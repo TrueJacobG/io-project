@@ -1,0 +1,21 @@
+{
+  "users": [],
+  "events": [
+    {
+      "id_event": "f39acecb-d7ee-43a5-9739-70bc62a96351",
+      "name": "Party1",
+      "description": "desc desc desc",
+      "users": ["test@test.com", "new_test@test.com"]
+    }
+  ],
+  "expenses": [
+    {
+      "id_expens": "67eb247c-13aa-4b7c-8222-c8cc236ce027",
+      "id_event": "f39acecb-d7ee-43a5-9739-70bc62a96351",
+      "name": "MCD",
+      "amount": 20,
+      "type": "Jedzenie",
+      "description": "desc desc desc"
+    }
+  ]
+}
