@@ -4,3 +4,54 @@
   padding: 2rem;
   text-align: center;
 }
+
+.add-event {
+  float: left;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.add-event button {
+  font-size: 2em;
+}
+
+.edit-event {
+  float: left;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.edit-event button {
+  font-size: 2em;
+}
+
+.title {
+  float: left;
+  width: 60%;
+}
+
+.title h1 {
+  display: inline;
+  vertical-align: top;
+}
+
+.info {
+  float: left;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.info h2 {
+  display: inline;
+  vertical-align: top;
+}
+
+.login {
+  float: left;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.login button {
+  font-size: 2em;
+}
