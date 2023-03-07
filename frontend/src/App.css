@@ -55,3 +55,44 @@
 .login button {
   font-size: 2em;
 }
+
+.login-button button {
+  font-size: 2em;
+}
+
+.logout-button button {
+  font-size: 1.8em;
+}
+
+/* LOGIN */
+
+.show {
+  opacity: 1;
+  transition: 500ms;
+}
+
+.show.active {
+  opacity: 0;
+  transform: translateY(-100px) scale(0) rotateY(180deg);
+}
+
+.show.unactive {
+  opacity: 1;
+}
+
+.login-form {
+  font-size: 1.3em;
+}
+
+.login-form input[type="text"] {
+  font-size: 1.2em;
+}
+
+.login-form input[type="password"] {
+  font-size: 1.1em;
+}
+
+.login-form input[type="submit"] {
+  font-size: 1.2em;
+  margin-top: 1em;
+}
