@@ -3,9 +3,10 @@ import { useState } from "react";
 type Props = {
   loginEvent: any;
   changeForms: any;
+  loginError: boolean;
 };
 
-const LoginForm = ({ loginEvent, changeForms }: Props) => {
+const LoginForm = ({ loginEvent, changeForms, loginError }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -40,6 +41,9 @@ const LoginForm = ({ loginEvent, changeForms }: Props) => {
           </button>
         </form>
       </div>
+
+      {loginError && <h1 className="login-error-message">Wrong email or password!</h1>}
+
       <button
         className="change-form-button"
         onClick={() => {

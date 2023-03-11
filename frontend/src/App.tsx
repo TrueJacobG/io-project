@@ -7,6 +7,7 @@ function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [username, setUsername] = useState("Anonymous");
+  const [loginError, setLoginError] = useState(false);
 
   const handleLoginClick = () => {
     setIsShowAuthForm((isShowLoginForm) => !isShowLoginForm);
@@ -30,6 +31,7 @@ function App() {
       body: JSON.stringify({ email: email, auth_data: password }),
     }).then((res) => {
       if (res.ok) {
+        setLoginError(false);
         res.json().then((data) => {
           setIsLogged(true);
           setIsShowAuthForm(false);
@@ -38,7 +40,10 @@ function App() {
           localStorage.setItem("email", email);
           localStorage.setItem("username", data.username);
         });
+        return res.json();
       }
+
+      setLoginError(true);
     });
   };
 
@@ -59,7 +64,7 @@ function App() {
   return (
     <div className="App">
       <Navbar handleLoginClick={handleLoginClick} handleLogoutClick={handleLogoutClick} isLogged={isLogged} username={username} />
-      <AuthForm isShowAuthForm={isShowAuthForm} loginEvent={loginEvent} registerEvent={registerEvent} />
+      <AuthForm isShowAuthForm={isShowAuthForm} loginEvent={loginEvent} registerEvent={registerEvent} loginError={loginError} />
     </div>
   );
 }
