@@ -41,7 +41,7 @@ const RegisterForm = ({ registerEvent, changeForms }: Props) => {
           changeForms();
         }}
       >
-        Don't have an account? Register now
+        Do you have an account? Login now
       </button>
     </div>
   );

@@ -10,17 +10,19 @@ const Navbar = ({
   handleLoginClick,
   handleLogoutClick,
   isLogged,
+  username,
 }: {
   handleLoginClick: any;
   handleLogoutClick: any;
   isLogged: boolean;
+  username: string;
 }) => {
   return (
     <div className="navbar">
       <AddEventButton />
       <EditEventButton />
       <Title />
-      <Info />
+      <Info username={username} />
       {!isLogged ? <LoginButton handleLoginClick={handleLoginClick} /> : <LogoutButton handleLogoutClick={handleLogoutClick} />}
     </div>
   );

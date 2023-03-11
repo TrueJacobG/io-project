@@ -1,5 +1,7 @@
 {
-  "users": [],
+  "users": [
+    { "id_user": "bc32fc6f-1354-435e-85ac-d5de65cb6fbd", "username": "J", "email": "test@test.com", "auth_data": "16781237123978123" }
+  ],
   "events": [
     {
       "id_event": "f39acecb-d7ee-43a5-9739-70bc62a96351",

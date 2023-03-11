@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
 import Navbar from "./components/navbar/Navbar";
@@ -6,6 +6,7 @@ import Navbar from "./components/navbar/Navbar";
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+  const [username, setUsername] = useState("Anonymous");
 
   const handleLoginClick = () => {
     setIsShowAuthForm((isShowLoginForm) => !isShowLoginForm);
@@ -13,11 +14,32 @@ function App() {
 
   const handleLogoutClick = () => {
     setIsLogged((isLogged) => false);
+    setUsername("Anonymous");
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
   };
 
-  const loginEvent = (e: any) => {
+  const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
-    console.log("login ->");
+
+    fetch("http://localhost:3000/api/v1/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, auth_data: password }),
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((data) => {
+          setIsLogged(true);
+          setIsShowAuthForm(false);
+          setUsername(data.username);
+
+          localStorage.setItem("email", email);
+          localStorage.setItem("username", data.username);
+        });
+      }
+    });
   };
 
   const registerEvent = (e: any) => {
@@ -25,9 +47,18 @@ function App() {
     console.log("register ->");
   };
 
+  useEffect(() => {
+    let username = localStorage.getItem("username");
+
+    if (username !== null) {
+      setUsername(username);
+      setIsLogged(true);
+    }
+  }, []);
+
   return (
     <div className="App">
-      <Navbar handleLoginClick={handleLoginClick} isLogged={isLogged} handleLogoutClick={handleLogoutClick} />
+      <Navbar handleLoginClick={handleLoginClick} handleLogoutClick={handleLogoutClick} isLogged={isLogged} username={username} />
       <AuthForm isShowAuthForm={isShowAuthForm} loginEvent={loginEvent} registerEvent={registerEvent} />
     </div>
   );

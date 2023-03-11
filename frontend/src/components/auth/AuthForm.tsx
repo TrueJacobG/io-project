@@ -4,7 +4,7 @@ import RegisterForm from "./RegisterForm";
 
 type Props = {
   isShowAuthForm: boolean;
-  loginEvent: React.MouseEventHandler<HTMLButtonElement>;
+  loginEvent: any;
   registerEvent: React.MouseEventHandler<HTMLButtonElement>;
 };
 

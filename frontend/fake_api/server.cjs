@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded());
 const port = 3000;
 
 const jsonDb = require("node-json-db");
@@ -14,13 +17,13 @@ const prefix = "/api/v1/";
 
 app.post(prefix + "auth/register", async (req, res) => {
   let body = req.body;
-  let user = { id_user: id.randomUUID(), name: body.name, surname: body.surname, email: body.email, password_data: body.password_data };
+  let user = { id_user: id.randomUUID(), username: body.username, email: body.email, auth_data: body.auth_data };
 
   await db
     .push("/users[]", user)
     .then(() => {
       let message = "User added to database!";
-      res.send(message);
+      res.send(JSON.stringify(message));
       console.log(message);
     })
     .catch((e) => {
@@ -36,15 +39,15 @@ app.post(prefix + "auth/login", async (req, res) => {
   let found = false;
 
   users.forEach((u) => {
-    if (u.email === body.email && u.password_data === body.password_data) {
-      res.send("User  logged!");
+    if (u.email === body.email && u.auth_data === body.auth_data) {
+      res.send(JSON.stringify({ message: "User found!", username: u.username }));
       found = true;
     }
   });
 
   if (!found) {
     res.status(404);
-    res.send("User does not exist in the database!");
+    res.send(JSON.stringify("User not found!"));
   }
 });
 

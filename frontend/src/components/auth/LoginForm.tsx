@@ -1,9 +1,22 @@
+import { useState } from "react";
+
 type Props = {
-  loginEvent: React.MouseEventHandler<HTMLButtonElement>;
+  loginEvent: any;
   changeForms: any;
 };
 
 const LoginForm = ({ loginEvent, changeForms }: Props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
   return (
     <div className="login-form">
       <div className="form-box">
@@ -11,16 +24,16 @@ const LoginForm = ({ loginEvent, changeForms }: Props) => {
           <h1>Login</h1>
           <label>Email</label>
           <br />
-          <input type="text" name="email" className="email" />
+          <input type="text" name="email" className="email" value={email} onChange={handleChangeEmail} />
           <br />
           <label>Password</label>
           <br />
-          <input type="password" name="password" className="password" />
+          <input type="password" name="password" className="password" value={password} onChange={handleChangePassword} />
           <br />
           <button
             className="button"
             onClick={(e) => {
-              loginEvent(e);
+              loginEvent(e, email, password);
             }}
           >
             Login
