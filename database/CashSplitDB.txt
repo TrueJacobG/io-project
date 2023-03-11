@@ -1,0 +1,7 @@
+CREATE TABLE "user" 
+(
+id_user NUMBER(38) CONSTRAINT id_user_pk PRIMARY KEY,
+email VARCHAR2(255) CONSTRAINT email_vnn NOT NULL,
+userName VARCHAR2(100) CONSTRAINT userName_vnn NOT NULL,
+auth_data VARCHAR2(100) CONSTRAINT auth_data_vnn NOT NULL
+);
