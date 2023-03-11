@@ -1,14 +1,14 @@
 import { useState } from "react";
 import "./App.css";
-import LoginForm from "./components/login/LoginForm";
+import AuthForm from "./components/auth/AuthForm";
 import Navbar from "./components/navbar/Navbar";
 
 function App() {
-  const [isShowLoginForm, setIsShowLoginForm] = useState(false);
+  const [isShowAuthForm, setIsShowAuthForm] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
 
   const handleLoginClick = () => {
-    setIsShowLoginForm((isShowLoginForm) => !isShowLoginForm);
+    setIsShowAuthForm((isShowLoginForm) => !isShowLoginForm);
   };
 
   const handleLogoutClick = () => {
@@ -20,10 +20,15 @@ function App() {
     console.log("login ->");
   };
 
+  const registerEvent = (e: any) => {
+    e.preventDefault();
+    console.log("register ->");
+  };
+
   return (
     <div className="App">
       <Navbar handleLoginClick={handleLoginClick} isLogged={isLogged} handleLogoutClick={handleLogoutClick} />
-      <LoginForm isShowLoginForm={isShowLoginForm} loginEvent={loginEvent} />
+      <AuthForm isShowAuthForm={isShowAuthForm} loginEvent={loginEvent} registerEvent={registerEvent} />
     </div>
   );
 }
