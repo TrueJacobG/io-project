@@ -46,7 +46,8 @@ function App() {
           localStorage.setItem("email", email);
           localStorage.setItem("username", data.username);
         });
-        return res.json();
+      } else {
+        console.log("something wrong");
       }
 
       setLoginError(true);
