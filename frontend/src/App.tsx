@@ -3,7 +3,7 @@ import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
 import Navbar from "./components/navbar/Navbar";
 
-const link = "http://localhost:7012/api/v1";
+const link = "https://localhost:7012/api/v1";
 const link2 = "http://localhost:3000/api/v1";
 
 function App() {
