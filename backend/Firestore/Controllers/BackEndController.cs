@@ -3,11 +3,16 @@ using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.CompilerServices;
+//using System.Web.Http.Cors;
+using Microsoft.AspNetCore.Cors;
+using Newtonsoft.Json;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Firestore.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/")]
+    //[EnableCors("http://localhost:5173/", "*", "*")]
     public class BackEndController : ControllerBase
     {
         private readonly ILogger<BackEndController> _logger;
@@ -22,20 +27,25 @@ namespace Firestore.Controllers
         Random random = new Random();
 
 
+
+
+
+
+        [EnableCors("Policy1")]
         [HttpPost]
-        [Route("auth/register", Name = "Register")]
+        [Route("auth/register", Name = "register")]
         public async Task<IActionResult> Register([FromBody] RegistrationModel registrationUser)
         {
-            _logger.LogInformation($"Register Attempt for {registrationUser.Email}");
+            _logger.LogInformation($"Register Attempt for {registrationUser.email}");
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError($"Wrong data model for register attempf for {registrationUser.Email}");
+                _logger.LogError($"Wrong data model for register attempf for {registrationUser.email}");
                 return BadRequest(ModelState);
             }
 
             CollectionReference users = firestoreDb.Collection("user");
-            Query query = users.WhereEqualTo("username", registrationUser.Username).WhereEqualTo("email", registrationUser.Email);
+            Query query = users.WhereEqualTo("username", registrationUser.username).WhereEqualTo("email", registrationUser.email);
 
             QuerySnapshot snap = await query.GetSnapshotAsync();
 
@@ -44,14 +54,14 @@ namespace Firestore.Controllers
                 _logger.LogInformation("This email is not registered yet");
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
                 {
-                    {"auth_data",registrationUser.AuthData },
-                    {"email",registrationUser.Email },
-                    {"username",registrationUser.Username },
+                    {"auth_data",registrationUser.auth_data },
+                    {"email",registrationUser.email },
+                    {"username",registrationUser.username },
                     {"uid", Guid.NewGuid().ToString()},
                 };
 
                 await users.AddAsync(data1);
-                return Ok();
+                return Ok(JsonConvert.SerializeObject(new { }));
 
             }
             else if (snap.Documents.Count >= 0)
@@ -60,23 +70,31 @@ namespace Firestore.Controllers
                 return StatusCode(409, "This email is already in use!");
             }
 
-            return Ok();
+            return StatusCode(550);
         }
 
+
+
+
+
+
+
+        [EnableCors("Policy1")]
         [HttpPost]
-        [Route("auth/login", Name = "Login")]
+        [Route("auth/login", Name = "login")]
         public async Task<IActionResult> Login([FromBody] LoginModel user)
         {
-            _logger.LogInformation($"Login Attempt for {user.Email}");
+
+            _logger.LogInformation($"Login Attempt for {user.email}");
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError($"Wrong data model for login attempt for {user.Email}");
+                _logger.LogError($"Wrong data model for login attempt for {user.email}");
                 return BadRequest(ModelState);
             }
 
             CollectionReference users = firestoreDb.Collection("user");
-            Query query = users.WhereEqualTo("email", user.Email).WhereEqualTo("auth_data", user.AuthData);
+            Query query = users.WhereEqualTo("email", user.email).WhereEqualTo("auth_data", user.auth_data);
 
             QuerySnapshot snap = await query.GetSnapshotAsync();
 
@@ -87,9 +105,10 @@ namespace Firestore.Controllers
             }
             else if (snap.Documents.Count == 1)
             {
-                return Ok();
+                string snapUsername = snap.Documents[0].ConvertTo<RegistrationModel>().username;
+                return Ok(JsonConvert.SerializeObject(new { username = snapUsername }));
             }
-            return Ok();
+            return StatusCode(550);
         }
     }
 }

@@ -9,12 +9,12 @@ namespace Firestore.Models
     public class RegistrationModel
     {
         [FirestoreProperty]
-        public string Username { get; set; }
+        public string username { get; set; }
 
         [FirestoreProperty]
-        public string Email { get; set; }
+        public string email { get; set; }
 
         [FirestoreProperty]
-        public string AuthData { get; set; }
+        public string auth_data { get; set; }
     }
 }

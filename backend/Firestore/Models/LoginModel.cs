@@ -5,10 +5,12 @@ namespace Firestore.Models
     public class LoginModel
     {
         [FirestoreProperty]
-        public string Email { get; set; }
+        public string auth_data { get; set; }
 
         [FirestoreProperty]
-        public string AuthData { get; set; }
+        public string email { get; set; }
+
+
 
     }
 }
