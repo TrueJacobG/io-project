@@ -61,7 +61,6 @@ function App() {
 
   const registerEvent = (e: any, username: string, email: string, password: string, rpassword: string) => {
     e.preventDefault();
-    console.log(username, email, password, rpassword);
 
     if (password !== rpassword) {
       setRegisterError("Passwords are not equal!");
