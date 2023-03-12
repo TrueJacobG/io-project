@@ -1,17 +1,18 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
+
+const prefix = "/api/v1/";
 const port = 3000;
 
 const jsonDb = require("node-json-db");
 var db = new jsonDb.JsonDB(new jsonDb.Config("./fake_api/fake_database", true, false, "/"));
 
 const id = require("crypto");
-
-const prefix = "/api/v1/";
 
 /* AUTH */
 

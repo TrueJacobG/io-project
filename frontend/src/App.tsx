@@ -3,6 +3,9 @@ import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
 import Navbar from "./components/navbar/Navbar";
 
+const link = "http://localhost:7012/api/v1";
+const link2 = "http://localhost:3000/api/v1";
+
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
@@ -26,9 +29,7 @@ function App() {
   const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
 
-    // http://localhost:3000/api/v1/auth/login
-
-    fetch("https://localhost:7012/BackEnd/auth/login", {
+    fetch(link + "/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,9 +84,7 @@ function App() {
 
     setRegisterError("");
 
-    // http://localhost:3000/api/v1/auth/register
-
-    fetch("https://localhost:7012/BackEnd/auth/register", {
+    fetch(link + "/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
