@@ -102,7 +102,8 @@ function App() {
           localStorage.setItem("email", email);
           localStorage.setItem("username", username);
         });
-        return res.json();
+      } else {
+        console.log("something went wrong");
       }
 
       setRegisterError("Registration is not available right now!");
