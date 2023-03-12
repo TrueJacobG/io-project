@@ -5,11 +5,12 @@ import RegisterForm from "./RegisterForm";
 type Props = {
   isShowAuthForm: boolean;
   loginEvent: any;
-  registerEvent: React.MouseEventHandler<HTMLButtonElement>;
+  registerEvent: any;
   loginError: boolean;
+  registerError: string;
 };
 
-const AuthForm = ({ isShowAuthForm, loginEvent, registerEvent, loginError }: Props) => {
+const AuthForm = ({ isShowAuthForm, loginEvent, registerEvent, loginError, registerError }: Props) => {
   const [isShowLoginForm, setIsShowLoginForm] = useState(true);
 
   const changeForms = () => {
@@ -21,7 +22,7 @@ const AuthForm = ({ isShowAuthForm, loginEvent, registerEvent, loginError }: Pro
       {isShowLoginForm ? (
         <LoginForm loginEvent={loginEvent} changeForms={changeForms} loginError={loginError} />
       ) : (
-        <RegisterForm registerEvent={registerEvent} changeForms={changeForms} />
+        <RegisterForm registerEvent={registerEvent} changeForms={changeForms} registerError={registerError} />
       )}
     </div>
   );

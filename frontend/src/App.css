@@ -7,27 +7,40 @@
 
 .add-event {
   float: left;
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
-.add-event button {
-  font-size: 2em;
+.navbar-buttons button {
+  font-family: system-ui, sans-serif;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0.1em 0.6em;
+  font-weight: bold;
+
+  border: none;
+  border-radius: 0.1em;
+  box-shadow: 0 0 0 0.1em #176bba;
+
+  background: #176bba;
+
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.navbar-buttons button:hover {
+  opacity: 1;
 }
 
 .edit-event {
   float: left;
-  margin-left: 1em;
-  margin-right: 1em;
-}
-
-.edit-event button {
-  font-size: 2em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 .title {
   float: left;
-  width: 60%;
+  width: 40%;
 }
 
 .title h1 {
@@ -37,23 +50,20 @@
 
 .info {
   float: left;
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-left: 0.5em;
+  vertical-align: middle;
+  margin-top: -0.5em;
 }
 
 .info h2 {
-  display: inline;
-  vertical-align: top;
 }
 
-.login {
-  float: left;
-  margin-left: 1em;
-  margin-right: 1em;
+.login-button {
+  float: right;
 }
 
-.login button {
-  font-size: 2em;
+.logout-button {
+  float: right;
 }
 
 .login-button button {
@@ -81,6 +91,7 @@
 }
 
 .login-form {
+  text-align: center;
   font-size: 1.3em;
 }
 
@@ -92,7 +103,48 @@
   font-size: 1.1em;
 }
 
-.login-form input[type="submit"] {
+.register-form {
+  text-align: center;
+  font-size: 1.3em;
+}
+
+.register-form input[type="text"],
+.register-form input[type="password"] {
   font-size: 1.2em;
-  margin-top: 1em;
+}
+
+.auth-button {
+  font-size: 1em;
+  margin-top: 0.5em;
+
+  align-items: center;
+  background-color: #0a66c2;
+  border: none;
+  border-radius: 2em;
+
+  color: #ffffff;
+  cursor: pointer;
+
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+
+  transition: 0.3s;
+}
+
+.auth-button:hover,
+.auth-button:focus {
+  background-color: #16437e;
+  color: #ffffff;
+}
+
+.change-form-button {
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+  padding: 0.1em 0.6em;
+  border: none;
+  background-color: rgb(65, 173, 255);
+  border-radius: 1em;
+  margin-top: 0.5em;
 }

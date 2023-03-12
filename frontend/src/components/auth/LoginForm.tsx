@@ -32,7 +32,7 @@ const LoginForm = ({ loginEvent, changeForms, loginError }: Props) => {
           <input type="password" name="password" className="password" value={password} onChange={handleChangePassword} />
           <br />
           <button
-            className="button"
+            className="auth-button"
             onClick={(e) => {
               loginEvent(e, email, password);
             }}

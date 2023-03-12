@@ -1,7 +1,7 @@
 const AddEventButton = () => {
   return (
-    <div className="add-event">
-      <button>Add</button>
+    <div className="add-event navbar-buttons">
+      <button>➕ Add Event ➕</button>
     </div>
   );
 };

@@ -24,6 +24,7 @@ const Navbar = ({
       <Title />
       <Info username={username} />
       {!isLogged ? <LoginButton handleLoginClick={handleLoginClick} /> : <LogoutButton handleLogoutClick={handleLogoutClick} />}
+      <div style={{ clear: "both" }}></div>
     </div>
   );
 };

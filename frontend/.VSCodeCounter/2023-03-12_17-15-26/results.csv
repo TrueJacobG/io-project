@@ -1,0 +1,26 @@
+"filename", "language", "JSON with Comments", "JSON", "TypeScript", "HTML", "CSS", "TypeScript JSX", "JavaScript", "comment", "blank", "total"
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\fake_api\fake_database.json", "JSON", 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\fake_api\server.cjs", "JavaScript", 0, 0, 0, 0, 0, 0, 115, 5, 27, 147
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\index.html", "HTML", 0, 0, 0, 13, 0, 0, 0, 0, 1, 14
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\package-lock.json", "JSON", 0, 2047, 0, 0, 0, 0, 0, 0, 1, 2048
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\package.json", "JSON", 0, 26, 0, 0, 0, 0, 0, 0, 1, 27
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\App.css", "CSS", 0, 0, 0, 0, 118, 0, 0, 1, 32, 151
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\App.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 93, 0, 0, 20, 113
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\auth\AuthForm.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 26, 0, 0, 6, 32
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\auth\LoginForm.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 51, 0, 0, 9, 60
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\auth\RegisterForm.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 87, 0, 0, 7, 94
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\navbar\AddEventButton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 8, 0, 0, 2, 10
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\navbar\EditEventButton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 8, 0, 0, 2, 10
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\navbar\Info.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 8, 0, 0, 2, 10
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\navbar\LoginButton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 8, 0, 0, 2, 10
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\navbar\LogoutButton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 8, 0, 0, 2, 10
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\navbar\Navbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 30, 0, 0, 3, 33
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\components\navbar\Title.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 8, 0, 0, 2, 10
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\index.css", "CSS", 0, 0, 0, 0, 12, 0, 0, 0, 3, 15
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\main.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 9, 0, 0, 2, 11
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\src\vite-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 1, 1, 2
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\tsconfig.json", "JSON with Comments", 21, 0, 0, 0, 0, 0, 0, 0, 1, 22
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\tsconfig.node.json", "JSON", 0, 9, 0, 0, 0, 0, 0, 0, 1, 10
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\types\user.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 2, 12
+"d:\PROGRAMMING\ul\IO PROJECT\frontend\vite.config.ts", "TypeScript", 0, 0, 5, 0, 0, 0, 0, 1, 2, 8
+"Total", "-", 21, 2083, 15, 13, 130, 344, 115, 8, 131, 2860
