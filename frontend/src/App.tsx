@@ -38,14 +38,19 @@ function App() {
     }).then((res) => {
       if (res.ok) {
         setLoginError(false);
-        res.json().then((data) => {
-          setIsLogged(true);
-          setIsShowAuthForm(false);
+        res
+          .json()
+          .then((data) => {
+            setIsLogged(true);
+            setIsShowAuthForm(false);
 
-          setUsername(data.username);
-          localStorage.setItem("email", email);
-          localStorage.setItem("username", data.username);
-        });
+            setUsername(data.username);
+            localStorage.setItem("email", email);
+            localStorage.setItem("username", data.username);
+          })
+          .catch((e) => {
+            console.log("something went wrong with json");
+          });
       } else {
         console.log("something wrong");
       }
@@ -94,14 +99,19 @@ function App() {
     }).then((res) => {
       if (res.ok) {
         setRegisterError("");
-        res.json().then((data) => {
-          setIsLogged(true);
-          setIsShowAuthForm(false);
+        res
+          .json()
+          .then((data) => {
+            setIsLogged(true);
+            setIsShowAuthForm(false);
 
-          setUsername(username);
-          localStorage.setItem("email", email);
-          localStorage.setItem("username", username);
-        });
+            setUsername(username);
+            localStorage.setItem("email", email);
+            localStorage.setItem("username", username);
+          })
+          .catch((e) => {
+            console.log("something went wrong with json");
+          });
       } else {
         console.log("something went wrong");
       }
