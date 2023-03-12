@@ -26,7 +26,9 @@ function App() {
   const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
 
-    fetch("http://localhost:3000/api/v1/auth/login", {
+    // http://localhost:3000/api/v1/auth/login
+
+    fetch("https://localhost:7012/BackEnd/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +83,9 @@ function App() {
 
     setRegisterError("");
 
-    fetch("http://localhost:3000/api/v1/auth/register", {
+    // http://localhost:3000/api/v1/auth/register
+
+    fetch("https://localhost:7012/BackEnd/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
