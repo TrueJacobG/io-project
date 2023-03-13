@@ -14,7 +14,7 @@ type Props = {
 
 const AuthForm = ({ isShowAuthForm, loginEvent, registerEvent, isShowLoginForm, setIsShowLoginForm, loginError, registerError }: Props) => {
   return (
-    <div className={`${!isShowAuthForm ? "active" : "unactive"} show`}>
+    <div className={`${!isShowAuthForm ? "unactive" : "active"} show`}>
       {isShowLoginForm ? (
         <LoginForm loginEvent={loginEvent} changeForms={setIsShowLoginForm} loginError={loginError} />
       ) : (

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
+import Events from "./components/events/Events";
+import AddEventButton from "./components/events/AddEventButton";
 import Navbar from "./components/navbar/Navbar";
+
+import { Event } from "./types/Event";
+import NotLogged from "./components/errors/NotLogged";
 
 const link2 = "https://localhost:7012/api/v1";
 const link = "http://localhost:3000/api/v1";
@@ -126,6 +131,25 @@ function App() {
     });
   };
 
+  /* EVENTS */
+
+  const [events, setEvents] = useState<Event[]>([]);
+
+  const handleAddEvent = () => {
+    setEvents((ev) => [
+      ...ev,
+      {
+        id_event: Math.random().toString(),
+        name: "test" + Math.random().toString() + Math.random().toString(),
+        description:
+          "lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum ",
+      } as Event,
+    ]);
+
+    // TODO
+    // fetch add event to database
+  };
+
   useEffect(() => {
     let username = localStorage.getItem("username");
 
@@ -133,6 +157,10 @@ function App() {
       setUsername(username);
       setIsLogged(true);
     }
+
+    // TODO
+    // fetch events -> custom hook
+    // after login -> fetch events
   }, []);
 
   return (
@@ -153,6 +181,14 @@ function App() {
         loginError={loginError}
         registerError={registerError}
       />
+      {isLogged ? (
+        <div>
+          <AddEventButton handleAddEvent={handleAddEvent} />
+          <Events events={events} />
+        </div>
+      ) : (
+        <NotLogged />
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import AddEventButton from "./AddEventButton";
-import EditEventButton from "./EditEventButton";
+import AddEventButton from "../events/AddEventButton";
+import EditEventButton from "../events/EditButton";
 import Info from "./Info";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
@@ -36,7 +36,6 @@ const Navbar = ({
       )}
       <div style={{ clear: "both" }}></div>
       <hr />
-      <AddEventButton />
     </div>
   );
 };

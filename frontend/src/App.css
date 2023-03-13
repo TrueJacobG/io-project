@@ -96,13 +96,6 @@
   width: 5em;
 }
 
-/* BOTTON NAVBAR */
-
-.add-event {
-  width: 100%;
-  margin-top: 1em;
-}
-
 /* LOGIN */
 
 .show {
@@ -110,12 +103,13 @@
   transition: 500ms;
 }
 
-.show.active {
+.show.unactive {
   opacity: 0;
   transform: translateY(-100px) scale(0) rotateY(180deg);
+  height: 0px;
 }
 
-.show.unactive {
+.show.active {
   opacity: 1;
 }
 
@@ -147,7 +141,7 @@
   margin-top: 0.5em;
 
   align-items: center;
-  background-color: #0a66c2;
+  background-color: #176bba;
   border: none;
   border-radius: 2em;
 
@@ -164,7 +158,7 @@
 
 .auth-button:hover,
 .auth-button:focus {
-  background-color: #16437e;
+  background-color: #176bba;
   color: #ffffff;
 }
 
@@ -176,4 +170,23 @@
   background-color: rgb(65, 173, 255);
   border-radius: 1em;
   margin-top: 0.5em;
+}
+
+/* ADD EVENTS */
+
+.add-event {
+  width: 100%;
+}
+
+/* EVENTS */
+
+.event-card {
+  border: 0.3em solid #176bba;
+  margin-top: 1em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: small;
+  word-break: break-all;
 }
