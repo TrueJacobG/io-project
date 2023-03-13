@@ -81,7 +81,7 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
       <button
         className="change-form-button"
         onClick={() => {
-          changeForms();
+          changeForms((i: any) => !i);
         }}
       >
         Do you have an account? Login now

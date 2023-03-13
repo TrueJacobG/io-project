@@ -3,12 +3,13 @@ import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
 import Navbar from "./components/navbar/Navbar";
 
-const link = "https://localhost:7012/api/v1";
-const link2 = "http://localhost:3000/api/v1";
+const link2 = "https://localhost:7012/api/v1";
+const link = "http://localhost:3000/api/v1";
 
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+  const [isShowLoginForm, setIsShowLoginForm] = useState(true);
 
   const [username, setUsername] = useState("Anonymous");
 
@@ -16,7 +17,13 @@ function App() {
   const [registerError, setRegisterError] = useState("");
 
   const handleLoginClick = () => {
-    setIsShowAuthForm((isShowLoginForm) => !isShowLoginForm);
+    setIsShowLoginForm(true);
+    setIsShowAuthForm((isShowForm) => !isShowForm);
+  };
+
+  const handleRegisterClick = () => {
+    setIsShowLoginForm(false);
+    setIsShowAuthForm((isShowForm) => !isShowForm);
   };
 
   const handleLogoutClick = () => {
@@ -130,11 +137,19 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar handleLoginClick={handleLoginClick} handleLogoutClick={handleLogoutClick} isLogged={isLogged} username={username} />
+      <Navbar
+        handleLoginClick={handleLoginClick}
+        handleRegisterClick={handleRegisterClick}
+        handleLogoutClick={handleLogoutClick}
+        isLogged={isLogged}
+        username={username}
+      />
       <AuthForm
         isShowAuthForm={isShowAuthForm}
         loginEvent={loginEvent}
         registerEvent={registerEvent}
+        isShowLoginForm={isShowLoginForm}
+        setIsShowLoginForm={setIsShowLoginForm}
         loginError={loginError}
         registerError={registerError}
       />

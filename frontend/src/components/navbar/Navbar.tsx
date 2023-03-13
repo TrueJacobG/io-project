@@ -4,27 +4,39 @@ import EditEventButton from "./EditEventButton";
 import Info from "./Info";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
+import RegisterButton from "./RegisterButton";
 import Title from "./Title";
 
 const Navbar = ({
   handleLoginClick,
+  handleRegisterClick,
   handleLogoutClick,
   isLogged,
   username,
 }: {
   handleLoginClick: any;
+  handleRegisterClick: any;
   handleLogoutClick: any;
   isLogged: boolean;
   username: string;
 }) => {
   return (
     <div className="navbar">
-      <AddEventButton />
-      <EditEventButton />
       <Title />
-      <Info username={username} />
-      {!isLogged ? <LoginButton handleLoginClick={handleLoginClick} /> : <LogoutButton handleLogoutClick={handleLogoutClick} />}
+      {!isLogged ? (
+        <div>
+          <LoginButton handleLoginClick={handleLoginClick} />
+          <RegisterButton handleRegisterClick={handleRegisterClick} />
+        </div>
+      ) : (
+        <div>
+          <Info username={username} />
+          <LogoutButton handleLogoutClick={handleLogoutClick} />
+        </div>
+      )}
       <div style={{ clear: "both" }}></div>
+      <hr />
+      <AddEventButton />
     </div>
   );
 };
