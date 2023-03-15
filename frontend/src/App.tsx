@@ -29,7 +29,6 @@ function App() {
   const [registerError, setRegisterError] = useState("");
 
   const handleLoginClick = () => {
-    console.log(link);
     setIsShowLoginForm(true);
     setIsShowAuthForm((isShowForm) => !isShowForm);
   };

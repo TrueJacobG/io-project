@@ -12,6 +12,71 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
   const [password, setPassword] = useState("");
   const [rpassword, setRpassword] = useState("");
 
+  const handlePasswordStrengthVisual = () => {
+    // 1 special char
+    // 1 number
+    // 1 big letter
+    // 1 small letter
+    // 2 -> > 8
+    // 1 -> > 12
+    // 1 -> > 16
+    // 10 -> > 30
+    // < 5 - week - red
+    // < 7 - medium - yellow
+    // >= 7 - strong - green
+    // > 14 - legendary - rainbow
+  };
+
+  const getPasswordStrengthLevel = (password: string) => {
+    let points: number = 0;
+
+    ".?!-_=+".split("").forEach((l) => {
+      if (password.includes(l)) {
+        points++;
+        return;
+      }
+    });
+
+    "0123456789".split("").forEach((l) => {
+      if (password.includes(l)) {
+        points++;
+        return;
+      }
+    });
+
+    password.split("").forEach((l) => {
+      if (l === l.toUpperCase()) {
+        points++;
+        return;
+      }
+    });
+
+    password.split("").forEach((l) => {
+      if (l === l.toLowerCase()) {
+        points++;
+        return;
+      }
+    });
+
+    if (password.length > 8) {
+      points += 2;
+    }
+
+    if (password.length > 12) {
+      points++;
+    }
+
+    if (password.length > 16) {
+      points++;
+    }
+
+    if (password.length > 30) {
+      points += 10;
+    }
+
+    return points;
+  };
+
   return (
     <div className="register-form">
       <div className="form-box">
@@ -75,6 +140,8 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
           </button>
         </form>
       </div>
+
+      <div className={getPasswordStrengthLevel()}></div>
 
       {registerError !== "" && <h3 className="register-error-message">{registerError}</h3>}
 
