@@ -7,6 +7,9 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 using System.Reflection.Metadata.Ecma335;
+using FirebaseAdmin.Auth;
+using Google.Apis.Auth.OAuth2;
+using FirebaseAdmin;
 
 namespace Firestore.Controllers
 {
@@ -24,7 +27,7 @@ namespace Firestore.Controllers
         }
 
         FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("databaseName.txt"));
-        Random random = new Random();
+        FirebaseApp app = FirebaseApp.Create();
 
 
 
@@ -44,6 +47,17 @@ namespace Firestore.Controllers
                 return BadRequest(ModelState);
             }
 
+
+
+            UserRecordArgs args = new UserRecordArgs()
+            {
+                Email = "user@example.com",
+                Password = "secretPassword",
+                DisplayName = "John Doe",
+            };
+            UserRecord userRecord = await FirebaseAuth.DefaultInstance.CreateUserAsync(args);
+
+
             CollectionReference users = firestoreDb.Collection("user");
             Query query = users.WhereEqualTo("username", registrationUser.username).WhereEqualTo("email", registrationUser.email);
 
@@ -57,7 +71,6 @@ namespace Firestore.Controllers
                     {"auth_data",registrationUser.auth_data },
                     {"email",registrationUser.email },
                     {"username",registrationUser.username },
-                    {"uid", Guid.NewGuid().ToString()},
                 };
 
                 await users.AddAsync(data1);
