@@ -8,7 +8,15 @@ import Navbar from "./components/navbar/Navbar";
 import { Event } from "./types/Event";
 import NotLogged from "./components/errors/NotLogged";
 
+let link: string;
 
+if (import.meta.env.VITE_FAKE_API !== undefined) {
+  link = import.meta.env.VITE_FAKE_API;
+}
+
+if (import.meta.env.VITE_API !== undefined) {
+  link = import.meta.env.VITE_API;
+}
 
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
@@ -21,6 +29,7 @@ function App() {
   const [registerError, setRegisterError] = useState("");
 
   const handleLoginClick = () => {
+    console.log(link);
     setIsShowLoginForm(true);
     setIsShowAuthForm((isShowForm) => !isShowForm);
   };
