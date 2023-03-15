@@ -1,14 +1,27 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
+import Events from "./components/events/Events";
+import AddEventButton from "./components/events/AddEventButton";
 import Navbar from "./components/navbar/Navbar";
 
-const link = "https://localhost:7012/api/v1";
-const link2 = "http://localhost:3000/api/v1";
+import { Event } from "./types/Event";
+import NotLogged from "./components/errors/NotLogged";
+
+let link: string;
+
+if (import.meta.env.VITE_FAKE_API !== undefined) {
+  link = import.meta.env.VITE_FAKE_API;
+}
+
+if (import.meta.env.VITE_API !== undefined) {
+  link = import.meta.env.VITE_API;
+}
 
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+  const [isShowLoginForm, setIsShowLoginForm] = useState(true);
 
   const [username, setUsername] = useState("Anonymous");
 
@@ -16,7 +29,14 @@ function App() {
   const [registerError, setRegisterError] = useState("");
 
   const handleLoginClick = () => {
-    setIsShowAuthForm((isShowLoginForm) => !isShowLoginForm);
+    console.log(link);
+    setIsShowLoginForm(true);
+    setIsShowAuthForm((isShowForm) => !isShowForm);
+  };
+
+  const handleRegisterClick = () => {
+    setIsShowLoginForm(false);
+    setIsShowAuthForm((isShowForm) => !isShowForm);
   };
 
   const handleLogoutClick = () => {
@@ -119,6 +139,25 @@ function App() {
     });
   };
 
+  /* EVENTS */
+
+  const [events, setEvents] = useState<Event[]>([]);
+
+  const handleAddEvent = () => {
+    setEvents((ev) => [
+      ...ev,
+      {
+        id_event: Math.random().toString(),
+        name: "test" + Math.random().toString() + Math.random().toString(),
+        description:
+          "lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum ",
+      } as Event,
+    ]);
+
+    // TODO
+    // fetch add event to database
+  };
+
   useEffect(() => {
     let username = localStorage.getItem("username");
 
@@ -126,18 +165,38 @@ function App() {
       setUsername(username);
       setIsLogged(true);
     }
+
+    // TODO
+    // fetch events -> custom hook
+    // after login -> fetch events
   }, []);
 
   return (
     <div className="App">
-      <Navbar handleLoginClick={handleLoginClick} handleLogoutClick={handleLogoutClick} isLogged={isLogged} username={username} />
+      <Navbar
+        handleLoginClick={handleLoginClick}
+        handleRegisterClick={handleRegisterClick}
+        handleLogoutClick={handleLogoutClick}
+        isLogged={isLogged}
+        username={username}
+      />
       <AuthForm
         isShowAuthForm={isShowAuthForm}
         loginEvent={loginEvent}
         registerEvent={registerEvent}
+        isShowLoginForm={isShowLoginForm}
+        setIsShowLoginForm={setIsShowLoginForm}
         loginError={loginError}
         registerError={registerError}
       />
+      {isLogged ? (
+        <div>
+          <AddEventButton handleAddEvent={handleAddEvent} />
+          <Events events={events} />
+        </div>
+      ) : (
+        <NotLogged />
+      )}
     </div>
   );
 }

@@ -16,24 +16,6 @@ const id = require("crypto");
 
 /* AUTH */
 
-app.post(prefix + "auth/register", async (req, res) => {
-  let body = req.body;
-  let user = { id_user: id.randomUUID(), username: body.username, email: body.email, auth_data: body.auth_data };
-
-  await db
-    .push("/users[]", user)
-    .then(() => {
-      let message = "User added to database!";
-      res.send(JSON.stringify(message));
-      console.log(message);
-    })
-    .catch((e) => {
-      console.log(e);
-      res.status(409);
-      res.send("Can't register user!");
-    });
-});
-
 app.post(prefix + "auth/login", async (req, res) => {
   let body = req.body;
   let users = await db.getData("/users");
@@ -41,18 +23,37 @@ app.post(prefix + "auth/login", async (req, res) => {
 
   users.forEach((u) => {
     if (u.email === body.email && u.auth_data === body.auth_data) {
-      res.send(JSON.stringify({ message: "User found!", username: u.username }));
+      res.status(200);
+      res.send(JSON.stringify({ username: u.username, auth_data: u.auth_data }));
       found = true;
     }
   });
 
   if (!found) {
     res.status(404);
-    res.send(JSON.stringify("User not found!"));
+    res.send(JSON.stringify({ message: "User not found!" }));
   }
 });
 
-/* USERS */
+app.post(prefix + "auth/register", async (req, res) => {
+  let body = req.body;
+  let user = { id_user: id.randomUUID(), username: body.username, email: body.email, auth_data: body.auth_data };
+
+  await db
+    .push("/users[]", user)
+    .then(() => {
+      // auth_data should be hash ofc
+      res.status(200);
+      res.send(JSON.stringify({ auth_data: body.auth_data }));
+    })
+    .catch((e) => {
+      console.log(e);
+      res.status(409);
+      res.send(JSON.stringify({ message: "Can't register to database!" }));
+    });
+});
+
+/* TODO USERS */
 
 app.get(prefix + "user/:email", async (req, res) => {
   let email = req.params.email;
