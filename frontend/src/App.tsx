@@ -8,8 +8,7 @@ import Navbar from "./components/navbar/Navbar";
 import { Event } from "./types/Event";
 import NotLogged from "./components/errors/NotLogged";
 
-const link2 = "https://localhost:7012/api/v1";
-const link = "http://localhost:3000/api/v1";
+
 
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
