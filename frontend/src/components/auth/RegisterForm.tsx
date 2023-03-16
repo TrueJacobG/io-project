@@ -1,4 +1,6 @@
 import { useState } from "react";
+import getPasswordLevelName from "../../utils/getPasswordLevelName";
+import getPasswordStrengthLevel from "../../utils/getPasswordStrengthLevel";
 
 type Props = {
   registerEvent: any;
@@ -12,70 +14,7 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
   const [password, setPassword] = useState("");
   const [rpassword, setRpassword] = useState("");
 
-  const handlePasswordStrengthVisual = () => {
-    // 1 special char
-    // 1 number
-    // 1 big letter
-    // 1 small letter
-    // 2 -> > 8
-    // 1 -> > 12
-    // 1 -> > 16
-    // 10 -> > 30
-    // < 5 - week - red
-    // < 7 - medium - yellow
-    // >= 7 - strong - green
-    // > 14 - legendary - rainbow
-  };
-
-  const getPasswordStrengthLevel = (password: string) => {
-    let points: number = 0;
-
-    ".?!-_=+".split("").forEach((l) => {
-      if (password.includes(l)) {
-        points++;
-        return;
-      }
-    });
-
-    "0123456789".split("").forEach((l) => {
-      if (password.includes(l)) {
-        points++;
-        return;
-      }
-    });
-
-    password.split("").forEach((l) => {
-      if (l === l.toUpperCase()) {
-        points++;
-        return;
-      }
-    });
-
-    password.split("").forEach((l) => {
-      if (l === l.toLowerCase()) {
-        points++;
-        return;
-      }
-    });
-
-    if (password.length > 8) {
-      points += 2;
-    }
-
-    if (password.length > 12) {
-      points++;
-    }
-
-    if (password.length > 16) {
-      points++;
-    }
-
-    if (password.length > 30) {
-      points += 10;
-    }
-
-    return points;
-  };
+  const [isOnFocusPassword, setIsOnFocusPassword] = useState(false);
 
   return (
     <div className="register-form">
@@ -113,8 +52,10 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
             name="password1"
             className="password"
             value={password}
+            onFocus={(_) => setIsOnFocusPassword(true)}
+            onBlur={(_) => setIsOnFocusPassword(false)}
             onChange={(e) => {
-              setPassword(e.target.value);
+              setPassword((_) => e.target.value);
             }}
           />
           <br />
@@ -130,6 +71,24 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
             }}
           />
           <br />
+
+          {registerError !== "" && (
+            <div className="register-error-message">
+              <h3>{registerError}</h3>
+            </div>
+          )}
+
+          {isOnFocusPassword && (
+            <div className="password-strength-level">
+              <label>Password Strength</label>
+              <div className="default-box">
+                <div className={getPasswordLevelName(password)}>
+                  <h3>{getPasswordLevelName(password)}</h3>
+                </div>
+              </div>
+            </div>
+          )}
+
           <button
             className="auth-button"
             onClick={(e) => {
@@ -140,10 +99,6 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
           </button>
         </form>
       </div>
-
-      <div className={getPasswordStrengthLevel()}></div>
-
-      {registerError !== "" && <h3 className="register-error-message">{registerError}</h3>}
 
       <button
         className="change-form-button"
