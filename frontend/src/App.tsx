@@ -28,6 +28,8 @@ function App() {
   const [loginError, setLoginError] = useState(false);
   const [registerError, setRegisterError] = useState("");
 
+  const [isEventButtonDisabled, setIsEventButtonDisabled] = useState(false);
+
   const handleLoginClick = () => {
     setIsShowLoginForm(true);
     setIsShowAuthForm((isShowForm) => !isShowForm);
@@ -144,17 +146,41 @@ function App() {
 
   const handleAddEvent = () => {
     setEvents((ev) => [
-      ...ev,
       {
-        id_event: Math.random().toString(),
-        name: "test" + Math.random().toString() + Math.random().toString(),
-        description:
-          "lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum ",
+        type: "create",
+        id_event: "",
+        name: "",
+        description: "",
       } as Event,
+      ...ev,
     ]);
 
-    // TODO
-    // fetch add event to database
+    setIsEventButtonDisabled(true);
+  };
+
+  const handleCreateEvent = (name: string, desc: string) => {
+    // TODO add to database, get id_event
+
+    setEvents((ev) => {
+      let newEvents: Event[] = [];
+
+      ev.forEach((e) => {
+        if (e.type === "create") {
+          newEvents.push({
+            type: "info",
+            id_event: "" + Math.random(),
+            name: name,
+            description: desc,
+          } as Event);
+        } else {
+          newEvents.push(e);
+        }
+      });
+
+      return newEvents;
+    });
+
+    setIsEventButtonDisabled(false);
   };
 
   useEffect(() => {
@@ -190,8 +216,8 @@ function App() {
       />
       {isLogged ? (
         <div>
-          <AddEventButton handleAddEvent={handleAddEvent} />
-          <Events events={events} />
+          <AddEventButton handleAddEvent={handleAddEvent} isEventButtonDisabled={isEventButtonDisabled} />
+          <Events events={events} handleCreateEvent={handleCreateEvent} />
         </div>
       ) : (
         <NotLogged />

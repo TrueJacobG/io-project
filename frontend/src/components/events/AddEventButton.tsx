@@ -1,7 +1,9 @@
-const AddEventButton = ({ handleAddEvent }: { handleAddEvent: any }) => {
+const AddEventButton = ({ handleAddEvent, isEventButtonDisabled }: { handleAddEvent: any; isEventButtonDisabled: boolean }) => {
   return (
     <div className="add-event navbar-buttons">
-      <button onClick={handleAddEvent}>➕ Add Event ➕</button>
+      <button onClick={handleAddEvent} disabled={isEventButtonDisabled}>
+        ➕ Add Event ➕
+      </button>
     </div>
   );
 };

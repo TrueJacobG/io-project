@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AddEventButton from "../events/AddEventButton";
-import EditEventButton from "../events/EditButton";
+import EditEventButton from "../events/EditEventButton";
 import Info from "./Info";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";

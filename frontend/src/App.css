@@ -240,6 +240,7 @@
 /* EVENTS */
 
 .event-card {
+  text-align: center;
   border: 0.3em solid #176bba;
   margin-top: 1em;
   padding-top: 0.3em;
