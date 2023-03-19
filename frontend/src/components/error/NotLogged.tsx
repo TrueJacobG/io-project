@@ -1,5 +1,5 @@
 const NotLogged = () => {
-  return <h1>not logged</h1>;
+  return <h1>Not logged</h1>;
 };
 
 export default NotLogged;

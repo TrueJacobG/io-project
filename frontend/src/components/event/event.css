@@ -1,0 +1,26 @@
+/* MAIN PAGE */
+.event-card {
+  text-align: center;
+  border: 0.3em solid #176bba;
+  margin-top: 1em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: small;
+  word-break: break-all;
+}
+
+.add-event {
+  width: 100%;
+}
+
+/* EVENT PAGE */
+.delete-event-button {
+  margin-top: 1em;
+  margin-bottom: 0.8em;
+}
+
+.edit-event {
+  margin-bottom: 2em;
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import DeleteEventButton from "../components/events/DeleteEventButton";
-import EditEventButton from "../components/events/EditEventButton";
+import DeleteEventButton from "../components/event/DeleteEventButton";
+import EditEventButton from "../components/event/EditEventButton";
 
 let link: string;
 
@@ -79,9 +79,12 @@ const Event = () => {
 
   return (
     <div>
-      <Link to={"/"}>Main Page</Link>
+      <Link to={"/"} className="link-main-page">
+        🔙
+      </Link>
       <DeleteEventButton handleDeleteEvent={handleDeleteEvent} />
       <EditEventButton />
+      <hr />
       <h1>{name}</h1>
       <p>{desc}</p>
     </div>

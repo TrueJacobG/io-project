@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import "./index.css";
-import Info from "./routes/Info";
-import Event from "./routes/Event";
-import WrongUrl from "./routes/WrongUrl";
+import Info from "./pages/Info";
+import Event from "./pages/Event";
+import WrongUrl from "./pages/WrongUrl";
 
 const router = createBrowserRouter([
   {

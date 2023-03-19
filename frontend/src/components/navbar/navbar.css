@@ -1,0 +1,68 @@
+/* LOGIN BUTTON */
+.login-button {
+  width: 50%;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 1.5em;
+}
+
+.login-button button {
+  text-align: center;
+  font-size: 2em;
+  width: 5em;
+}
+
+/* LOGOUT BUTTON */
+.logout-button {
+  width: 50%;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 1.5em;
+}
+
+.logout-button button {
+  text-align: center;
+  font-size: 2em;
+  width: 5em;
+}
+
+/* NAVBAR */
+.info {
+  width: 50%;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 0.7em;
+}
+
+.info h2 {
+  font-size: 1em;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* REGISTER BUTTON */
+.register-button {
+  width: 50%;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 1.5em;
+}
+
+.register-button button {
+  text-align: center;
+  font-size: 2em;
+  width: 5em;
+}
+
+.title {
+  width: 100%;
+}
+
+.title h1 {
+  display: inline;
+  vertical-align: top;
+}

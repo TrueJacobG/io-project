@@ -1,6 +1,6 @@
+import "./auth.css";
 import { useState } from "react";
 import getPasswordLevelName from "../../utils/getPasswordLevelName";
-import getPasswordStrengthLevel from "../../utils/getPasswordStrengthLevel";
 
 type Props = {
   registerEvent: any;

@@ -1,11 +1,7 @@
-import { useState } from "react";
-import AddEventButton from "../events/AddEventButton";
-import EditEventButton from "../events/EditEventButton";
-import Info from "./Info";
+import "./navbar.css";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 import RegisterButton from "./RegisterButton";
-import Title from "./Title";
 
 const Navbar = ({
   handleLoginClick,
@@ -22,7 +18,9 @@ const Navbar = ({
 }) => {
   return (
     <div className="navbar">
-      <Title />
+      <div className="title">
+        <h1>Cash Split</h1>
+      </div>
       {!isLogged ? (
         <div>
           <LoginButton handleLoginClick={handleLoginClick} />
@@ -30,7 +28,9 @@ const Navbar = ({
         </div>
       ) : (
         <div>
-          <Info username={username} />
+          <div className="info">
+            <h2>{username}</h2>
+          </div>
           <LogoutButton handleLogoutClick={handleLogoutClick} />
         </div>
       )}

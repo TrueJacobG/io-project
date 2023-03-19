@@ -5,9 +5,9 @@
   text-align: center;
 }
 
-/* NAVBAR */
+/* BUTTON STYLE */
 
-.navbar-buttons button {
+.global-button-style button {
   font-family: system-ui, sans-serif;
   font-size: 1.2rem;
   cursor: pointer;
@@ -25,228 +25,16 @@
   text-align: center;
 }
 
-.navbar-buttons button:hover {
+.global-button-style button:hover {
   opacity: 1;
 }
 
-/* TOP NAVBAR */
-
-.title {
-  width: 100%;
-}
-
-.title h1 {
-  display: inline;
-  vertical-align: top;
-}
-
-.info {
-  width: 50%;
-  float: left;
-  text-align: center;
-  vertical-align: middle;
-  margin-top: 0.7em;
-}
-
-.info h2 {
-  font-size: 1em;
-  vertical-align: middle;
-  text-align: center;
-}
-
-.logout-button {
-  width: 50%;
-  float: left;
-  text-align: center;
-  vertical-align: middle;
-  margin-top: 1.5em;
-}
-
-.logout-button button {
-  text-align: center;
-  font-size: 2em;
-  width: 5em;
-}
-
-.login-button {
-  width: 50%;
-  float: left;
-  text-align: center;
-  vertical-align: middle;
-  margin-top: 1.5em;
-}
-
-.login-button button {
-  text-align: center;
-  font-size: 2em;
-  width: 5em;
-}
-
-.register-button {
-  width: 50%;
-  float: left;
-  text-align: center;
-  vertical-align: middle;
-  margin-top: 1.5em;
-}
-
-.register-button button {
-  text-align: center;
-  font-size: 2em;
-  width: 5em;
-}
-
-/* LOGIN / REGISTER */
-
-.show {
-  opacity: 1;
-  transition: 500ms;
-}
-
-.show.unactive {
-  opacity: 0;
-  transform: translateY(-100px) scale(0) rotateY(180deg);
-  height: 0px;
-}
-
-.show.active {
-  opacity: 1;
-}
-
-.login-form {
-  text-align: center;
-  font-size: 1.3em;
-}
-
-.login-form input[type="text"] {
-  font-size: 1.2em;
-}
-
-.login-form input[type="password"] {
-  font-size: 1.1em;
-}
-
-.register-form {
-  text-align: center;
-  font-size: 1.3em;
-}
-
-.register-form input[type="text"],
-.register-form input[type="password"] {
-  font-size: 1.2em;
-}
-
-.auth-button {
-  font-size: 1em;
-  margin-top: 0.5em;
-
-  align-items: center;
-  background-color: #176bba;
-  border: none;
-  border-radius: 2em;
-
-  color: #ffffff;
+/* INFO */
+.link-main-page {
+  border: 0.1em solid #176bba;
+  color: white;
+  text-decoration: none;
   cursor: pointer;
-
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-
-  transition: 0.3s;
-}
-
-.auth-button:hover,
-.auth-button:focus {
-  background-color: #176bba;
-  color: #ffffff;
-}
-
-.change-form-button {
-  font-family: system-ui, sans-serif;
-  cursor: pointer;
-  padding: 0.1em 0.6em;
-  border: none;
-  background-color: rgb(65, 173, 255);
-  border-radius: 1em;
-  margin-top: 0.5em;
-}
-
-.password-strength-level {
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-
-.default-box {
-  background-color: #3f3f3f;
-  width: 100%;
-  height: 2em;
-  margin-top: 0.5em;
-  border: 0.1em solid black;
-  position: relative;
-}
-
-.default-box h3 {
-  position: absolute;
-  top: -1em;
-  left: 0;
-  right: 0;
-  text-shadow: 1px 1px 1px black;
-}
-
-.Weak {
-  background-color: red;
-  width: 33%;
-  height: 2em;
-}
-
-.Medium {
-  background-color: yellow;
-  width: 66%;
-  height: 2em;
-}
-
-.Strong {
-  background-color: green;
-  width: 100%;
-  height: 2em;
-}
-
-.Legendary {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 1) 0%,
-    rgba(255, 154, 0, 1) 10%,
-    rgba(208, 222, 33, 1) 20%,
-    rgba(79, 220, 74, 1) 30%,
-    rgba(63, 218, 216, 1) 40%,
-    rgba(47, 201, 226, 1) 50%,
-    rgba(28, 127, 238, 1) 60%,
-    rgba(95, 21, 242, 1) 70%,
-    rgba(186, 12, 248, 1) 80%,
-    rgba(251, 7, 217, 1) 90%,
-    rgba(255, 0, 0, 1) 100%
-  );
-  width: 100%;
-  height: 2em;
-}
-
-/* ADD EVENTS */
-
-.add-event {
-  width: 100%;
-}
-
-/* EVENTS */
-
-.event-card {
-  text-align: center;
-  border: 0.3em solid #176bba;
-  margin-top: 1em;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-  padding-left: 2em;
-  padding-right: 2em;
-  font-size: small;
-  word-break: break-all;
+  padding: 0.1em;
+  font-size: 3em;
 }

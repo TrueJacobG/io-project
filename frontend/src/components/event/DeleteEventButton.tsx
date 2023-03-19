@@ -1,6 +1,8 @@
+import "./event.css";
+
 const DeleteEventButton = ({ handleDeleteEvent }: { handleDeleteEvent: any }) => {
   return (
-    <div>
+    <div className="delete-event-button global-button-style">
       <button
         onClick={() => {
           handleDeleteEvent();

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
-import Events from "./components/events/Events";
-import AddEventButton from "./components/events/AddEventButton";
+import Events from "./components/event/Events";
+import AddEventButton from "./components/event/AddEventButton";
 import Navbar from "./components/navbar/Navbar";
 
 import { Event } from "./types/Event";
-import NotLogged from "./components/errors/NotLogged";
+import NotLogged from "./components/error/NotLogged";
 
 let link: string;
 
