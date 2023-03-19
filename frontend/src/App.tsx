@@ -45,6 +45,7 @@ function App() {
     setUsername("Anonymous");
     localStorage.removeItem("username");
     localStorage.removeItem("email");
+    localStorage.removeItem("auth_data");
   };
 
   const loginEvent = (e: any, email: string, password: string) => {
@@ -65,12 +66,12 @@ function App() {
             setIsLogged(true);
             setIsShowAuthForm(false);
 
-            setUsername(data.username);
-            localStorage.setItem("email", email);
-            localStorage.setItem("username", data.username);
+            setStorageVariables(email, data.username, data.auth_data);
+            loadEvents();
           })
           .catch((e) => {
             console.log("something went wrong with json");
+            console.log(e);
           });
       } else {
         console.log("something wrong");
@@ -125,18 +126,49 @@ function App() {
             setIsLogged(true);
             setIsShowAuthForm(false);
 
-            setUsername(username);
-            localStorage.setItem("email", email);
-            localStorage.setItem("username", username);
+            setStorageVariables(email, username, data.auth_data);
+            loadEvents();
           })
           .catch((e) => {
             console.log("something went wrong with json");
+            console.log(e);
           });
       } else {
         console.log("something went wrong");
       }
 
       setRegisterError("Registration is not available right now!");
+    });
+  };
+
+  const setStorageVariables = (email: string, username: string, auth_data: string) => {
+    setUsername(username);
+    localStorage.setItem("email", email);
+    localStorage.setItem("username", username);
+    localStorage.setItem("auth_data", auth_data);
+  };
+
+  const loadEvents = () => {
+    fetch(link + "/event", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: localStorage.getItem("email"), auth_data: localStorage.getItem("auth_data") }),
+    }).then((res) => {
+      if (res.ok) {
+        res
+          .json()
+          .then((data) => {
+            setEvents(() => data.events);
+          })
+          .catch((e) => {
+            console.log("something went wrong with json");
+            console.log(e);
+          });
+      } else {
+        console.log("something went wrong");
+      }
     });
   };
 
@@ -159,8 +191,6 @@ function App() {
   };
 
   const handleCreateEvent = (name: string, desc: string) => {
-    // TODO add to database, get id_event
-
     setEvents((ev) => {
       let newEvents: Event[] = [];
 
@@ -181,6 +211,31 @@ function App() {
     });
 
     setIsEventButtonDisabled(false);
+
+    fetch(link + "/event/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: localStorage.getItem("email"),
+        auth_data: localStorage.getItem("auth_data"),
+        name: name,
+        description: desc,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        res
+          .json()
+          .then((data) => {})
+          .catch((e) => {
+            console.log("something went wrong with json");
+            console.log(e);
+          });
+      } else {
+        console.log("something went wrong");
+      }
+    });
   };
 
   useEffect(() => {
@@ -191,9 +246,7 @@ function App() {
       setIsLogged(true);
     }
 
-    // TODO
-    // fetch events -> custom hook
-    // after login -> fetch events
+    loadEvents();
   }, []);
 
   return (

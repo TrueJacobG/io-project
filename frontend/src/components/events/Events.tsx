@@ -4,9 +4,6 @@ import { Event } from "./../../types/Event";
 import CreateEventCard from "./CreateEventCard";
 
 const Events = ({ events, handleCreateEvent }: { events: Event[]; handleCreateEvent: any }) => {
-  // TODO fetch /events
-  useEffect(() => {}, []);
-
   return (
     <>
       {events.map((ev) => {
