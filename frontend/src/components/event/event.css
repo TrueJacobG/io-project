@@ -1,4 +1,8 @@
 /* MAIN PAGE */
+.add-event {
+  width: 100%;
+}
+
 .event-card {
   text-align: center;
   border: 0.3em solid #176bba;
@@ -9,10 +13,24 @@
   padding-right: 2em;
   font-size: small;
   word-break: break-all;
+  color: white;
 }
 
-.add-event {
-  width: 100%;
+.event-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.event-link:visited {
+  color: white;
+}
+
+.event-name {
+  font-size: 1.7em;
+}
+
+.event-desc {
+  font-size: 0.8em;
 }
 
 /* EVENT PAGE */
