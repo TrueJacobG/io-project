@@ -72,7 +72,7 @@ app.post(prefix + "event", async (req, res) => {
     }
   });
 
-  res.send(JSON.stringify({ events: result }));
+  res.send(JSON.stringify(result));
 });
 
 app.post(prefix + "event/add", async (req, res) => {
