@@ -160,7 +160,7 @@ function App() {
         res
           .json()
           .then((data) => {
-            setEvents(() => data.events);
+            setEvents(() => data);
           })
           .catch((e) => {
             console.log("something went wrong with json");
