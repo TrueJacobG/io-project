@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import AuthForm from "./components/auth/AuthForm";
-import Events from "./components/events/Events";
-import AddEventButton from "./components/events/AddEventButton";
+import Events from "./components/event/Events";
+import AddEventButton from "./components/event/AddEventButton";
 import Navbar from "./components/navbar/Navbar";
 
 import { Event } from "./types/Event";
-import NotLogged from "./components/errors/NotLogged";
+import NotLogged from "./components/error/NotLogged";
 
 let link: string;
 
@@ -28,8 +28,9 @@ function App() {
   const [loginError, setLoginError] = useState(false);
   const [registerError, setRegisterError] = useState("");
 
+  const [isEventButtonDisabled, setIsEventButtonDisabled] = useState(false);
+
   const handleLoginClick = () => {
-    console.log(link);
     setIsShowLoginForm(true);
     setIsShowAuthForm((isShowForm) => !isShowForm);
   };
@@ -44,6 +45,7 @@ function App() {
     setUsername("Anonymous");
     localStorage.removeItem("username");
     localStorage.removeItem("email");
+    localStorage.removeItem("auth_data");
   };
 
   const loginEvent = (e: any, email: string, password: string) => {
@@ -64,12 +66,12 @@ function App() {
             setIsLogged(true);
             setIsShowAuthForm(false);
 
-            setUsername(data.username);
-            localStorage.setItem("email", email);
-            localStorage.setItem("username", data.username);
+            setStorageVariables(email, data.username, data.auth_data);
+            loadEvents();
           })
           .catch((e) => {
             console.log("something went wrong with json");
+            console.log(e);
           });
       } else {
         console.log("something wrong");
@@ -124,12 +126,12 @@ function App() {
             setIsLogged(true);
             setIsShowAuthForm(false);
 
-            setUsername(username);
-            localStorage.setItem("email", email);
-            localStorage.setItem("username", username);
+            setStorageVariables(email, username, data.auth_data);
+            loadEvents();
           })
           .catch((e) => {
             console.log("something went wrong with json");
+            console.log(e);
           });
       } else {
         console.log("something went wrong");
@@ -139,23 +141,101 @@ function App() {
     });
   };
 
+  const setStorageVariables = (email: string, username: string, auth_data: string) => {
+    setUsername(username);
+    localStorage.setItem("email", email);
+    localStorage.setItem("username", username);
+    localStorage.setItem("auth_data", auth_data);
+  };
+
+  const loadEvents = () => {
+    fetch(link + "/event", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: localStorage.getItem("email"), auth_data: localStorage.getItem("auth_data") }),
+    }).then((res) => {
+      if (res.ok) {
+        res
+          .json()
+          .then((data) => {
+            setEvents(() => data.events);
+          })
+          .catch((e) => {
+            console.log("something went wrong with json");
+            console.log(e);
+          });
+      } else {
+        console.log("something went wrong");
+      }
+    });
+  };
+
   /* EVENTS */
 
   const [events, setEvents] = useState<Event[]>([]);
 
   const handleAddEvent = () => {
     setEvents((ev) => [
-      ...ev,
       {
-        id_event: Math.random().toString(),
-        name: "test" + Math.random().toString() + Math.random().toString(),
-        description:
-          "lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum lotem ipsum ",
+        type: "create",
+        id_event: "",
+        name: "",
+        description: "",
       } as Event,
+      ...ev,
     ]);
 
-    // TODO
-    // fetch add event to database
+    setIsEventButtonDisabled(true);
+  };
+
+  const handleCreateEvent = (name: string, desc: string) => {
+    setEvents((ev) => {
+      let newEvents: Event[] = [];
+
+      ev.forEach((e) => {
+        if (e.type === "create") {
+          newEvents.push({
+            type: "info",
+            id_event: "" + Math.random(),
+            name: name,
+            description: desc,
+          } as Event);
+        } else {
+          newEvents.push(e);
+        }
+      });
+
+      return newEvents;
+    });
+
+    setIsEventButtonDisabled(false);
+
+    fetch(link + "/event/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: localStorage.getItem("email"),
+        auth_data: localStorage.getItem("auth_data"),
+        name: name,
+        description: desc,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        res
+          .json()
+          .then((data) => {})
+          .catch((e) => {
+            console.log("something went wrong with json");
+            console.log(e);
+          });
+      } else {
+        console.log("something went wrong");
+      }
+    });
   };
 
   useEffect(() => {
@@ -166,9 +246,7 @@ function App() {
       setIsLogged(true);
     }
 
-    // TODO
-    // fetch events -> custom hook
-    // after login -> fetch events
+    loadEvents();
   }, []);
 
   return (
@@ -191,8 +269,8 @@ function App() {
       />
       {isLogged ? (
         <div>
-          <AddEventButton handleAddEvent={handleAddEvent} />
-          <Events events={events} />
+          <AddEventButton handleAddEvent={handleAddEvent} isEventButtonDisabled={isEventButtonDisabled} />
+          <Events events={events} handleCreateEvent={handleCreateEvent} />
         </div>
       ) : (
         <NotLogged />

@@ -1,4 +1,6 @@
+import "./auth.css";
 import { useState } from "react";
+import getPasswordLevelName from "../../utils/getPasswordLevelName";
 
 type Props = {
   registerEvent: any;
@@ -11,6 +13,8 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rpassword, setRpassword] = useState("");
+
+  const [isOnFocusPassword, setIsOnFocusPassword] = useState(false);
 
   return (
     <div className="register-form">
@@ -48,8 +52,10 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
             name="password1"
             className="password"
             value={password}
+            onFocus={(_) => setIsOnFocusPassword(true)}
+            onBlur={(_) => setIsOnFocusPassword(false)}
             onChange={(e) => {
-              setPassword(e.target.value);
+              setPassword((_) => e.target.value);
             }}
           />
           <br />
@@ -65,6 +71,24 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
             }}
           />
           <br />
+
+          {registerError !== "" && (
+            <div className="register-error-message">
+              <h3>{registerError}</h3>
+            </div>
+          )}
+
+          {isOnFocusPassword && (
+            <div className="password-strength-level">
+              <label>Password Strength</label>
+              <div className="default-box">
+                <div className={getPasswordLevelName(password)}>
+                  <h3>{getPasswordLevelName(password)}</h3>
+                </div>
+              </div>
+            </div>
+          )}
+
           <button
             className="auth-button"
             onClick={(e) => {
@@ -75,8 +99,6 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
           </button>
         </form>
       </div>
-
-      {registerError !== "" && <h3 className="register-error-message">{registerError}</h3>}
 
       <button
         className="change-form-button"

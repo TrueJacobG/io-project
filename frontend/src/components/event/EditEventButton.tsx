@@ -1,6 +1,8 @@
+import "./event.css";
+
 const EditEventButton = () => {
   return (
-    <div className="edit-event navbar-buttons">
+    <div className="edit-event global-button-style">
       <button>Edit</button>
     </div>
   );

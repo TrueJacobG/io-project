@@ -1,0 +1,44 @@
+/* MAIN PAGE */
+.add-event {
+  width: 100%;
+}
+
+.event-card {
+  text-align: center;
+  border: 0.3em solid #176bba;
+  margin-top: 1em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: small;
+  word-break: break-all;
+  color: white;
+}
+
+.event-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.event-link:visited {
+  color: white;
+}
+
+.event-name {
+  font-size: 1.7em;
+}
+
+.event-desc {
+  font-size: 0.8em;
+}
+
+/* EVENT PAGE */
+.delete-event-button {
+  margin-top: 1em;
+  margin-bottom: 0.8em;
+}
+
+.edit-event {
+  margin-bottom: 2em;
+}
