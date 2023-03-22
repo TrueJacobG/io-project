@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
-import { Event } from "../../types/Event";
+import { Event } from "../../../../types/Event";
 import CreateEventCard from "./CreateEventCard";
 
 const Events = ({ events, handleCreateEvent }: { events: Event[]; handleCreateEvent: any }) => {

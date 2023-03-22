@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import DeleteEventButton from "../components/event/DeleteEventButton";
-import EditEventButton from "../components/event/EditEventButton";
+import DeleteEventButton from "./components/DeleteEventButton";
+import EditEventButton from "./components/EditEventButton";
 
 let link: string;
 

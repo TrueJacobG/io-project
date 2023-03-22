@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Event } from "../../types/Event";
+import { Event } from "../../../../types/Event";
 
 const EventCard = ({ event }: { event: Event }) => {
   return (

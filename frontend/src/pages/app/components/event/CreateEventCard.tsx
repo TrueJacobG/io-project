@@ -1,6 +1,6 @@
 import "./event.css";
 import { useState } from "react";
-import { Event } from "../../types/Event";
+import { Event } from "../../../../types/Event";
 
 const CreateEventCard = ({ event, handleCreateEvent }: { event: Event; handleCreateEvent: any }) => {
   const [name, setName] = useState("");
