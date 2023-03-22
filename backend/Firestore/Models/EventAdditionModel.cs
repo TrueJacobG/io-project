@@ -13,5 +13,7 @@ namespace Firestore.Models
         public string name { get; set; }
         [FirestoreProperty]
         public string email { get; set; }
+        [FirestoreProperty]
+        public DateTime add_date { get; set; }
     }
 }
