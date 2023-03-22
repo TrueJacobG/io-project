@@ -51,16 +51,18 @@ namespace Firestore.Controllers
                 {"auth_data", model.auth_data },
                 {"description", model.description},
                 {"name", model.name },
-                {"uid", model.email },
+                {"email", model.email },
+                { "add_date", DateTime.Now.ToFileTimeUtc()}
             };
 
-            await events.AddAsync(data1);
-            return Ok(JsonConvert.SerializeObject(new { }));
+            var a = await events.AddAsync(data1);
+
+            return Ok(JsonConvert.SerializeObject(new { id_event = a.Id }));
         }
 
         [EnableCors("Policy1")]
-        [HttpGet]
-        [Route("get", Name = "getall")]
+        [HttpPost]
+        [Route("event", Name = "getall")]
         public async Task<IActionResult> GetEvents()
         {
             _logger.LogInformation($"Event get Attempt");
@@ -70,27 +72,36 @@ namespace Firestore.Controllers
             CollectionReference events = firestoreDb.Collection("event");
             QuerySnapshot snap = await events.GetSnapshotAsync();
             Dictionary<string, object> dane = new Dictionary<string, object>();
-
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
 
             foreach (DocumentSnapshot documentSnapshot in snap.Documents)
             {
                 Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 dane = documentSnapshot.ToDictionary();
-                foreach (KeyValuePair<string, object> pair in dane)
-                {
-                    Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
-                }
-                Console.WriteLine("");
+
+                Dictionary<string, object> data1 = new Dictionary<string, object>()
+            {
+                {"id_event", documentSnapshot.Id},
+                {"description", dane["description"]},
+                {"name", dane["name"] },
+                {"add_date", dane["add_date"]}
+            };
+
+
+                Console.WriteLine();
+
+                result.Add(data1);
+
+
             }
 
-
-            return Ok(dane);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
 
         [EnableCors("Policy1")]
-        [HttpGet]
-        [Route("get/{uid}", Name = "getone")]
+        [HttpPost]
+        [Route("event/{uid}", Name = "getone")]
         public async Task<IActionResult> GetEvent(string uid)
         {
             _logger.LogInformation($"Event get Attempt");
@@ -105,7 +116,8 @@ namespace Firestore.Controllers
                     name = result.GetValue<string>("name"),
                     email = result.GetValue<string>("email"),
                     auth_data = result.GetValue<string>("auth_data"),
-                    description = result.GetValue<string>("description")
+                    description = result.GetValue<string>("description"),
+                    add_date = result.GetValue<string>("add_date"),
                 });
             }
 
