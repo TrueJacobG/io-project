@@ -18,7 +18,7 @@ module.exports = function (app, prefix, db, id) {
     }
   });
 
-  app.get(prefix + "auth/register", async (req, res) => {
+  app.post(prefix + "auth/register", async (req, res) => {
     let body = req.body;
     let user = { id_user: id.randomUUID(), username: body.username, email: body.email, auth_data: body.auth_data };
 
