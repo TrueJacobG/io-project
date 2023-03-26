@@ -9,6 +9,7 @@ import { Event } from "../../types/Event";
 import NotLogged from "./components/error/NotLogged";
 import useFetch from "../../hooks/useFetch";
 import setWrongPasswordMessage from "./utils/setWrongPasswordErrorMessage";
+import useFetchWithBody from "../../hooks/useFetchWithBody";
 
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(false);
@@ -45,7 +46,7 @@ function App() {
   const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
 
-    useFetch("/auth/login", "POST", { email: email, auth_data: password }).then((data) => {
+    useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password }).then((data) => {
       setStorageVariables(data.token, data.username);
       setIsLogged(true);
       setIsShowAuthForm(false);
@@ -64,7 +65,7 @@ function App() {
 
     setRegisterError("");
 
-    useFetch("/auth/register", "POST", { username: username, email: email, auth_data: password })
+    useFetchWithBody("/auth/register", "POST", "", { username: username, email: email, auth_data: password })
       .then((data) => {
         setStorageVariables(data.token, username);
         setIsLogged(true);
@@ -92,7 +93,7 @@ function App() {
   };
 
   const handleCreateEvent = (name: string, desc: string) => {
-    useFetch("/event", "POST", {
+    useFetchWithBody("/event", "POST", "", {
       email: localStorage.getItem("email"),
       auth_data: localStorage.getItem("auth_data"),
       name: name,
@@ -133,7 +134,7 @@ function App() {
   };
 
   const loadEvents = () => {
-    useFetch("/event", "GET", localStorage.getItem("token"), {})
+    useFetch("/event", "GET", localStorage.getItem("token"))
       .then((data) => {
         setEvents(() => data);
       })

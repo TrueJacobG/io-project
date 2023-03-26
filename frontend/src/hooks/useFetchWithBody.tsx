@@ -8,14 +8,15 @@ if (import.meta.env.VITE_API !== undefined) {
   link = import.meta.env.VITE_API;
 }
 
-const useFetch = async (url: string, method: string, token: string) => {
+const useFetchWithBody = async (url: string, method: string, token: string, body: any) => {
   return fetch(link + url, {
     method: method,
     headers: new Headers({
       Authorization: token,
       "Content-Type": "application/json",
     }),
+    body: JSON.stringify(body),
   }).then((res) => res.json());
 };
 
-export default useFetch;
+export default useFetchWithBody;
