@@ -45,21 +45,6 @@ module.exports = function (app, prefix, db, id) {
     let id_event = req.params.id_event;
     let body = req.body;
 
-    let users = await db.getData("/users");
-
-    let verified = false;
-    users.forEach((u) => {
-      if (u.email === body.email && u.auth_data === body.auth_data) {
-        verified = true;
-      }
-    });
-
-    if (!verified) {
-      res.status(401);
-      res.send(JSON.stringify({ message: "Not authorized!" }));
-      return;
-    }
-
     let events = await db.getData("/events");
 
     let isSend = false;
@@ -79,21 +64,6 @@ module.exports = function (app, prefix, db, id) {
   app.delete(prefix + "event/:id_event", async (req, res) => {
     let id_event = req.params.id_event;
     let body = req.body;
-
-    let users = await db.getData("/users");
-
-    let verified = false;
-    users.forEach((u) => {
-      if (u.email === body.email && u.auth_data === body.auth_data) {
-        verified = true;
-      }
-    });
-
-    if (!verified) {
-      res.status(401);
-      res.send(JSON.stringify({ message: "Not authorized!" }));
-      return;
-    }
 
     let events = await db.getData("/events");
 
@@ -119,21 +89,6 @@ module.exports = function (app, prefix, db, id) {
   app.put(prefix + "event/:id_event", async (req, res) => {
     let id_event = req.params.id_event;
     let body = req.body;
-
-    let users = await db.getData("/users");
-
-    let verified = false;
-    users.forEach((u) => {
-      if (u.email === body.email && u.auth_data === body.auth_data) {
-        verified = true;
-      }
-    });
-
-    if (!verified) {
-      res.status(401);
-      res.send(JSON.stringify({ message: "Not authorized!" }));
-      return;
-    }
 
     let events = await db.getData("/events");
 
@@ -172,21 +127,6 @@ module.exports = function (app, prefix, db, id) {
     let id_event = req.params.id_event;
     let body = req.body;
 
-    let users = await db.getData("/users");
-
-    let verified = false;
-    users.forEach((u) => {
-      if (u.email === body.email && u.auth_data === body.auth_data) {
-        verified = true;
-      }
-    });
-
-    if (!verified) {
-      res.status(401);
-      res.send(JSON.stringify({ message: "Not authorized!" }));
-      return;
-    }
-
     let events = await db.getData("/events");
 
     events.forEach(async (ev) => {
@@ -199,21 +139,6 @@ module.exports = function (app, prefix, db, id) {
   app.post(prefix + "event/:id_event/user", async (req, res) => {
     let id_event = req.params.id_event;
     let body = req.body;
-
-    let users = await db.getData("/users");
-
-    let verified = false;
-    users.forEach((u) => {
-      if (u.email === body.email && u.auth_data === body.auth_data) {
-        verified = true;
-      }
-    });
-
-    if (!verified) {
-      res.status(401);
-      res.send(JSON.stringify({ message: "Not authorized!" }));
-      return;
-    }
 
     let events = await db.getData("/events");
 
@@ -237,21 +162,6 @@ module.exports = function (app, prefix, db, id) {
   app.delete(prefix + "event/:id_event/user", async (req, res) => {
     let id_event = req.params.id_event;
     let body = req.body;
-
-    let users = await db.getData("/users");
-
-    let verified = false;
-    users.forEach((u) => {
-      if (u.email === body.email && u.auth_data === body.auth_data) {
-        verified = true;
-      }
-    });
-
-    if (!verified) {
-      res.status(401);
-      res.send(JSON.stringify({ message: "Not authorized!" }));
-      return;
-    }
 
     let events = await db.getData("/events");
 
