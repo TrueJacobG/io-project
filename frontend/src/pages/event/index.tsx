@@ -24,7 +24,7 @@ const Event = () => {
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<string[]>([]);
 
   const [isShowAddUserForm, setIsShowAddUserForm] = useState(false);
 
