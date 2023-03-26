@@ -1,4 +1,16 @@
+
+Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "keys.json");
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(2);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddCors(options =>
 {
@@ -7,12 +19,16 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
 
-        });
+        }) ;
 });
+
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -23,10 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseRouting();
-
+app.UseSession();
 app.UseHttpsRedirection();
 
 app.UseCors(options =>

@@ -1,13 +1,11 @@
-﻿using Google.Cloud.Firestore;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Firestore.Models;
-using Microsoft.AspNetCore.Cors;
+using Google.Cloud.Firestore;
 using Newtonsoft.Json;
-using FirebaseAdmin.Auth;
-using FirebaseAdmin;
-using Firebase.Auth.Providers;
+using Firestore.Models;
 using Firebase.Auth;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace Firestore.Controllers
 {
@@ -17,16 +15,11 @@ namespace Firestore.Controllers
     {
         private readonly ILogger<EventController> _logger;
         FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("databaseName.txt"));
+        
 
         public EventController(ILogger<EventController> logger)
         {
             _logger = logger;
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "keys.json");
-
-            _logger.LogInformation("Connection to Firestore succesful");
-
-
-
         }
 
 
@@ -40,7 +33,7 @@ namespace Firestore.Controllers
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError($"Wrong data model for register attempf for {model.email}");
+                _logger.LogError($"Wrong data model for event addition for {model.email}");
                 return BadRequest(ModelState);
             }
 
