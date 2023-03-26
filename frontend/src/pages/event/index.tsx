@@ -90,7 +90,7 @@ const Event = () => {
       .then((data) => {
         setName(data.name);
         setDesc(data.description);
-        /*setMembers(data.users);*/
+        setMembers(data.users);
       })
       .catch((e) => {
         console.log("something went wrong");
