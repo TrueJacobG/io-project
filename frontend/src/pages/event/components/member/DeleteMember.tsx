@@ -1,7 +1,7 @@
-const DeleteMember = () => {
+const DeleteMember = ({ handleClickDeleteMember }: { handleClickDeleteMember: any }) => {
   return (
     <div className="global-button-style">
-      <button>Delete</button>
+      <button onClick={handleClickDeleteMember}>Delete</button>
     </div>
   );
 };

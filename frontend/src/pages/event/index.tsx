@@ -7,6 +7,7 @@ import DeleteEventButton from "./components/DeleteEventButton";
 import EditEventButton from "./components/EditEventButton";
 import Members from "./components/member/Members";
 import AddMember from "./components/member/AddMember";
+import AddUserForm from "./components/member/AddUserForm";
 
 let link: string;
 
@@ -23,28 +24,65 @@ const Event = () => {
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
+  const [members, setMembers] = useState(["test1@test.com", "test2@test.com", "test3@test.com", "test4@test.com", "test5@test.com"]);
 
-  const [members, setMembers] = useState([
-    "test1@test1.com",
-    "test2@test2.com",
-    "test3@test3.com",
-    "test2@test2.com",
-    "test3@test3.com",
-    "test2@test2.com",
-    "test3@test3.com",
-    "test2@test2.com",
-    "test3@test3.com",
-  ]);
+  const [isShowAddUserForm, setIsShowAddUserForm] = useState(false);
 
   const handleDeleteEvent = () => {
     useFetch("/event/" + id_event, "DELETE", localStorage.getItem("token") as string)
       .then(() => {})
       .catch((e) => {
         console.log("something went wrong");
-        console.log(e);
+        console.error(e);
       });
 
     window.location.href = "/";
+  };
+
+  const handleEditEvent = (name: string, description: string) => {
+    useFetchWithBody("/event/" + id_event, "PUT", localStorage.getItem("token") as string, { name: name, description: description })
+      .then(() => {})
+      .catch((e) => {
+        console.log("something went wrong");
+        console.error(e);
+      });
+  };
+
+  const handleFinishEvent = () => {};
+
+  const handleClickAddMember = () => {
+    setIsShowAddUserForm(true);
+  };
+
+  const handleAddUser = (email: string) => {
+    useFetchWithBody("/event/" + id_event + "/user", "POST", localStorage.getItem("token") as string, { user_email: email })
+      .then(() => {
+        setMembers(() => [...members, email]);
+      })
+      .catch((e) => {
+        console.log("something went wrong");
+        console.error(e);
+      });
+    setIsShowAddUserForm(false);
+  };
+
+  const handleDeleteMember = (email: string) => {
+    useFetchWithBody("/event/" + id_event + "/user", "DELETE", localStorage.getItem("token") as string, { user_email: email })
+      .then(() => {
+        let newMembers: string[] = [];
+
+        members.forEach((member) => {
+          if (member !== email) {
+            newMembers.push(member);
+          }
+        });
+
+        setMembers(() => newMembers);
+      })
+      .catch((e) => {
+        console.log("something went wrong");
+        console.error(e);
+      });
   };
 
   useEffect(() => {
@@ -56,7 +94,7 @@ const Event = () => {
       })
       .catch((e) => {
         console.log("something went wrong");
-        console.log(e);
+        console.error(e);
       });
   }, []);
 
@@ -70,19 +108,23 @@ const Event = () => {
       <hr />
       <div className="buttons">
         <DeleteEventButton handleDeleteEvent={handleDeleteEvent} />
-        <EditEventButton />
+        <EditEventButton handleEditEvent={handleEditEvent} />
         <div className="finish-event-button global-button-style">
           <button>Finish</button>
         </div>
         <div style={{ clear: "both" }}></div>
       </div>
       <hr />
-      <div className="expenses">{/* TODO */}</div>
+      <div className="expenses">
+        <h1>Expenses</h1>
+        {/* TODO */}
+      </div>
       <hr />
       <div className="bottom">
         <h1>Members</h1>
-        <AddMember />
-        <Members members={members} />
+        <AddMember handleClickAddMember={handleClickAddMember} isShowAddUserForm={isShowAddUserForm} />
+        {isShowAddUserForm ? <AddUserForm handleAddUser={handleAddUser} /> : <></>}
+        <Members members={members} handleDeleteMember={handleDeleteMember} />
       </div>
     </div>
   );

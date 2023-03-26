@@ -1,9 +1,10 @@
+import { useState } from "react";
 import "./event.css";
 
-const EditEventButton = () => {
+const EditEventButton = ({ handleEditEvent }: { handleEditEvent: any }) => {
   return (
     <div className="edit-event-button global-button-style">
-      <button>Edit</button>
+      <button onClick={handleEditEvent}>Edit</button>
     </div>
   );
 };
