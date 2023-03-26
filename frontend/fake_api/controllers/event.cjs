@@ -25,19 +25,6 @@ module.exports = function (app, prefix, db, id) {
 
     let users = await db.getData("/users");
 
-    let verified = false;
-    users.forEach((u) => {
-      if (u.email === body.email && u.auth_data === body.auth_data) {
-        verified = true;
-      }
-    });
-
-    if (!verified) {
-      res.status(401);
-      res.send(JSON.stringify({ message: "Not authorized!" }));
-      return;
-    }
-
     let id_event = id.randomUUID();
     let event = { author: body.email, id_event: id_event, name: body.name, description: body.description, users: [] };
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 import DeleteEventButton from "./components/DeleteEventButton";
 import EditEventButton from "./components/EditEventButton";
 
@@ -22,59 +23,26 @@ const Event = () => {
   // TODO fetch event by id
 
   const handleDeleteEvent = () => {
-    fetch(link + "/event/delete", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id_event: id_event,
-        email: localStorage.getItem("email"),
-        auth_data: localStorage.getItem("auth_data"),
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        res
-          .json()
-          .then((data) => {})
-          .catch((e) => {
-            console.log("something went wrong with json");
-            console.log(e);
-          });
-      } else {
-        console.log("something went wrong");
-      }
-    });
+    useFetch("/event/" + id_event, "DELETE", { email: localStorage.getItem("email"), auth_data: localStorage.getItem("auth_data") })
+      .then((data) => {})
+      .catch((e) => {
+        console.log("something went wrong with json");
+        console.log(e);
+      });
 
     window.location.href = "/";
   };
 
   useEffect(() => {
-    fetch(link + "/event/" + id_event, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: localStorage.getItem("email"),
-        auth_data: localStorage.getItem("auth_data"),
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        res
-          .json()
-          .then((data) => {
-            setName(data.name);
-            setDesc(data.description);
-          })
-          .catch((e) => {
-            console.log("something went wrong with json");
-            console.log(e);
-          });
-      } else {
-        console.log("something went wrong");
-      }
-    });
+    useFetch("/event/" + id_event, "GET", { email: localStorage.getItem("email"), auth_data: localStorage.getItem("auth_data") })
+      .then((data) => {
+        setName(data.name);
+        setDesc(data.description);
+      })
+      .catch((e) => {
+        console.log("something went wrong with json");
+        console.log(e);
+      });
   }, []);
 
   return (

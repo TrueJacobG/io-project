@@ -7,7 +7,7 @@ import Navbar from "./components/navbar/Navbar";
 
 import { Event } from "../../types/Event";
 import NotLogged from "./components/error/NotLogged";
-import useFetch from "./hooks/useFetch";
+import useFetch from "../../hooks/useFetch";
 import setWrongPasswordMessage from "./utils/setWrongPasswordErrorMessage";
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
   const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
 
-    useFetch("/auth/login", "GET", { email: email, auth_data: password }).then((d) => {
+    useFetch("/auth/login", "POST", { email: email, auth_data: password }).then((d) => {
       setIsLogged(true);
       setIsShowAuthForm(false);
       setStorageVariables(email, d.username, d.auth_data);
@@ -93,38 +93,38 @@ function App() {
   };
 
   const handleCreateEvent = (name: string, desc: string) => {
-    setEvents((ev) => {
-      let newEvents: Event[] = [];
-
-      ev.forEach((e) => {
-        if (e.type === "create") {
-          newEvents.push({
-            type: "info",
-            id_event: "" + Math.random(),
-            name: name,
-            description: desc,
-          } as Event);
-        } else {
-          newEvents.push(e);
-        }
-      });
-
-      return newEvents;
-    });
-
-    setIsEventButtonDisabled(false);
-
     useFetch("/event", "POST", {
       email: localStorage.getItem("email"),
       auth_data: localStorage.getItem("auth_data"),
       name: name,
       description: desc,
     })
-      .then((data) => {})
+      .then((data) => {
+        setEvents((ev) => {
+          let newEvents: Event[] = [];
+
+          ev.forEach((e) => {
+            if (e.type === "create") {
+              newEvents.push({
+                type: "info",
+                id_event: data.id_event,
+                name: name,
+                description: desc,
+              } as Event);
+            } else {
+              newEvents.push(e);
+            }
+          });
+
+          return newEvents;
+        });
+      })
       .catch((e) => {
         console.error(e);
         console.log("something went wrong");
       });
+
+    setIsEventButtonDisabled(false);
   };
 
   const setStorageVariables = (email: string, username: string, auth_data: string) => {

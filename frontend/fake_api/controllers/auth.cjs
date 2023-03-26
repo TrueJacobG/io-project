@@ -1,5 +1,5 @@
 module.exports = function (app, prefix, db, id) {
-  app.get(prefix + "auth/login", async (req, res) => {
+  app.post(prefix + "auth/login", async (req, res) => {
     let body = req.body;
     let users = await db.getData("/users");
     let found = false;
