@@ -13,10 +13,10 @@ if (import.meta.env.VITE_API !== undefined) {
 const useFetch = async (url: string, method: string, token: string, body: any) => {
   return fetch(link + url, {
     method: method,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
+    headers: new Headers({
+      'Authorization': token, 
+      'Content-Type': 'application/json'
+  }),
     body: JSON.stringify(body),
   }).then((res) => res.json());
 };
