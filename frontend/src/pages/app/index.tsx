@@ -46,10 +46,9 @@ function App() {
     e.preventDefault();
 
     useFetch("/auth/login", "POST", { email: email, auth_data: password }).then((data) => {
-      console.log(data);
+      setStorageVariables(data.token, data.username);
       setIsLogged(true);
       setIsShowAuthForm(false);
-      setStorageVariables(email, data.username, data.auth_data);
       loadEvents();
     });
 
@@ -67,10 +66,9 @@ function App() {
 
     useFetch("/auth/register", "POST", { username: username, email: email, auth_data: password })
       .then((data) => {
-        console.log(data);
+        setStorageVariables(data.token, username);
         setIsLogged(true);
         setIsShowAuthForm(false);
-        setStorageVariables(email, username, data.auth_data);
         loadEvents();
       })
       .catch((e) => {
@@ -128,15 +126,14 @@ function App() {
     setIsEventButtonDisabled(false);
   };
 
-  const setStorageVariables = (email: string, username: string, auth_data: string) => {
+  const setStorageVariables = (token: string, username: string) => {
     setUsername(username);
-    localStorage.setItem("email", email);
+    localStorage.setItem("token", token);
     localStorage.setItem("username", username);
-    localStorage.setItem("auth_data", auth_data);
   };
 
   const loadEvents = () => {
-    useFetch("/event", "GET", { email: localStorage.getItem("email"), auth_data: localStorage.getItem("auth_data") })
+    useFetch("/event", "GET", { Authorization: localStorage.getItem("token") })
       .then((data) => {
         setEvents(() => data);
       })
