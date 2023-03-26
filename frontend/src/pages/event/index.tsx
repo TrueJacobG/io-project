@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import useFetchWithBody from "../../hooks/useFetchWithBody";
 import DeleteEventButton from "./components/DeleteEventButton";
 import EditEventButton from "./components/EditEventButton";
 
@@ -20,11 +21,9 @@ const Event = () => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
 
-  // TODO fetch event by id
-
   const handleDeleteEvent = () => {
-    useFetch("/event/" + id_event, "DELETE", { email: localStorage.getItem("email"), auth_data: localStorage.getItem("auth_data") })
-      .then((data) => {})
+    useFetch("/event/" + id_event, "DELETE", localStorage.getItem("token") as string)
+      .then(() => {})
       .catch((e) => {
         console.log("something went wrong with json");
         console.log(e);
@@ -34,7 +33,7 @@ const Event = () => {
   };
 
   useEffect(() => {
-    useFetch("/event/" + id_event, "GET", { email: localStorage.getItem("email"), auth_data: localStorage.getItem("auth_data") })
+    useFetch("/event/" + id_event, "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setName(data.name);
         setDesc(data.description);

@@ -36,11 +36,10 @@ function App() {
   };
 
   const handleLogoutClick = () => {
-    setIsLogged((isLogged) => false);
+    setIsLogged(() => false);
     setUsername("Anonymous");
+    localStorage.removeItem("token");
     localStorage.removeItem("username");
-    localStorage.removeItem("email");
-    localStorage.removeItem("auth_data");
   };
 
   const loginEvent = (e: any, email: string, password: string) => {
@@ -65,7 +64,11 @@ function App() {
 
     setRegisterError("");
 
-    useFetchWithBody("/auth/register", "POST", "", { username: username, email: email, auth_data: password })
+    useFetchWithBody("/auth/register", "POST", "", {
+      username: username,
+      email: email,
+      auth_data: password,
+    })
       .then((data) => {
         setStorageVariables(data.token, username);
         setIsLogged(true);
@@ -93,7 +96,7 @@ function App() {
   };
 
   const handleCreateEvent = (name: string, desc: string) => {
-    useFetchWithBody("/event", "POST", "", {
+    useFetchWithBody("/event", "POST", localStorage.getItem("token") as string, {
       email: localStorage.getItem("email"),
       auth_data: localStorage.getItem("auth_data"),
       name: name,
@@ -134,7 +137,7 @@ function App() {
   };
 
   const loadEvents = () => {
-    useFetch("/event", "GET", localStorage.getItem("token"))
+    useFetch("/event", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setEvents(() => data);
       })
