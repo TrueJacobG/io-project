@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Firebase.Auth" Version="1.0.0" />
+    <PackageReference Include="Google.Cloud.Firestore" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
