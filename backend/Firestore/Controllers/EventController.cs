@@ -6,6 +6,7 @@ using Firestore.Models;
 using Firebase.Auth;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using System.Collections;
 
 namespace Firestore.Controllers
 {
@@ -14,6 +15,7 @@ namespace Firestore.Controllers
     public class EventController : ControllerBase
     {
         private readonly ILogger<EventController> _logger;
+        FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("userConnection.txt")[0]));
         FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("databaseName.txt"));
         
 
@@ -26,27 +28,30 @@ namespace Firestore.Controllers
         //TODO: authentication of events (check for same name and uid)
         [EnableCors("Policy1")]
         [HttpPost]
-        [Route("event/add", Name = "add")]
+        [Route("event", Name = "add")]
         public async Task<IActionResult> Add([FromBody] EventAdditionModel model)
         {
             _logger.LogInformation($"Event adding Attempt for {model.name}");
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError($"Wrong data model for event addition for {model.email}");
+                _logger.LogError($"Wrong data model for event addition for {model.name}");
                 return BadRequest(ModelState);
             }
-
+            var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
             CollectionReference events = firestoreDb.Collection("event");
             Dictionary<string, object> data1 = new Dictionary<string, object>()
             {
-                {"auth_data", model.auth_data },
                 {"description", model.description},
                 {"name", model.name },
-                {"email", model.email },
+                {"email", user.Email },
                 { "add_date", DateTime.Now.ToFileTimeUtc()}
             };
+
+            ArrayList users = new ArrayList();
+            users.Add(user.LocalId);
+            data1.Add("users",users);
 
             var a = await events.AddAsync(data1);
 
@@ -54,13 +59,15 @@ namespace Firestore.Controllers
         }
 
         [EnableCors("Policy1")]
-        [HttpPost]
+        [HttpGet]
         [Route("event", Name = "getall")]
         public async Task<IActionResult> GetEvents()
         {
             _logger.LogInformation($"Event get Attempt");
 
+            Console.WriteLine(auth.GetUserAsync(Request.Headers["authorization"]).Result.LocalId);
 
+           
 
             CollectionReference events = firestoreDb.Collection("event");
             QuerySnapshot snap = await events.GetSnapshotAsync();
@@ -93,7 +100,7 @@ namespace Firestore.Controllers
 
 
         [EnableCors("Policy1")]
-        [HttpPost]
+        [HttpGet]
         [Route("event/{uid}", Name = "getone")]
         public async Task<IActionResult> GetEvent(string uid)
         {
