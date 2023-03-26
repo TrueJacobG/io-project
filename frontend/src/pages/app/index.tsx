@@ -176,7 +176,7 @@ function App() {
       {isLogged ? (
         <div>
           <AddEventButton handleAddEvent={handleAddEvent} isEventButtonDisabled={isEventButtonDisabled} />
-          <Events events={events} handleCreateEvent={handleCreateEvent} />
+          {/*<Events events={events} handleCreateEvent={handleCreateEvent} /> */}
         </div>
       ) : (
         <NotLogged />
