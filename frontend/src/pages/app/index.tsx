@@ -45,10 +45,11 @@ function App() {
   const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
 
-    useFetch("/auth/login", "POST", { email: email, auth_data: password }).then((d) => {
+    useFetch("/auth/login", "POST", { email: email, auth_data: password }).then((data) => {
+      console.log(data);
       setIsLogged(true);
       setIsShowAuthForm(false);
-      setStorageVariables(email, d.username, d.auth_data);
+      setStorageVariables(email, data.username, data.auth_data);
       loadEvents();
     });
 
@@ -66,10 +67,10 @@ function App() {
 
     useFetch("/auth/register", "POST", { username: username, email: email, auth_data: password })
       .then((data) => {
+        console.log(data);
         setIsLogged(true);
         setIsShowAuthForm(false);
-
-        setStorageVariables(email, username, "data.auth_data");
+        setStorageVariables(email, username, data.auth_data);
         loadEvents();
       })
       .catch((e) => {
