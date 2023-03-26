@@ -133,7 +133,8 @@ function App() {
   };
 
   const loadEvents = () => {
-    useFetch("/event", "GET", { Authorization: localStorage.getItem("token") })
+    const headers = { Authorization: localStorage.getItem("token") };
+    useFetch("/event", "GET", { headers })
       .then((data) => {
         setEvents(() => data);
       })
