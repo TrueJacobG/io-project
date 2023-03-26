@@ -24,7 +24,7 @@ const Event = () => {
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [members, setMembers] = useState(["test1@test.com", "test2@test.com", "test3@test.com", "test4@test.com", "test5@test.com"]);
+  const [members, setMembers] = useState([]);
 
   const [isShowAddUserForm, setIsShowAddUserForm] = useState(false);
 
