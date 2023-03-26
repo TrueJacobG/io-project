@@ -97,8 +97,6 @@ function App() {
 
   const handleCreateEvent = (name: string, desc: string) => {
     useFetchWithBody("/event", "POST", localStorage.getItem("token") as string, {
-      email: localStorage.getItem("email"),
-      auth_data: localStorage.getItem("auth_data"),
       name: name,
       description: desc,
     })

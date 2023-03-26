@@ -2,7 +2,7 @@ import "./event.css";
 
 const EditEventButton = () => {
   return (
-    <div className="edit-event global-button-style">
+    <div className="edit-event-button global-button-style">
       <button>Edit</button>
     </div>
   );
