@@ -10,11 +10,12 @@ if (import.meta.env.VITE_API !== undefined) {
   link = import.meta.env.VITE_API;
 }
 
-const useFetch = async (url: string, method: string, body: any) => {
+const useFetch = async (url: string, method: string, token: string, body: any) => {
   return fetch(link + url, {
     method: method,
     headers: {
       "Content-Type": "application/json",
+      Authorization: token,
     },
     body: JSON.stringify(body),
   }).then((res) => res.json());
