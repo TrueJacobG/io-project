@@ -2,9 +2,11 @@
 
 namespace Firestore.Models
 {
-    public class EventAdditionModel
+    public class EventModel
     {
+        [Required]
         public string description { get; set; }
+        [Required]
         public string name { get; set; }
     }
 }

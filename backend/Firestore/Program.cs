@@ -1,10 +1,12 @@
 
+using FirebaseAdmin;
+
 Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "keys.json");
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDistributedMemoryCache();
-
+builder.Services.AddSingleton(FirebaseApp.Create());
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromSeconds(5);
