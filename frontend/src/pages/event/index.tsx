@@ -116,8 +116,34 @@ const Event = () => {
       </div>
       <hr />
       <div className="expenses">
-        <h1>Expenses</h1>
+        <Link to={"/event/" + id_event + "/expense"} className="link-expense-page">
+          <h1>Expenses</h1>
+        </Link>
+
         {/* TODO */}
+        <table>
+          <tr>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Cost</td>
+            <td>Paid by</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Pizza</th>
+            <th>Pizza:emoji</th>
+            <th>80zł</th>
+            <th>testowy</th>
+            <th>DELETE</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>ADD</th>
+          </tr>
+        </table>
       </div>
       <hr />
       <div className="bottom">

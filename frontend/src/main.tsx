@@ -7,6 +7,7 @@ import Info from "./pages/info";
 import Event from "./pages/event";
 import WrongUrl from "./pages/error";
 import App from "./pages/app";
+import Expense from "./pages/expense";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/event/:id_event",
     element: <Event />,
+  },
+  {
+    path: "/event/:id_event/expense",
+    element: <Expense />,
   },
 ]);
 

@@ -57,3 +57,16 @@
   margin-top: 1em;
   margin-bottom: 1em;
 }
+
+.link-expense-page {
+  color: white;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  border-top: 0.1em black solid;
+}
