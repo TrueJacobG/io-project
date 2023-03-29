@@ -19,6 +19,41 @@
   padding-top: 1em;
 }
 
+/* EXPENSE */
+
+.link-expense-page {
+  color: white;
+  text-decoration: none;
+}
+
+.delete-expense-button {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
+.delete-expense-button button {
+  font-size: 0.8em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.add-expense-button {
+  font-size: 2em;
+  padding-bottom: 0.5em;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  border-top: 0.1em black solid;
+}
+
+/* USERS */
+
 .bottom {
   width: 100%;
 }
@@ -48,7 +83,6 @@
   padding-top: 1em;
 }
 
-/* */
 .add-user-form label {
   padding-right: 1em;
 }
@@ -56,17 +90,4 @@
 .add-user-form button {
   margin-top: 1em;
   margin-bottom: 1em;
-}
-
-.link-expense-page {
-  color: white;
-  text-decoration: none;
-}
-
-table {
-  width: 100%;
-}
-
-th {
-  border-top: 0.1em black solid;
 }

@@ -151,9 +151,8 @@ function App() {
     if (username !== null) {
       setUsername(username);
       setIsLogged(true);
+      loadEvents();
     }
-
-    loadEvents();
   }, []);
 
   return (

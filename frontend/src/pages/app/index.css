@@ -4,13 +4,3 @@
   padding: 2rem;
   text-align: center;
 }
-
-/* INFO */
-.link-main-page {
-  border: 0.1em solid #176bba;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 0.1em;
-  font-size: 3em;
-}
