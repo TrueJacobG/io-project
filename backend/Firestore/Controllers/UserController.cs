@@ -45,11 +45,11 @@ namespace Firestore.Controllers
 
                 if (token != null)
                 {
-                    return Ok(JsonConvert.SerializeObject(new {token = token }));
+                    return Ok(JsonConvert.SerializeObject(new { token = token }));
                 }
             }
             catch (FirebaseAuthException ex)
-            { 
+            {
                 return StatusCode(409, JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
             }
             return StatusCode(4000);
@@ -60,25 +60,25 @@ namespace Firestore.Controllers
         [Route("auth/login", Name = "login")]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
+            _logger.LogInformation($"Login attempt for {loginModel.email}");
+            try
             {
-                try
-                {
-                    var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(loginModel.email, loginModel.auth_data);
-                    string token = fbAuthLink.FirebaseToken;
+                var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(loginModel.email, loginModel.auth_data);
+                string token = fbAuthLink.FirebaseToken;
 
-                    if (token != null)
-                    {
-                        //HttpContext.Session.SetString("_UserToken", token);
-                        //HttpContext.Session.Get("_UserToken");
-                        return Ok(JsonConvert.SerializeObject(new { token = token, username = fbAuthLink.User.DisplayName }));
-                    }
-                }
-                catch (FirebaseAuthException ex)
+                if (token != null)
                 {
-                    return StatusCode(404, JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
+                    //HttpContext.Session.SetString("_UserToken", token);
+                    //HttpContext.Session.Get("_UserToken");
+                    return Ok(JsonConvert.SerializeObject(new { token = token, username = fbAuthLink.User.DisplayName }));
                 }
-                return StatusCode(4000,"How could this happen to me?");
             }
+            catch (FirebaseAuthException ex)
+            {
+                return StatusCode(404, JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
+            }
+            return StatusCode(4000, "How could this happen to me?");
+
         }
     }
 }

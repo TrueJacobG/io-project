@@ -133,7 +133,7 @@ namespace Firestore.Controllers
         [Route("event/{id_event}/user", Name = "deleteuser")]
         public async Task<IActionResult> DeleteUser([FromBody] UserInEventModel userModel, string id_event)
         {
-            _logger.LogInformation($"Attempt for adding user {userModel.user_email} in event {id_event}");
+            _logger.LogInformation($"Attempt for deleting user {userModel.user_email} in event {id_event}");
             string uid = await Translator.GetUid(userModel.user_email);
 
             DocumentReference events = firestoreDb.Collection("event").Document(id_event);
