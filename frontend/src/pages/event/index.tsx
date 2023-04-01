@@ -157,7 +157,7 @@ const Event = () => {
       .then((data) => {
         let expenses: ExpenseType[] = [];
 
-        data.expenses.foreach((exp) => {
+        [...data.expenses].forEach((exp) => {
           let newExp: ExpenseType = {
             id_expense: exp.id_expense,
             name: exp.name,
