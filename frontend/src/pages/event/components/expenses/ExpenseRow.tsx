@@ -6,7 +6,7 @@ const ExpenseRow = ({ expense, handleDeleteExpense }: { expense: ExpenseType; ha
     <tr>
       <th>{expense.name}</th>
       <th>{expense.type}</th>
-      <th>{expense.cost}</th>
+      <th>{expense.cash}</th>
       <th>{expense.author}</th>
       <th>
         <DeleteExpense handleDeleteExpense={handleDeleteExpense} id_expense={expense.id_expense} />
