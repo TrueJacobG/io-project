@@ -16,7 +16,7 @@ const ExpensesTable = ({ expenses }: { expenses: ExpenseType[] }) => {
         <tbody>
           {expenses.map((exp) => {
             return (
-              <>
+              <div key={Math.random()}>
                 <ExpenseRow expense={exp} key={Math.random()} />
                 <tr>
                   <td colSpan={4}>
@@ -25,7 +25,7 @@ const ExpensesTable = ({ expenses }: { expenses: ExpenseType[] }) => {
                     <div>{exp.date}</div>
                   </td>
                 </tr>
-              </>
+              </div>
             );
           })}
         </tbody>
