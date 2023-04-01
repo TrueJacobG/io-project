@@ -76,12 +76,11 @@ const Event = () => {
         setExpenses(newExpenses);
       })
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
   };
 
-  /* TODO */
   const handleAddExpense = (name: string, description: string, type: string, cash: number) => {
     if (!isShowAddExpenseForm) {
       setIsShowAddExpenseForm(true);
@@ -93,20 +92,24 @@ const Event = () => {
       description: description,
       type: type,
       cash: cash,
-    }).then((data) => {
-      let newExpens: ExpenseType = {
-        id_expense: data.id_expense,
-        name: name,
-        description: description,
-        type: type,
-        cash: cash,
-        author: data.author,
-        date: data.date,
-      };
-      setExpenses([...expenses, newExpens]);
-    });
-
-    setIsShowAddExpenseForm(false);
+    })
+      .then((data) => {
+        let newExpens: ExpenseType = {
+          id_expense: data.id_expense,
+          name: name,
+          description: description,
+          type: type,
+          cash: cash,
+          author: data.author,
+          date: data.date,
+        };
+        setExpenses([...expenses, newExpens]);
+        setIsShowAddExpenseForm(false);
+      })
+      .catch((e) => {
+        console.error("something went wrong");
+        console.error(e);
+      });
   };
 
   const [isShowAddUserForm, setIsShowAddUserForm] = useState(false);
@@ -117,7 +120,7 @@ const Event = () => {
         window.location.href = "/";
       })
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
   };
@@ -126,7 +129,7 @@ const Event = () => {
     useFetchWithBody("/event/" + id_event, "PUT", localStorage.getItem("token") as string, { name: name, description: description })
       .then(() => {})
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
   };
@@ -143,7 +146,7 @@ const Event = () => {
         setMembers(() => [...members, email]);
       })
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
     setIsShowAddUserForm(false);
@@ -163,7 +166,7 @@ const Event = () => {
         setMembers(() => newMembers);
       })
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
   };
@@ -176,7 +179,7 @@ const Event = () => {
         setMembers(data.users);
       })
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
 
@@ -185,7 +188,7 @@ const Event = () => {
         setExpenses(data.expenses);
       })
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
   }, []);

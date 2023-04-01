@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ExpenseType } from "../../../../types/Expense";
 import AddExpense from "./AddExpense";
 import ExpenseRow from "./ExpenseRow";
@@ -11,6 +12,11 @@ type Props = {
 };
 
 const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpense, isShowAddExpenseForm }: Props) => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [type, setType] = useState("food");
+  const [cost, setCost] = useState(0);
+
   return (
     <div>
       <table>
@@ -30,23 +36,53 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={3}>
-                <input type="text" name="name" id="name" className="input-expense input-name" />
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="input-expense input-name"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </td>
               <td>
-                <select name="type" id="type" className="input-expense input-type">
+                <select name="type" id="type" className="input-expense input-type" value={type} onChange={(e) => setType(e.target.value)}>
                   <option value="food">🍕</option>
                   <option value="shop">🛒</option>
                   <option value="fun">🎡</option>
                 </select>
               </td>
               <td>
-                <input type="number" name="cost" id="cost" className="input-expense input-cost" />
+                <input
+                  type="number"
+                  name="cost"
+                  id="cost"
+                  className="input-expense input-cost"
+                  value={cost}
+                  onChange={(e) => setCost(e.target.value)}
+                />
+              </td>
+            </tr>
+          )}
+          {isShowAddExpenseForm && (
+            <tr>
+              <td colSpan={5}>
+                <input
+                  type="text"
+                  name="description"
+                  id="description"
+                  className="input-expense input-description"
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </td>
             </tr>
           )}
           <tr>
             <td colSpan={5} className="add-expense-button">
-              <AddExpense handleAddExpense={handleAddExpense} />
+              <AddExpense handleAddExpense={() => handleAddExpense(name, description, type, cost)} />
             </td>
           </tr>
         </tbody>
