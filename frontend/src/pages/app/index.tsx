@@ -122,7 +122,7 @@ function App() {
       })
       .catch((e) => {
         console.error(e);
-        console.log("something went wrong");
+        console.error("something went wrong");
       });
 
     setIsEventButtonDisabled(false);
@@ -140,8 +140,8 @@ function App() {
         setEvents(() => data);
       })
       .catch((e) => {
+        console.error("something went wrong");
         console.error(e);
-        console.log("something went wrong");
       });
   };
 

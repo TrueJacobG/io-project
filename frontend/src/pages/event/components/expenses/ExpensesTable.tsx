@@ -82,7 +82,15 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           )}
           <tr>
             <td colSpan={5} className="add-expense-button">
-              <AddExpense handleAddExpense={() => handleAddExpense(name, description, type, cost)} />
+              <AddExpense
+                handleAddExpense={() => {
+                  handleAddExpense(name, description, type, cost);
+                  setName("");
+                  setDescription("");
+                  setType("food");
+                  setCost(0);
+                }}
+              />
             </td>
           </tr>
         </tbody>
