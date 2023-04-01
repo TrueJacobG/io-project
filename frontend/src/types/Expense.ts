@@ -3,7 +3,7 @@ export type ExpenseType = {
   name: string;
   description: string;
   type: string;
-  cost: number;
+  cash: number;
   author: string;
   date: string;
 };

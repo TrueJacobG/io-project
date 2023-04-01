@@ -60,6 +60,8 @@ const Event = () => {
     },
   ]);
 
+  const [isShowAddExpenseForm, setIsShowAddExpenseForm] = useState(false);
+
   const handleDeleteExpense = (id_expense: string) => {
     useFetchWithBody("/event/" + id_event + "/expense", "DELETE", localStorage.getItem("token") as string, { id_expense: id_expense })
       .then(() => {
@@ -80,21 +82,44 @@ const Event = () => {
   };
 
   /* TODO */
-  const handleAddExpense = () => {};
+  const handleAddExpense = (name: string, description: string, type: string, cash: number) => {
+    if (!isShowAddExpenseForm) {
+      setIsShowAddExpenseForm(true);
+      return;
+    }
 
-  /* USER */
+    useFetchWithBody("/event/" + id_event + "/expense", "POST", localStorage.getItem("token") as string, {
+      name: name,
+      description: description,
+      type: type,
+      cash: cash,
+    }).then((data) => {
+      let newExpens: ExpenseType = {
+        id_expense: data.id_expense,
+        name: name,
+        description: description,
+        type: type,
+        cash: cash,
+        author: data.author,
+        date: data.date,
+      };
+      setExpenses([...expenses, newExpens]);
+    });
+
+    setIsShowAddExpenseForm(false);
+  };
 
   const [isShowAddUserForm, setIsShowAddUserForm] = useState(false);
 
   const handleDeleteEvent = () => {
     useFetch("/event/" + id_event, "DELETE", localStorage.getItem("token") as string)
-      .then(() => {})
+      .then(() => {
+        window.location.href = "/";
+      })
       .catch((e) => {
         console.log("something went wrong");
         console.error(e);
       });
-
-    window.location.href = "/";
   };
 
   const handleEditEvent = (name: string, description: string) => {
@@ -156,8 +181,8 @@ const Event = () => {
       });
 
     useFetch("/event/" + id_event + "/expense", "GET", localStorage.getItem("token") as string)
-      .then((exp) => {
-        setExpenses(exp);
+      .then((data) => {
+        setExpenses(data.expenses);
       })
       .catch((e) => {
         console.log("something went wrong");
@@ -186,7 +211,13 @@ const Event = () => {
         <Link to={"/event/" + id_event + "/expense"} className="link-expense-page">
           <h1>Expenses</h1>
         </Link>
-        <ExpensesTable expenses={expenses} handleDeleteExpense={handleDeleteExpense} handleAddExpense={handleAddExpense} />
+        <ExpensesTable
+          expenses={expenses}
+          members={members}
+          handleDeleteExpense={handleDeleteExpense}
+          handleAddExpense={handleAddExpense}
+          isShowAddExpenseForm={isShowAddExpenseForm}
+        />
       </div>
       <hr />
       <div className="bottom">

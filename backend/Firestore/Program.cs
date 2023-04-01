@@ -20,7 +20,6 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
-
         }) ;
 });
 
@@ -29,16 +28,15 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 }
 
 app.UseRouting();

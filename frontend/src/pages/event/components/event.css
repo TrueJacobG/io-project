@@ -42,3 +42,20 @@
 .edit-event {
   margin-bottom: 2em;
 }
+
+/* ADD EXPENSE FORM */
+.input-expense {
+  height: 2em;
+}
+
+.input-name {
+  width: 100%;
+}
+
+.input-type {
+  width: 50%;
+}
+
+.input-cost {
+  width: 80%;
+}
