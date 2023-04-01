@@ -155,7 +155,22 @@ const Event = () => {
 
     useFetch("/event/" + id_event + "/expense", "GET", localStorage.getItem("token") as string)
       .then((data) => {
-        setExpenses(data.expenses);
+        let expenses: ExpenseType[] = [];
+
+        data.expenses.foreach((exp) => {
+          let newExp: ExpenseType = {
+            id_expense: exp.id_expense,
+            name: exp.name,
+            description: exp.description,
+            type: convertTypeToEmoji(exp.type),
+            cash: exp.cash,
+            author: exp.author,
+            date: exp.date,
+          };
+          expenses.push(newExp);
+        });
+
+        setExpenses(expenses);
       })
       .catch((e) => {
         console.error("something went wrong");
