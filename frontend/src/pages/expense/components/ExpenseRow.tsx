@@ -5,7 +5,7 @@ const ExpenseRow = ({ expense }: { expense: ExpenseType }) => {
     <tr>
       <th>{expense.name}</th>
       <th>{expense.type}</th>
-      <th>{expense.cost}</th>
+      <th>{expense.cash}</th>
       <th>{expense.author}</th>
     </tr>
   );
