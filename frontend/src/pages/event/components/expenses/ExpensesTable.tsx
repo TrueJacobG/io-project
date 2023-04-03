@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ExpenseType } from "../../../../types/Expense";
 import AddExpense from "./AddExpense";
 import ExpenseRow from "./ExpenseRow";
+import sumCosts from "../../utils/sumCosts";
 
 type Props = {
   expenses: ExpenseType[];
@@ -31,7 +32,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
         </thead>
         <tbody>
           {expenses.map((exp) => {
-            return <ExpenseRow expense={exp} key={exp.id_expense} handleDeleteExpense={handleDeleteExpense} />;
+            return <ExpenseRow exp={exp} key={exp.id_expense} handleDeleteExpense={handleDeleteExpense} />;
           })}
           {isShowAddExpenseForm && (
             <tr>
@@ -60,11 +61,16 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                   id="cost"
                   className="input-expense input-cost"
                   value={cost}
-                  onChange={(e) => setCost(e.target.value)}
+                  onChange={(e) => setCost(Number(e.target.value))}
                 />
               </td>
             </tr>
           )}
+          <tr>
+            <td colSpan={5}>
+              <h3>SUM: {sumCosts(expenses)}</h3>
+            </td>
+          </tr>
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={5}>
