@@ -1,15 +1,20 @@
 import { ExpenseType } from "../../../../types/Expense";
 import DeleteExpense from "./DeleteExense";
 
-const ExpenseRow = ({ expense, handleDeleteExpense }: { expense: ExpenseType; handleDeleteExpense: any }) => {
+const ExpenseRow = ({ exp, handleDeleteExpense }: { exp: ExpenseType; handleDeleteExpense: any }) => {
+  const formatter = new Intl.NumberFormat("pl-PL", {
+    style: "currency",
+    currency: "PLN",
+  });
+
   return (
     <tr>
-      <th>{expense.name}</th>
-      <th>{expense.type}</th>
-      <th>{expense.cash}</th>
-      <th>{expense.author}</th>
+      <th>{exp.name}</th>
+      <th>{exp.type}</th>
+      <th>{formatter.format(exp.cash)}</th>
+      <th>{exp.author}</th>
       <th>
-        <DeleteExpense handleDeleteExpense={handleDeleteExpense} id_expense={expense.id_expense} />
+        <DeleteExpense handleDeleteExpense={handleDeleteExpense} id_expense={exp.id_expense} />
       </th>
     </tr>
   );

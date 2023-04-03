@@ -3,22 +3,21 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
 type Props = {
-  isShowAuthForm: boolean;
+  isShowAuthForm: number;
+  setIsShowAuthForm: any;
   loginEvent: any;
   registerEvent: any;
-  isShowLoginForm: boolean;
-  setIsShowLoginForm: any;
-  loginError: boolean;
+  loginError: string;
   registerError: string;
 };
 
-const AuthForm = ({ isShowAuthForm, loginEvent, registerEvent, isShowLoginForm, setIsShowLoginForm, loginError, registerError }: Props) => {
+const AuthForm = ({ isShowAuthForm, setIsShowAuthForm, loginEvent, registerEvent, loginError, registerError }: Props) => {
   return (
-    <div className={`${!isShowAuthForm ? "unactive" : "active"} show`}>
-      {isShowLoginForm ? (
-        <LoginForm loginEvent={loginEvent} changeForms={setIsShowLoginForm} loginError={loginError} />
+    <div className={`${isShowAuthForm === 0 ? "unactive" : "active"} show`}>
+      {isShowAuthForm === 1 ? (
+        <LoginForm loginEvent={loginEvent} changeForms={setIsShowAuthForm} loginError={loginError} />
       ) : (
-        <RegisterForm registerEvent={registerEvent} changeForms={setIsShowLoginForm} registerError={registerError} />
+        <RegisterForm registerEvent={registerEvent} changeForms={setIsShowAuthForm} registerError={registerError} />
       )}
     </div>
   );

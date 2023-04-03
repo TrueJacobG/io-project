@@ -12,31 +12,35 @@ import setWrongPasswordMessage from "./utils/setWrongPasswordErrorMessage";
 import useFetchWithBody from "../../hooks/useFetchWithBody";
 
 function App() {
-  const [isShowAuthForm, setIsShowAuthForm] = useState(false);
+  const [isShowAuthForm, setIsShowAuthForm] = useState(0);
   const [isLogged, setIsLogged] = useState(false);
-  const [isShowLoginForm, setIsShowLoginForm] = useState(true);
-
-  const [loginError, setLoginError] = useState(false);
-  const [registerError, setRegisterError] = useState("");
-
   const [username, setUsername] = useState("Anonymous");
+
+  const [loginError, setLoginError] = useState("");
+  const [registerError, setRegisterError] = useState("");
 
   const [isEventButtonDisabled, setIsEventButtonDisabled] = useState(false);
 
   const [events, setEvents] = useState<Event[]>([]);
 
   const handleLoginClick = () => {
-    setIsShowLoginForm(true);
-    setIsShowAuthForm((isShowForm) => !isShowForm);
+    if (isShowAuthForm === 1) {
+      setIsShowAuthForm(0);
+    } else {
+      setIsShowAuthForm(1);
+    }
   };
 
   const handleRegisterClick = () => {
-    setIsShowLoginForm(false);
-    setIsShowAuthForm((isShowForm) => !isShowForm);
+    if (isShowAuthForm === 2) {
+      setIsShowAuthForm(0);
+    } else {
+      setIsShowAuthForm(2);
+    }
   };
 
   const handleLogoutClick = () => {
-    setIsLogged(() => false);
+    setIsLogged(false);
     setUsername("Anonymous");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -45,14 +49,19 @@ function App() {
   const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
 
-    useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password }).then((data) => {
-      setStorageVariables(data.token, data.username);
-      setIsLogged(true);
-      setIsShowAuthForm(false);
-      loadEvents();
-    });
+    setLoginError("");
 
-    setLoginError(true);
+    useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password })
+      .then((data) => {
+        setStorageVariables(data.token, data.username);
+        setIsLogged(true);
+        setIsShowAuthForm(0);
+        loadEvents();
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoginError("Wrong email/username or password!");
+      });
   };
 
   const registerEvent = (e: any, username: string, email: string, password: string, rpassword: string) => {
@@ -72,11 +81,11 @@ function App() {
       .then((data) => {
         setStorageVariables(data.token, username);
         setIsLogged(true);
-        setIsShowAuthForm(false);
+        setIsShowAuthForm(0);
         loadEvents();
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((err) => {
+        console.error(err);
         setRegisterError("Registration is not available right now!");
       });
   };
@@ -137,7 +146,11 @@ function App() {
   const loadEvents = () => {
     useFetch("/event", "GET", localStorage.getItem("token") as string)
       .then((data) => {
-        setEvents(() => data);
+        // TODO!
+        // setActiveEvents(data.active_events);
+        // setUserEvents(data.user_events);
+        // setInvitedEvents(data.invited_events);
+        setEvents(data);
       })
       .catch((e) => {
         console.error("something went wrong");
@@ -166,10 +179,9 @@ function App() {
       />
       <AuthForm
         isShowAuthForm={isShowAuthForm}
+        setIsShowAuthForm={setIsShowAuthForm}
         loginEvent={loginEvent}
         registerEvent={registerEvent}
-        isShowLoginForm={isShowLoginForm}
-        setIsShowLoginForm={setIsShowLoginForm}
         loginError={loginError}
         registerError={registerError}
       />

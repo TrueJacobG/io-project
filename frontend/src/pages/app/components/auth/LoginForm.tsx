@@ -4,7 +4,7 @@ import { useState } from "react";
 type Props = {
   loginEvent: any;
   changeForms: any;
-  loginError: boolean;
+  loginError: string;
 };
 
 const LoginForm = ({ loginEvent, changeForms, loginError }: Props) => {
@@ -43,12 +43,12 @@ const LoginForm = ({ loginEvent, changeForms, loginError }: Props) => {
         </form>
       </div>
 
-      {loginError && <h1 className="login-error-message">Wrong email or password!</h1>}
+      {loginError !== "" && <h1 className="login-error-message">{loginError}</h1>}
 
       <button
         className="change-form-button"
         onClick={() => {
-          changeForms((i: any) => !i);
+          changeForms((i: any) => (i === 1 ? 2 : 1));
         }}
       >
         Don't have an account? Register now
