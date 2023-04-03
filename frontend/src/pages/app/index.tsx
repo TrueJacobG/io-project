@@ -16,7 +16,7 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [username, setUsername] = useState("Anonymous");
 
-  const [loginError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState("");
   const [registerError, setRegisterError] = useState("");
 
   const [isEventButtonDisabled, setIsEventButtonDisabled] = useState(false);
@@ -49,14 +49,19 @@ function App() {
   const loginEvent = (e: any, email: string, password: string) => {
     e.preventDefault();
 
-    useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password }).then((data) => {
-      setStorageVariables(data.token, data.username);
-      setIsLogged(true);
-      setIsShowAuthForm(0);
-      loadEvents();
-    });
+    setLoginError("");
 
-    setLoginError(true);
+    useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password })
+      .then((data) => {
+        setStorageVariables(data.token, data.username);
+        setIsLogged(true);
+        setIsShowAuthForm(0);
+        loadEvents();
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoginError("Wrong email/username or password!");
+      });
   };
 
   const registerEvent = (e: any, username: string, email: string, password: string, rpassword: string) => {
@@ -79,8 +84,8 @@ function App() {
         setIsShowAuthForm(0);
         loadEvents();
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((err) => {
+        console.error(err);
         setRegisterError("Registration is not available right now!");
       });
   };
@@ -141,7 +146,11 @@ function App() {
   const loadEvents = () => {
     useFetch("/event", "GET", localStorage.getItem("token") as string)
       .then((data) => {
-        setEvents(() => data);
+        // TODO!
+        // setActiveEvents(data.active_events);
+        // setUserEvents(data.user_events);
+        // setInvitedEvents(data.invited_events);
+        setEvents(data);
       })
       .catch((e) => {
         console.error("something went wrong");

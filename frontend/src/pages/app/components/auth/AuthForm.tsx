@@ -7,7 +7,7 @@ type Props = {
   setIsShowAuthForm: any;
   loginEvent: any;
   registerEvent: any;
-  loginError: boolean;
+  loginError: string;
   registerError: string;
 };
 

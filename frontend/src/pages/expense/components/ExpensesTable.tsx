@@ -1,5 +1,6 @@
 import { ExpenseType } from "../../../types/Expense";
-import ExpenseRow from "./ExpenseRow";
+import ExpenseBoxRow from "./ExpenseBoxRow";
+import ExpenseRow from "./ExpenseRow1";
 
 const ExpensesTable = ({ expenses }: { expenses: ExpenseType[] }) => {
   return (
@@ -15,18 +16,7 @@ const ExpensesTable = ({ expenses }: { expenses: ExpenseType[] }) => {
         </thead>
         <tbody>
           {expenses.map((exp) => {
-            return (
-              <>
-                <ExpenseRow expense={exp} key={Math.random()} />
-                <tr key={Math.random()}>
-                  <td colSpan={4}>
-                    <div className="description-name">DESCRIPTION</div>
-                    <div className="description-box">{exp.description}</div>
-                    <div>{exp.date}</div>
-                  </td>
-                </tr>
-              </>
-            );
+            return <ExpenseBoxRow exp={exp} key={Math.random()} />;
           })}
         </tbody>
       </table>
