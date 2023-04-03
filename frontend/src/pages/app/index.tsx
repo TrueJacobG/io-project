@@ -12,31 +12,35 @@ import setWrongPasswordMessage from "./utils/setWrongPasswordErrorMessage";
 import useFetchWithBody from "../../hooks/useFetchWithBody";
 
 function App() {
-  const [isShowAuthForm, setIsShowAuthForm] = useState(false);
+  const [isShowAuthForm, setIsShowAuthForm] = useState(0);
   const [isLogged, setIsLogged] = useState(false);
-  const [isShowLoginForm, setIsShowLoginForm] = useState(true);
+  const [username, setUsername] = useState("Anonymous");
 
   const [loginError, setLoginError] = useState(false);
   const [registerError, setRegisterError] = useState("");
-
-  const [username, setUsername] = useState("Anonymous");
 
   const [isEventButtonDisabled, setIsEventButtonDisabled] = useState(false);
 
   const [events, setEvents] = useState<Event[]>([]);
 
   const handleLoginClick = () => {
-    setIsShowLoginForm(true);
-    setIsShowAuthForm((isShowForm) => !isShowForm);
+    if (isShowAuthForm === 1) {
+      setIsShowAuthForm(0);
+    } else {
+      setIsShowAuthForm(1);
+    }
   };
 
   const handleRegisterClick = () => {
-    setIsShowLoginForm(false);
-    setIsShowAuthForm((isShowForm) => !isShowForm);
+    if (isShowAuthForm === 2) {
+      setIsShowAuthForm(0);
+    } else {
+      setIsShowAuthForm(2);
+    }
   };
 
   const handleLogoutClick = () => {
-    setIsLogged(() => false);
+    setIsLogged(false);
     setUsername("Anonymous");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -48,7 +52,7 @@ function App() {
     useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password }).then((data) => {
       setStorageVariables(data.token, data.username);
       setIsLogged(true);
-      setIsShowAuthForm(false);
+      setIsShowAuthForm(0);
       loadEvents();
     });
 
@@ -72,7 +76,7 @@ function App() {
       .then((data) => {
         setStorageVariables(data.token, username);
         setIsLogged(true);
-        setIsShowAuthForm(false);
+        setIsShowAuthForm(0);
         loadEvents();
       })
       .catch((e) => {
@@ -166,10 +170,9 @@ function App() {
       />
       <AuthForm
         isShowAuthForm={isShowAuthForm}
+        setIsShowAuthForm={setIsShowAuthForm}
         loginEvent={loginEvent}
         registerEvent={registerEvent}
-        isShowLoginForm={isShowLoginForm}
-        setIsShowLoginForm={setIsShowLoginForm}
         loginError={loginError}
         registerError={registerError}
       />

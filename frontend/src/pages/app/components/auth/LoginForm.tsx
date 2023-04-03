@@ -48,7 +48,7 @@ const LoginForm = ({ loginEvent, changeForms, loginError }: Props) => {
       <button
         className="change-form-button"
         onClick={() => {
-          changeForms((i: any) => !i);
+          changeForms((i: any) => (i === 1 ? 2 : 1));
         }}
       >
         Don't have an account? Register now
