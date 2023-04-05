@@ -9,10 +9,20 @@ table {
   width: 100%;
 }
 
-.description-name {
-  margin-top: 1em;
+.bottom-box {
+  width: 100%;
+  margin-top: 2em;
 }
 
 .description-box {
-  margin: 2em;
+  width: 50%;
+  float: left;
+}
+
+.users-box {
+  width: 50%;
+  float: left;
+}
+
+.date-box {
 }

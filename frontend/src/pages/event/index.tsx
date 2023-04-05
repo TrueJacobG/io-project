@@ -32,6 +32,8 @@ const Event = () => {
 
   const [isShowAddExpenseForm, setIsShowAddExpenseForm] = useState(false);
 
+  const [errorAddExpenseForm, setErrorAddExpenseForm] = useState("");
+
   const handleDeleteExpense = (id_expense: string) => {
     useFetchWithBody("/event/" + id_event + "/expense", "DELETE", localStorage.getItem("token") as string, { id_expense: id_expense })
       .then(() => {
@@ -51,9 +53,16 @@ const Event = () => {
       });
   };
 
-  const handleAddExpense = (name: string, description: string, type: string, cash: number) => {
+  const handleAddExpense = (name: string, description: string, type: string, cash: number, users: string[]) => {
+    setErrorAddExpenseForm("");
+
     if (!isShowAddExpenseForm) {
       setIsShowAddExpenseForm(true);
+      return;
+    }
+
+    if (name.length === 0 || cash === 0 || description.length === 0) {
+      setErrorAddExpenseForm("Name/Description can't be empty! Cash can't be equal to 0!");
       return;
     }
 
@@ -72,6 +81,7 @@ const Event = () => {
           cash: cash,
           author: data.author,
           date: data.date,
+          users: users,
         };
         setExpenses([...expenses, newExpens]);
         setIsShowAddExpenseForm(false);
@@ -205,6 +215,7 @@ const Event = () => {
           handleDeleteExpense={handleDeleteExpense}
           handleAddExpense={handleAddExpense}
           isShowAddExpenseForm={isShowAddExpenseForm}
+          errorAddExpenseForm={errorAddExpenseForm}
         />
       </div>
       <hr />

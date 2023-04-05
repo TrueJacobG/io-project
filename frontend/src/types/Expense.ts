@@ -6,4 +6,5 @@ export type ExpenseType = {
   cash: number;
   author: string;
   date: string;
+  users: string[];
 };

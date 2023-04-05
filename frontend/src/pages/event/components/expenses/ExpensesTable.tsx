@@ -10,13 +10,31 @@ type Props = {
   handleDeleteExpense: any;
   handleAddExpense: any;
   isShowAddExpenseForm: any;
+  errorAddExpenseForm: string;
 };
 
-const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpense, isShowAddExpenseForm }: Props) => {
+const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpense, isShowAddExpenseForm, errorAddExpenseForm }: Props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("food");
   const [cost, setCost] = useState(0);
+  const [users, setUsers] = useState<string[]>([]);
+
+  const handleChange = (e: any, u: string) => {
+    if (e.target.checked) {
+      setUsers([...users, u]);
+    } else {
+      let result: string[] = [];
+
+      result.forEach((user) => {
+        if (user !== u) {
+          result.push(user);
+        }
+      });
+
+      setUsers(result);
+    }
+  };
 
   return (
     <div>
@@ -34,6 +52,11 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           {expenses.map((exp) => {
             return <ExpenseRow exp={exp} key={exp.id_expense} handleDeleteExpense={handleDeleteExpense} />;
           })}
+          {isShowAddExpenseForm && (
+            <tr>
+              <td colSpan={5} className="separator-add-expense-form"></td>
+            </tr>
+          )}
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={3}>
@@ -86,15 +109,37 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
               </td>
             </tr>
           )}
+          {isShowAddExpenseForm && (
+            <tr>
+              <td colSpan={5}>
+                {members.map((u) => {
+                  return (
+                    <div>
+                      <label>{u}</label>
+                      <input type="checkbox" name={u} onChange={(e) => handleChange(e, u)} />
+                    </div>
+                  );
+                })}
+              </td>
+            </tr>
+          )}
+          {isShowAddExpenseForm && errorAddExpenseForm.length !== 0 && (
+            <tr>
+              <td colSpan={5} className="add-expense-form-error">
+                {errorAddExpenseForm}
+              </td>
+            </tr>
+          )}
           <tr>
             <td colSpan={5} className="add-expense-button">
               <AddExpense
                 handleAddExpense={() => {
-                  handleAddExpense(name, description, type, cost);
+                  handleAddExpense(name, description, type, cost, users);
                   setName("");
                   setDescription("");
                   setType("food");
                   setCost(0);
+                  setUsers([]);
                 }}
               />
             </td>
