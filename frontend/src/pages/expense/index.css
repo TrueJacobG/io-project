@@ -24,5 +24,6 @@ table {
   float: left;
 }
 
-.date-box {
+.info-split {
+  margin-top: 1em;
 }

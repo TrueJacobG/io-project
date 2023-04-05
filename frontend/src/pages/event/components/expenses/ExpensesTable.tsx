@@ -112,6 +112,16 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={5}>
+                <div className="split-title">
+                  <h3>Split</h3>
+                </div>
+                <div className="info-split">
+                  <label>Equal</label>
+                  <input type="checkbox" name="equal" />
+                  <label>Select</label>
+                  <input type="checkbox" name="equal" />
+                </div>
+                <br />
                 {members.map((u) => {
                   return (
                     <div>
