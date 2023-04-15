@@ -244,7 +244,7 @@ namespace Firestore.Controllers
 
                     ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id, expenseData.GetValue<string>("name"), expenseData.GetValue<string>("description"),
                        expenseData.GetValue<string>("type"), expenseData.GetValue<double>("cash"), await Translator.GetMail(expenseData.GetValue<string>("creator")),
-                       expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), expenseData.GetValue<string[]>("users"));
+                       expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), expenseData.GetValue<Dictionary<string, string>[]>("users"));
 
                     data.Add(model);
                 }
@@ -275,8 +275,13 @@ namespace Firestore.Controllers
                 {"add_date", time},
             };
 
-            ArrayList users = new ArrayList();
-            data1.Add("users", users);
+            foreach (Dictionary<string,string> item in model.users)
+            {
+                Console.WriteLine(item["email"]);
+                Console.WriteLine(item["value"]);
+            }
+
+            data1.Add("users", model.users);
 
             var a = await expense.AddAsync(data1);
 

@@ -20,9 +20,9 @@ namespace Firestore.Models
         [Required]
         public string date { get; set; }
         [Required]
-        public string[] users { get; set; }
+        public Dictionary<string,string>[] users { get; set; }
 
-        public ExpenseLoadModel(string id_expense, string name, string description, string type, double cash, string author, string date, string[] users)
+        public ExpenseLoadModel(string id_expense, string name, string description, string type, double cash, string author, string date, Dictionary<string, string>[] users)
         {
             this.id_expense = id_expense;
             this.name = name;
