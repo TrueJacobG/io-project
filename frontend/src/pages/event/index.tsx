@@ -81,7 +81,7 @@ const Event = () => {
           cash: cash,
           author: data.author,
           date: data.date,
-          users: users,
+          users: [],
         };
         setExpenses([...expenses, newExpens]);
         setIsShowAddExpenseForm(false);
@@ -122,8 +122,10 @@ const Event = () => {
 
   const handleAddUser = (email: string) => {
     useFetchWithBody("/event/" + id_event + "/user", "POST", localStorage.getItem("token") as string, { user_email: email })
-      .then(() => {
-        setMembers(() => [...members, email]);
+      .then((data) => {
+        if (data.ok) {
+          setMembers(() => [...members, email]);
+        }
       })
       .catch((e) => {
         console.error("something went wrong");
@@ -176,6 +178,7 @@ const Event = () => {
             cash: exp.cash,
             author: exp.author,
             date: exp.date,
+            users: exp.users,
           };
           expenses.push(newExp);
         });

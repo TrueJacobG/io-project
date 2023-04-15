@@ -163,12 +163,12 @@ namespace Firestore.Controllers
         public async Task<IActionResult> AddUser([FromBody] UserInEventModel userModel, string id_event)
         {
             _logger.LogInformation($"Attempt for adding user {userModel.user_email} in event {id_event}");
-
+            
             string uid = await Translator.GetUid(userModel.user_email);
 
             if(uid == string.Empty)
             {
-                return BadRequest(new { message = "There is no user with that email"});
+                return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email"}));
             }
 
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
@@ -188,7 +188,7 @@ namespace Firestore.Controllers
 
             await eventToUpdate.UpdateAsync(updates);
 
-            return Ok(JsonConvert.SerializeObject(new { }));
+            return Ok(JsonConvert.SerializeObject(new { ok = "ok" }));
         }
 
 

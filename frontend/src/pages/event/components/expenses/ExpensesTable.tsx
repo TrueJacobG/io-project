@@ -57,11 +57,17 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           {expenses.map((exp) => {
             return <ExpenseRow exp={exp} key={exp.id_expense} handleDeleteExpense={handleDeleteExpense} />;
           })}
+          <tr>
+            <td colSpan={5}>
+              <h3>SUM: {formatter.format(sumCosts(expenses))}</h3>
+            </td>
+          </tr>
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={5} className="separator-add-expense-form"></td>
             </tr>
           )}
+
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={3}>
@@ -94,11 +100,6 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
               </td>
             </tr>
           )}
-          <tr>
-            <td colSpan={5}>
-              <h3>SUM: {formatter.format(sumCosts(expenses))}</h3>
-            </td>
-          </tr>
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={5}>
@@ -114,9 +115,9 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
               </td>
             </tr>
           )}
-          {isShowAddExpenseForm && (
+          {isShowAddExpenseForm && members.length !== 0 && (
             <tr>
-              <td colSpan={5}>
+              <td colSpan={5} className="add-user-expense">
                 <div className="split-title">
                   <h3>Split</h3>
                 </div>
@@ -129,7 +130,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                 <br />
                 {members.map((u) => {
                   return (
-                    <div>
+                    <div key={Math.random()}>
                       <label>{u}</label>
                       <input type="checkbox" name={u} onChange={(e) => handleChange(e, u)} />
                     </div>

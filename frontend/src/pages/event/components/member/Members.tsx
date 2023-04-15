@@ -10,7 +10,7 @@ const Members = ({ members, handleDeleteMember }: Props) => {
     <div className="members">
       {members.map((member) => {
         return (
-          <div className="row">
+          <div className="row" key={Math.random()}>
             <Member member={member} handleDeleteMember={handleDeleteMember} />
             <div style={{ clear: "both" }}></div>
           </div>
