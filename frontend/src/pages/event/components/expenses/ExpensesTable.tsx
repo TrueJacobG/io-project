@@ -20,18 +20,28 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
   const [cost, setCost] = useState(0);
   const [users, setUsers] = useState<string[]>([]);
 
+  const [splitType, setSplitType] = useState("");
+
   const formatter = new Intl.NumberFormat("pl-PL", {
     style: "currency",
     currency: "PLN",
   });
 
-  const handleChange = (e: any, u: string) => {
+  const handleChangeSplitType = (type: string) => {
+    if (splitType !== type) {
+      setSplitType(type);
+    } else {
+      setSplitType("");
+    }
+  };
+
+  const handleChangeUserInExpense = (e: any, u: string) => {
     if (e.target.checked) {
       setUsers([...users, u]);
     } else {
       let result: string[] = [];
 
-      result.forEach((user) => {
+      users.forEach((user) => {
         if (user !== u) {
           result.push(user);
         }
@@ -123,16 +133,17 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                 </div>
                 <div className="info-split">
                   <label>Equal</label>
-                  <input type="checkbox" name="equal" />
+                  <input type="checkbox" name="equal" onChange={() => handleChangeSplitType("equal")} />
+                  {/* TODO! */}
                   <label>Select</label>
-                  <input type="checkbox" name="equal" />
+                  <input type="checkbox" name="select" />
                 </div>
                 <br />
                 {members.map((u) => {
                   return (
-                    <div key={Math.random()}>
+                    <div key={u}>
                       <label>{u}</label>
-                      <input type="checkbox" name={u} onChange={(e) => handleChange(e, u)} />
+                      <input type="checkbox" name={u} onChange={(e) => handleChangeUserInExpense(e, u)} />
                     </div>
                   );
                 })}
@@ -150,12 +161,13 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
             <td colSpan={5} className="add-expense-button">
               <AddExpense
                 handleAddExpense={() => {
-                  handleAddExpense(name, description, type, cost, users);
+                  handleAddExpense(name, description, type, cost, users, splitType);
                   setName("");
                   setDescription("");
                   setType("food");
                   setCost(0);
                   setUsers([]);
+                  setSplitType("");
                 }}
               />
             </td>

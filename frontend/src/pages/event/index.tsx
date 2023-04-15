@@ -11,6 +11,7 @@ import AddUserForm from "./components/member/AddUserForm";
 import ExpensesTable from "./components/expenses/ExpensesTable";
 import { ExpenseType } from "../../types/Expense";
 import convertTypeToEmoji from "./utils/convertTypeToEmoji";
+import getUsersWithCashBySplitType from "./utils/getUsersWithCashBySplitType";
 
 let link: string;
 
@@ -53,7 +54,7 @@ const Event = () => {
       });
   };
 
-  const handleAddExpense = (name: string, description: string, type: string, cash: number, users: string[]) => {
+  const handleAddExpense = (name: string, description: string, type: string, cash: number, users: string[], splitType: string) => {
     setErrorAddExpenseForm("");
 
     if (!isShowAddExpenseForm) {
@@ -66,11 +67,16 @@ const Event = () => {
       return;
     }
 
+    let usersWithCash: any = getUsersWithCashBySplitType(users, cash, splitType);
+
+    console.log(usersWithCash);
+
     useFetchWithBody("/event/" + id_event + "/expense", "POST", localStorage.getItem("token") as string, {
       name: name,
       description: description,
       type: type,
       cash: cash,
+      users: usersWithCash,
     })
       .then((data) => {
         let newExpens: ExpenseType = {
@@ -81,7 +87,7 @@ const Event = () => {
           cash: cash,
           author: data.author,
           date: data.date,
-          users: [],
+          users: users,
         };
         setExpenses([...expenses, newExpens]);
         setIsShowAddExpenseForm(false);
