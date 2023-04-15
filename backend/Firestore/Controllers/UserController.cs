@@ -65,17 +65,18 @@ namespace Firestore.Controllers
             {
                 var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(loginModel.email, loginModel.auth_data);
                 string token = fbAuthLink.FirebaseToken;
+                Console.WriteLine(token);
 
                 if (token != null)
                 {
-                    //HttpContext.Session.SetString("_UserToken", token);
-                    //HttpContext.Session.Get("_UserToken");
                     return Ok(JsonConvert.SerializeObject(new { token = token, username = fbAuthLink.User.DisplayName }));
                 }
             }
             catch (FirebaseAuthException ex)
             {
-                return StatusCode(404, JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
+
+                
             }
             return StatusCode(4000, "How could this happen to me?");
 

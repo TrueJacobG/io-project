@@ -242,9 +242,18 @@ namespace Firestore.Controllers
                 {
                     DocumentSnapshot expenseData = await firestoreDb.Collection(expenseCollection).Document(item).GetSnapshotAsync();
 
+                    List<string> users = new List<string>();
+
+                    foreach (Dictionary<string,string> userData in expenseData.GetValue<Dictionary<string, string>[]>("users"))
+                    {
+                        users.Add(userData["email"]); 
+                    }
+
+
+
                     ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id, expenseData.GetValue<string>("name"), expenseData.GetValue<string>("description"),
                        expenseData.GetValue<string>("type"), expenseData.GetValue<double>("cash"), await Translator.GetMail(expenseData.GetValue<string>("creator")),
-                       expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), expenseData.GetValue<Dictionary<string, string>[]>("users"));
+                       expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), users.ToArray());
 
                     data.Add(model);
                 }
