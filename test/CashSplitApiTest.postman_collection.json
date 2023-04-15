@@ -1,0 +1,52 @@
+{
+	"info": {
+		"_postman_id": "b2e0c81b-6785-4652-a285-51bfb32eb51f",
+		"name": "CashSplitApiTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26532531"
+	},
+	"item": [
+		{
+			"name": "LogIn",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"saru1234@gmail.com\",\r\n    \"auth_data\": \"saru1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7012/api/v1/auth/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7012",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
