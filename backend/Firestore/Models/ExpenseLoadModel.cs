@@ -19,8 +19,10 @@ namespace Firestore.Models
         public string author { get; set; }
         [Required]
         public string date { get; set; }
+        [Required]
+        public string[] users { get; set; }
 
-        public ExpenseLoadModel(string id_expense, string name, string description, string type, double cash, string author, string date)
+        public ExpenseLoadModel(string id_expense, string name, string description, string type, double cash, string author, string date, string[] users)
         {
             this.id_expense = id_expense;
             this.name = name;
@@ -29,6 +31,7 @@ namespace Firestore.Models
             this.cash = cash;
             this.author = author;
             this.date = date;
+            this.users = users;
         }
     }
 }

@@ -188,9 +188,9 @@ namespace Firestore.Controllers
                 return Ok(JsonConvert.SerializeObject(new { }));
 
             }
-            catch (FirebaseAuthException ex)
+            catch (Exception)
             {
-                return Ok(JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
+                return Ok(JsonConvert.SerializeObject(new { message = "error" }));
             }
         }
 
@@ -246,7 +246,8 @@ namespace Firestore.Controllers
                     DocumentSnapshot expenseData = await firestoreDb.Collection(expenseCollection).Document(item).GetSnapshotAsync();
 
                     ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id, expenseData.GetValue<string>("name"), expenseData.GetValue<string>("description"),
-                       expenseData.GetValue<string>("type"), expenseData.GetValue<double>("cash"), await Translator.GetMail(expenseData.GetValue<string>("creator")), expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString());
+                       expenseData.GetValue<string>("type"), expenseData.GetValue<double>("cash"), await Translator.GetMail(expenseData.GetValue<string>("creator")),
+                       expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), expenseData.GetValue<string[]>("users"));
 
                     data.Add(model);
                 }
