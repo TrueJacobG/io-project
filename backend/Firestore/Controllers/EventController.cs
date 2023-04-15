@@ -164,34 +164,31 @@ namespace Firestore.Controllers
         {
             _logger.LogInformation($"Attempt for adding user {userModel.user_email} in event {id_event}");
 
-            try
+            string uid = await Translator.GetUid(userModel.user_email);
+
+            if(uid == string.Empty)
             {
-                string uid = await Translator.GetUid(userModel.user_email);
+                return BadRequest(new { message = "There is no user with that email"});
+            }
 
-                DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
+            DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
 
-                DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
-                List<string> users = new List<string>();
-                if (snapshot.Exists)
-                {
-                    users = snapshot.GetValue<List<string>>("users");
-                }
-                users.Add(uid);
+            DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
+            List<string> users = new List<string>();
+            if (snapshot.Exists)
+            {
+                users = snapshot.GetValue<List<string>>("users");
+            }
+            users.Add(uid);
 
-                Dictionary<string, object> updates = new Dictionary<string, object>
+            Dictionary<string, object> updates = new Dictionary<string, object>
                 {
                     { "users", users }
                 };
 
-                await eventToUpdate.UpdateAsync(updates);
+            await eventToUpdate.UpdateAsync(updates);
 
-                return Ok(JsonConvert.SerializeObject(new { }));
-
-            }
-            catch (Exception)
-            {
-                return Ok(JsonConvert.SerializeObject(new { message = "error" }));
-            }
+            return Ok(JsonConvert.SerializeObject(new { }));
         }
 
 

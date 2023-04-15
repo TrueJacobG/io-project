@@ -12,7 +12,17 @@ namespace Firestore
         }
         public static async Task<string> GetUid(string mail)
         {
-            UserRecord userRecord = await FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance.GetUserByEmailAsync(mail);
+            UserRecord userRecord;
+            try
+            {
+                userRecord = await FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance.GetUserByEmailAsync(mail);
+                Console.WriteLine("Succesfully got uid");
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+
+            }
             return userRecord.Uid;
         }
     }
