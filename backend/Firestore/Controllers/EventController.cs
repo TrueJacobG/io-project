@@ -163,26 +163,35 @@ namespace Firestore.Controllers
         public async Task<IActionResult> AddUser([FromBody] UserInEventModel userModel, string id_event)
         {
             _logger.LogInformation($"Attempt for adding user {userModel.user_email} in event {id_event}");
-            string uid = await Translator.GetUid(userModel.user_email);
 
-            DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
-
-            DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
-            List<string> users = new List<string>();
-            if (snapshot.Exists)
+            try
             {
-                users = snapshot.GetValue<List<string>>("users");
+                string uid = await Translator.GetUid(userModel.user_email);
+
+                DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
+
+                DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
+                List<string> users = new List<string>();
+                if (snapshot.Exists)
+                {
+                    users = snapshot.GetValue<List<string>>("users");
+                }
+                users.Add(uid);
+
+                Dictionary<string, object> updates = new Dictionary<string, object>
+                {
+                    { "users", users }
+                };
+
+                await eventToUpdate.UpdateAsync(updates);
+
+                return Ok(JsonConvert.SerializeObject(new { }));
+
             }
-            users.Add(uid);
-
-            Dictionary<string, object> updates = new Dictionary<string, object>
+            catch (FirebaseAuthException ex)
             {
-                { "users", users }
-            };
-
-            await eventToUpdate.UpdateAsync(updates);
-
-            return Ok(JsonConvert.SerializeObject(new { }));
+                return Ok(JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
+            }
         }
 
 
@@ -267,6 +276,9 @@ namespace Firestore.Controllers
                 {"cash", model.cash },
                 {"add_date", time},
             };
+
+            ArrayList users = new ArrayList();
+            data1.Add("users", users);
 
             var a = await expense.AddAsync(data1);
 
