@@ -6,10 +6,11 @@ const getUsersWithCashBySplitType = (users: string[], cash: number, splitType: s
 
   let newUsers: any = [];
 
+  // TODO!
   let perUserCash = cash / users.length;
 
   users.forEach((u) => {
-    newUsers.push({ email: u, value: perUserCash });
+    newUsers.push({ email: u, value: perUserCash.toString() });
   });
 
   return newUsers;
