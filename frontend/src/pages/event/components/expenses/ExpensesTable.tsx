@@ -20,6 +20,11 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
   const [cost, setCost] = useState(0);
   const [users, setUsers] = useState<string[]>([]);
 
+  const formatter = new Intl.NumberFormat("pl-PL", {
+    style: "currency",
+    currency: "PLN",
+  });
+
   const handleChange = (e: any, u: string) => {
     if (e.target.checked) {
       setUsers([...users, u]);
@@ -91,7 +96,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           )}
           <tr>
             <td colSpan={5}>
-              <h3>SUM: {sumCosts(expenses)}</h3>
+              <h3>SUM: {formatter.format(sumCosts(expenses))}</h3>
             </td>
           </tr>
           {isShowAddExpenseForm && (
