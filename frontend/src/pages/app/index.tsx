@@ -53,10 +53,12 @@ function App() {
 
     useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password })
       .then((data) => {
-        setStorageVariables(data.token, data.username);
-        setIsLogged(true);
-        setIsShowAuthForm(0);
-        loadEvents();
+        if (data.token !== undefined && data.username !== undefined) {
+          setStorageVariables(data.token, data.username);
+          setIsLogged(true);
+          setIsShowAuthForm(0);
+          loadEvents();
+        }
       })
       .catch((err) => {
         console.error(err);
