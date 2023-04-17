@@ -67,6 +67,11 @@ const Event = () => {
       return;
     }
 
+    if (cash > 2000000000) {
+      setErrorAddExpenseForm("Cash is too big!");
+      return;
+    }
+
     let usersWithCash: any = getUsersWithCashBySplitType(users, cash, splitType);
 
     console.log(usersWithCash);
