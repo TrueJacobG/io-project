@@ -78,6 +78,12 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
             </tr>
           )}
 
+          {/* TODO! 2 checkboxes: equal all, equal */}
+          {/* TODO! equal all disable all just add everyone and split equal*/}
+          {/* TODO! equal: true/false, after add person set to equal split or don't */}
+          {/* TODO! button add person */}
+          {/* TODO! person email and field with number */}
+
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={3}>
