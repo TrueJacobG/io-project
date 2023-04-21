@@ -33,8 +33,6 @@ namespace Firestore.Event
         }
 
 
-
-
         #region event
         [EnableCors("Policy1")]
         [HttpGet]
@@ -159,72 +157,7 @@ namespace Firestore.Event
         #endregion event/{uid}
 
 
-        #region event/{id_event}/user
-
-        [EnableCors("Policy1")]
-        [HttpPost]
-        [Route("event/{id_event}/user", Name = "addUser")]
-        public async Task<IActionResult> AddUser([FromBody] UserEmailDTO userModel, string id_event)
-        {
-            _logger.LogInformation($"Attempt for adding user {userModel.user_email} in event {id_event}");
-
-            string uid = await Translator.GetUid(userModel.user_email);
-
-            if (uid == string.Empty)
-            {
-                return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email" }));
-            }
-
-            DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
-
-            DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
-            List<string> users = new List<string>();
-            if (snapshot.Exists)
-            {
-                users = snapshot.GetValue<List<string>>("users");
-            }
-            users.Add(uid);
-
-            Dictionary<string, object> updates = new Dictionary<string, object>
-                {
-                    { "users", users }
-                };
-
-            await eventToUpdate.UpdateAsync(updates);
-
-            return Ok(JsonConvert.SerializeObject(new { ok = "ok" }));
-        }
-
-
-        [EnableCors("Policy1")]
-        [HttpDelete]
-        [Route("event/{id_event}/user", Name = "deleteUser")]
-        public async Task<IActionResult> DeleteUser([FromBody] UserEmailDTO userModel, string id_event)
-        {
-            _logger.LogInformation($"Attempt for deleting user {userModel.user_email} in event {id_event}");
-            string uid = await Translator.GetUid(userModel.user_email);
-
-            DocumentReference events = firestoreDb.Collection(eventCollection).Document(id_event);
-
-            DocumentSnapshot snapshot = await events.GetSnapshotAsync();
-            List<string> users = new List<string>();
-            if (snapshot.Exists)
-            {
-                users = snapshot.GetValue<List<string>>("users");
-            }
-            users.Remove(uid);
-
-            Dictionary<string, object> updates = new Dictionary<string, object>
-            {
-                { "users", users }
-            };
-
-            await events.UpdateAsync(updates);
-
-            return Ok(JsonConvert.SerializeObject(new { }));
-        }
-        #endregion event/{uid}/user
-
+       
 
         #region event/{id_event}/expense
         [EnableCors("Policy1")]
