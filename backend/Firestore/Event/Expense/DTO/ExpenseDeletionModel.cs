@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Models
+namespace Firestore.Event.Expense.DTO
 {
     public class ExpenseDeletionModel
     {
         [Required]
-        public string id_expense { get;set;}
+        public string id_expense { get; set; }
     }
 }

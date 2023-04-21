@@ -6,7 +6,7 @@ using Firebase.Auth;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 
-namespace Firestore.Controllers
+namespace Firestore.User
 {
     [ApiController]
     [Route("api/v1/")]
@@ -45,7 +45,7 @@ namespace Firestore.Controllers
 
                 if (token != null)
                 {
-                    return Ok(JsonConvert.SerializeObject(new { token = token }));
+                    return Ok(JsonConvert.SerializeObject(new { token }));
                 }
             }
             catch (FirebaseAuthException ex)
@@ -69,14 +69,14 @@ namespace Firestore.Controllers
 
                 if (token != null)
                 {
-                    return Ok(JsonConvert.SerializeObject(new { token = token, username = fbAuthLink.User.DisplayName }));
+                    return Ok(JsonConvert.SerializeObject(new { token, username = fbAuthLink.User.DisplayName }));
                 }
             }
             catch (FirebaseAuthException ex)
             {
-                return StatusCode(404, JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
+                return StatusCode(404, JsonConvert.SerializeObject(new { JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
 
-                
+
             }
             return StatusCode(4000, "How could this happen to me?");
 

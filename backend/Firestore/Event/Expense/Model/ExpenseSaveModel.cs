@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Models
+namespace Firestore.Event.Expense.Model
 {
     public class ExpenseSaveModel
     {
@@ -14,6 +14,6 @@ namespace Firestore.Models
         [Required]
         public double cash { get; set; }
         [Required]
-        public Dictionary<string,string>[] users { get; set; }
+        public Dictionary<string, string>[] users { get; set; }
     }
 }

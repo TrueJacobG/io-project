@@ -2,14 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Google.Cloud.Firestore;
 using Newtonsoft.Json;
-using Firestore.Models;
 using Firebase.Auth;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Collections;
 using Newtonsoft.Json.Linq;
+using Firestore.Event.Model;
+using Firestore.Event.DTO;
+using Firestore.Event.Expense.DTO;
+using Firestore.Event.Expense.Model;
 
-namespace Firestore.Controllers
+namespace Firestore.Event
 {
     [ApiController]
     [Route("api/v1/")]
@@ -132,7 +135,7 @@ namespace Firestore.Controllers
                     name = result.GetValue<string>("name"),
                     description = result.GetValue<string>("description"),
                     add_date = result.GetValue<Timestamp>("add_date"),
-                    users = users,
+                    users,
                 });
             }
             return Ok(data);
@@ -160,15 +163,15 @@ namespace Firestore.Controllers
         [EnableCors("Policy1")]
         [HttpPost]
         [Route("event/{id_event}/user", Name = "addUser")]
-        public async Task<IActionResult> AddUser([FromBody] UserInEventModel userModel, string id_event)
+        public async Task<IActionResult> AddUser([FromBody] UserEmailDTO userModel, string id_event)
         {
             _logger.LogInformation($"Attempt for adding user {userModel.user_email} in event {id_event}");
-            
+
             string uid = await Translator.GetUid(userModel.user_email);
 
-            if(uid == string.Empty)
+            if (uid == string.Empty)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email"}));
+                return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email" }));
             }
 
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
@@ -195,7 +198,7 @@ namespace Firestore.Controllers
         [EnableCors("Policy1")]
         [HttpDelete]
         [Route("event/{id_event}/user", Name = "deleteUser")]
-        public async Task<IActionResult> DeleteUser([FromBody] UserInEventModel userModel, string id_event)
+        public async Task<IActionResult> DeleteUser([FromBody] UserEmailDTO userModel, string id_event)
         {
             _logger.LogInformation($"Attempt for deleting user {userModel.user_email} in event {id_event}");
             string uid = await Translator.GetUid(userModel.user_email);
@@ -244,9 +247,9 @@ namespace Firestore.Controllers
 
                     List<string> users = new List<string>();
 
-                    foreach (Dictionary<string,string> userData in expenseData.GetValue<Dictionary<string, string>[]>("users"))
+                    foreach (Dictionary<string, string> userData in expenseData.GetValue<Dictionary<string, string>[]>("users"))
                     {
-                        users.Add(userData["email"]); 
+                        users.Add(userData["email"]);
                     }
 
 
@@ -258,7 +261,7 @@ namespace Firestore.Controllers
                     data.Add(model);
                 }
             }
-            return Ok(JsonConvert.SerializeObject(new {expenses = data}));
+            return Ok(JsonConvert.SerializeObject(new { expenses = data }));
         }
 
         [EnableCors("Policy1")]
@@ -266,7 +269,7 @@ namespace Firestore.Controllers
         [Route("event/{id_event}/expense", Name = "addExpense")]
         public async Task<IActionResult> AddExpense(string id_event, [FromBody] ExpenseSaveModel model)
         {
-            
+
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
@@ -284,7 +287,7 @@ namespace Firestore.Controllers
                 {"add_date", time},
             };
 
-            foreach (Dictionary<string,string> item in model.users)
+            foreach (Dictionary<string, string> item in model.users)
             {
                 Console.WriteLine(item["email"]);
                 Console.WriteLine(item["value"]);
@@ -308,13 +311,13 @@ namespace Firestore.Controllers
             };
             await eventToUpdate.UpdateAsync(updates);
 
-            return Ok(JsonConvert.SerializeObject(new {id_expense = a.Id, author = user.Email, date = time.ToDateTime().ToString() }));
+            return Ok(JsonConvert.SerializeObject(new { id_expense = a.Id, author = user.Email, date = time.ToDateTime().ToString() }));
         }
 
         [EnableCors("Policy1")]
         [HttpDelete]
         [Route("event/{id_event}/expense", Name = "deleteExpense")]
-        public async Task<IActionResult> DeleteExpense(string id_event,[FromBody] ExpenseDeletionModel model)
+        public async Task<IActionResult> DeleteExpense(string id_event, [FromBody] ExpenseDeletionModel model)
         {
             _logger.LogInformation($"Attempt for deleting expense {model} in event {id_event}");
 

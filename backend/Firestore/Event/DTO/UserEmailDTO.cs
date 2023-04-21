@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Models
+namespace Firestore.Event.DTO
 {
-    public class UserInEventModel
+    public class UserEmailDTO
     {
         [Required]
         [EmailAddress]

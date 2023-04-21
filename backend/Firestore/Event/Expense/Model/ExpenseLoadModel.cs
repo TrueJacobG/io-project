@@ -1,7 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Models
+namespace Firestore.Event.Expense.Model
 {
     public class ExpenseLoadModel
     {
