@@ -8,7 +8,6 @@ using System.Security.Claims;
 using System.Collections;
 using Newtonsoft.Json.Linq;
 using Firestore.Event.Model;
-using Firestore.Event.DTO;
 using Firestore.Event.Expense.DTO;
 using Firestore.Event.Expense.Model;
 using Firestore.Firebase;

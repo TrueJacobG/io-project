@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Event.DTO
+namespace Firestore.Event.User.DTO
 {
     public class UserEmailDTO
     {
