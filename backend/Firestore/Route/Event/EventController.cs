@@ -13,7 +13,7 @@ using Firestore.Route.Event.Model;
 namespace Firestore.Route.Event
 {
     [ApiController]
-    [Route("api/v1")]
+    [Route("api/v1/event")]
     public class EventController : ControllerBase
     {
         private readonly ILogger<EventController> _logger;
@@ -30,10 +30,9 @@ namespace Firestore.Route.Event
         }
 
 
-        #region event
         [EnableCors("Policy1")]
         [HttpGet]
-        [Route("event", Name = "getEvents")]
+        [Route("", Name = "getEvents")]
         public async Task<IActionResult> GetEvents()
         {
             _logger.LogInformation($"EventModel get Attempt");
@@ -62,16 +61,13 @@ namespace Firestore.Route.Event
                 Console.WriteLine();
 
                 result.Add(data1);
-
             }
-
             return Ok(JsonConvert.SerializeObject(result));
         }
 
-
         [EnableCors("Policy1")]
         [HttpPost]
-        [Route("event", Name = "addEvent")]
+        [Route("", Name = "addEvent")]
         public async Task<IActionResult> Add([FromBody] EventModel model)
         {
             _logger.LogInformation($"EventModel adding Attempt for {model.name}");
@@ -79,7 +75,7 @@ namespace Firestore.Route.Event
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"Wrong data model for event addition for {model.name}");
-                return BadRequest(ModelState);
+                return BadRequest(JsonConvert.SerializeObject(new { message = "Wrong model in Event/add"}));
             }
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
@@ -102,10 +98,5 @@ namespace Firestore.Route.Event
 
             return Ok(JsonConvert.SerializeObject(new { id_event = a.Id }));
         }
-
-        #endregion event
-
-
-
     }
 }

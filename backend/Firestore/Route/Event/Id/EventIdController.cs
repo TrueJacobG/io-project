@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace Firestore.Route.Event.Id
 {
     [ApiController]
-    [Route("api/v1/")]
+    [Route("api/v1/event/")]
     public class EventIdController : Controller
     {
         private readonly ILogger<EventController> _logger;
@@ -22,10 +22,9 @@ namespace Firestore.Route.Event.Id
             _logger = logger;
         }
 
-        #region event/{id_event}
         [EnableCors("Policy1")]
         [HttpGet]
-        [Route("event/{id_event}", Name = "getEvent")]
+        [Route("{id_event}", Name = "getEvent")]
         public async Task<IActionResult> GetEvent(string id_event)
         {
             _logger.LogInformation($"EventModel get Attempt");
@@ -55,7 +54,7 @@ namespace Firestore.Route.Event.Id
 
         [EnableCors("Policy1")]
         [HttpDelete]
-        [Route("event/{id_event}", Name = "deleteEvent")]
+        [Route("{id_event}", Name = "deleteEvent")]
         public async Task<IActionResult> Delete(string id_event)
         {
             _logger.LogInformation($"EventModel delete Attempt for {id_event}");
@@ -67,6 +66,5 @@ namespace Firestore.Route.Event.Id
 
             return Ok(JsonConvert.SerializeObject(new { }));
         }
-        #endregion event/{uid}
     }
 }

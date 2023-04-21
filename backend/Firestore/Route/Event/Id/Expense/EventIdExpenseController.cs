@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Firestore.Route.Event.Id.Expense
 {
     [ApiController]
-    [Route("api/v1/")]
+    [Route("api/v1/event/")]
     public class EventIdExpenseController : Controller
     {
         private readonly ILogger<EventController> _logger;
@@ -26,10 +26,9 @@ namespace Firestore.Route.Event.Id.Expense
             _logger = logger;
         }
 
-        #region event/{id_event}/expense
         [EnableCors("Policy1")]
         [HttpGet]
-        [Route("event/{id_event}/expense", Name = "getExpenses")]
+        [Route("{id_event}/expense", Name = "getExpenses")]
         public async Task<IActionResult> GetExpenses(string id_event)
         {
 
@@ -64,9 +63,12 @@ namespace Firestore.Route.Event.Id.Expense
             return Ok(JsonConvert.SerializeObject(new { expenses = data }));
         }
 
+
+        //TODO:
+        // if no shapshot -> throw error!!!
         [EnableCors("Policy1")]
         [HttpPost]
-        [Route("event/{id_event}/expense", Name = "addExpense")]
+        [Route("{id_event}/expense", Name = "addExpense")]
         public async Task<IActionResult> AddExpense(string id_event, [FromBody] ExpenseSaveModel model)
         {
 
@@ -114,9 +116,11 @@ namespace Firestore.Route.Event.Id.Expense
             return Ok(JsonConvert.SerializeObject(new { id_expense = a.Id, author = user.Email, date = time.ToDateTime().ToString() }));
         }
 
+        //TODO:
+        // if no shapshot -> throw error!!!
         [EnableCors("Policy1")]
         [HttpDelete]
-        [Route("event/{id_event}/expense", Name = "deleteExpense")]
+        [Route("{id_event}/expense", Name = "deleteExpense")]
         public async Task<IActionResult> DeleteExpense(string id_event, [FromBody] ExpenseDeletionModel model)
         {
             _logger.LogInformation($"Attempt for deleting expense {model} in event {id_event}");
@@ -141,7 +145,5 @@ namespace Firestore.Route.Event.Id.Expense
 
             return Ok(JsonConvert.SerializeObject(new { }));
         }
-
-        #endregion event/{id_event}/expense
     }
 }

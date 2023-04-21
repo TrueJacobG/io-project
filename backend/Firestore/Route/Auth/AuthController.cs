@@ -11,17 +11,20 @@ namespace Firestore.Route.User
 {
     [ApiController]
     [Route("api/v1/auth/")]
-    public class UserController : ControllerBase
+    public class AuthController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<AuthController> _logger;
 
         FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("Config/userConnection.txt")[0]));
 
-        public UserController(ILogger<UserController> logger)
+        public AuthController(ILogger<AuthController> logger)
         {
             _logger = logger;
         }
 
+        //TODO::
+        //VALIDATION
+        //TODO:
         [HttpPost]
         [EnableCors("Policy1")]
         [Route("register", Name = "register")]
@@ -32,7 +35,7 @@ namespace Firestore.Route.User
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"Wrong data model for register attempf for {registrationModel.email}");
-                return BadRequest(ModelState);
+                return BadRequest(JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {registrationModel.email}" }));
             }
 
             try
@@ -48,20 +51,34 @@ namespace Firestore.Route.User
                 {
                     return Ok(JsonConvert.SerializeObject(new { token }));
                 }
+                else
+                {
+                    return BadRequest(JsonConvert.SerializeObject(new { message = "Token is null" }));
+                }
             }
             catch (FirebaseAuthException ex)
             {
-                return StatusCode(409, JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
+                _logger.LogError(JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
+                return StatusCode(409, JsonConvert.SerializeObject(new { message = "Something is wrong in Firebase(REGISTER)" }));
             }
-            return StatusCode(4000);
         }
 
+        //TODO::
+        //VALIDATION
+        //TODO:
         [HttpPost]
         [EnableCors("Policy1")]
         [Route("login", Name = "login")]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
             _logger.LogInformation($"Login attempt for {loginModel.email}");
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Wrong data model for register attempf for {loginModel.email}");
+                return BadRequest(JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {loginModel.email}" }));
+            }
+
             try
             {
                 var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(loginModel.email, loginModel.auth_data);
@@ -72,15 +89,16 @@ namespace Firestore.Route.User
                 {
                     return Ok(JsonConvert.SerializeObject(new { token, username = fbAuthLink.User.DisplayName }));
                 }
+                else
+                {
+                    return BadRequest(JsonConvert.SerializeObject(new { message = "Token is null" }));
+                }
             }
             catch (FirebaseAuthException ex)
             {
-                return StatusCode(404, JsonConvert.SerializeObject(new { JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
-
-
+                _logger.LogError(JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = "Something is wrong in Firebase(LOGIN)" }));
             }
-            return StatusCode(4000, "How could this happen to me?");
-
         }
     }
 }
