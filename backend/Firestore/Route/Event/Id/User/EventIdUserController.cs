@@ -1,12 +1,12 @@
 ﻿using Firebase.Auth;
-using Firestore.Event.User.DTO;
 using Firestore.Firebase;
+using Firestore.Route.Event.Id.User.DTO;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace Firestore.Event.User
+namespace Firestore.Route.Event.Id.User
 {
     [ApiController]
     [Route("api/v1/")]

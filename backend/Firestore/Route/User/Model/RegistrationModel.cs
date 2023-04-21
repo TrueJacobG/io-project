@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.User.Model
+namespace Firestore.Route.User.Model
 {
-    public class LoginModel
+    /// <summary>
+    /// Represents a user that will be stored in firestore.
+    /// </summary>
+    public class RegistrationModel
     {
         [Required]
         [MinLength(6, ErrorMessage = "Password is too short")]
@@ -14,5 +17,11 @@ namespace Firestore.User.Model
         [MaxLength(100, ErrorMessage = "Email is too long")]
         [EmailAddress]
         public string email { get; set; }
+
+        [Required]
+        [MinLength(3, ErrorMessage = "Username is too short")]
+        [MaxLength(50, ErrorMessage = "Username is too long")]
+        public string username { get; set; }
+
     }
 }

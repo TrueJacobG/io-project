@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Event.Expense.Model
+namespace Firestore.Route.Event.Id.Expense.Model
 {
     public class ExpenseSaveModel
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Event.Model
+namespace Firestore.Route.Event.Model
 {
     public class EventModel
     {

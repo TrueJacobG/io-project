@@ -7,15 +7,13 @@ using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Collections;
 using Newtonsoft.Json.Linq;
-using Firestore.Event.Model;
-using Firestore.Event.Expense.DTO;
-using Firestore.Event.Expense.Model;
 using Firestore.Firebase;
+using Firestore.Route.Event.Model;
 
-namespace Firestore.Event
+namespace Firestore.Route.Event
 {
     [ApiController]
-    [Route("api/v1/event")]
+    [Route("api/v1")]
     public class EventController : ControllerBase
     {
         private readonly ILogger<EventController> _logger;
@@ -35,7 +33,7 @@ namespace Firestore.Event
         #region event
         [EnableCors("Policy1")]
         [HttpGet]
-        [Route("", Name = "getEvents")]
+        [Route("event", Name = "getEvents")]
         public async Task<IActionResult> GetEvents()
         {
             _logger.LogInformation($"EventModel get Attempt");
@@ -73,7 +71,7 @@ namespace Firestore.Event
 
         [EnableCors("Policy1")]
         [HttpPost]
-        [Route("", Name = "addEvent")]
+        [Route("event", Name = "addEvent")]
         public async Task<IActionResult> Add([FromBody] EventModel model)
         {
             _logger.LogInformation($"EventModel adding Attempt for {model.name}");
@@ -108,52 +106,6 @@ namespace Firestore.Event
         #endregion event
 
 
-        #region event/{id_event}
-        [EnableCors("Policy1")]
-        [HttpGet]
-        [Route("event/{id_event}", Name = "getEvent")]
-        public async Task<IActionResult> GetEvent(string id_event)
-        {
-            _logger.LogInformation($"EventModel get Attempt");
 
-            Console.WriteLine(id_event);
-
-            DocumentReference events = firestoreDb.Collection("event").Document(id_event);
-            DocumentSnapshot result = await events.GetSnapshotAsync();
-            string data = string.Empty;
-            if (result.Exists)
-            {
-                List<string> users = new List<string>();
-
-                foreach (string item in result.GetValue<string[]>("users"))
-                {
-                    users.Add(await Translator.GetMail(item));
-                }
-                data = JsonConvert.SerializeObject(new
-                {
-                    name = result.GetValue<string>("name"),
-                    description = result.GetValue<string>("description"),
-                    add_date = result.GetValue<Timestamp>("add_date"),
-                    users,
-                });
-            }
-            return Ok(data);
-        }
-
-        [EnableCors("Policy1")]
-        [HttpDelete]
-        [Route("event/{id_event}", Name = "deleteEvent")]
-        public async Task<IActionResult> Delete(string id_event)
-        {
-            _logger.LogInformation($"EventModel delete Attempt for {id_event}");
-
-
-            DocumentReference eventToDelete = firestoreDb.Collection("event").Document(id_event);
-
-            await eventToDelete.DeleteAsync();
-
-            return Ok(JsonConvert.SerializeObject(new { }));
-        }
-        #endregion event/{uid}
     }
 }

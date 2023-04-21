@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Firestore.Event.Expense.DTO
+namespace Firestore.Route.Event.Id.Expense.DTO
 {
     public class ExpenseDeletionModel
     {

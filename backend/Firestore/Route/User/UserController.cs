@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 using Firebase.Auth;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
-using Firestore.User.Model;
 using Firestore.Firebase;
+using Firestore.Route.User.Model;
 
-namespace Firestore.User
+namespace Firestore.Route.User
 {
     [ApiController]
-    [Route("api/v1/")]
+    [Route("api/v1/auth/")]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
@@ -24,7 +24,7 @@ namespace Firestore.User
 
         [HttpPost]
         [EnableCors("Policy1")]
-        [Route("auth/register", Name = "register")]
+        [Route("register", Name = "register")]
         public async Task<IActionResult> Register([FromBody] RegistrationModel registrationModel)
         {
             _logger.LogInformation($"Register Attempt for {registrationModel.email}");
@@ -58,7 +58,7 @@ namespace Firestore.User
 
         [HttpPost]
         [EnableCors("Policy1")]
-        [Route("auth/login", Name = "login")]
+        [Route("login", Name = "login")]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
             _logger.LogInformation($"Login attempt for {loginModel.email}");
