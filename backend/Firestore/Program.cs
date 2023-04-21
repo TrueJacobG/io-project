@@ -1,7 +1,7 @@
 
 using FirebaseAdmin;
 
-Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "keys.json");
+Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "Config/keys.json");
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Firestore.Models;
 using Firebase.Auth;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
+using Firestore.User.Model;
+using Firestore.Firebase;
 
 namespace Firestore.User
 {
@@ -14,7 +15,7 @@ namespace Firestore.User
     {
         private readonly ILogger<UserController> _logger;
 
-        FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("userConnection.txt")[0]));
+        FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("Config/userConnection.txt")[0]));
 
         public UserController(ILogger<UserController> logger)
         {

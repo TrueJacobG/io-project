@@ -11,6 +11,7 @@ using Firestore.Event.Model;
 using Firestore.Event.DTO;
 using Firestore.Event.Expense.DTO;
 using Firestore.Event.Expense.Model;
+using Firestore.Firebase;
 
 namespace Firestore.Event
 {
@@ -19,8 +20,8 @@ namespace Firestore.Event
     public class EventController : ControllerBase
     {
         private readonly ILogger<EventController> _logger;
-        FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("userConnection.txt")[0]));
-        FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("databaseName.txt"));
+        FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("Config/userConnection.txt")[0]));
+        FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("Config/databaseName.txt"));
 
         private readonly string eventCollection = "event";
         private readonly string expenseCollection = "expense";

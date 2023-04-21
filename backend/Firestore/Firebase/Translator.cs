@@ -1,7 +1,7 @@
 ﻿using Firebase.Auth;
 using FirebaseAdmin.Auth;
 
-namespace Firestore
+namespace Firestore.Firebase
 {
     public class Translator
     {

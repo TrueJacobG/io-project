@@ -1,4 +1,4 @@
-﻿namespace Firestore.Models
+﻿namespace Firestore.Firebase
 {
     public class FirebaseError
     {
