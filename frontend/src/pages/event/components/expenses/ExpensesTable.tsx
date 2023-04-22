@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExpenseType } from "../../../../types/Expense";
 import AddExpense from "./AddExpense";
 import ExpenseRow from "./ExpenseRow";
 import sumCosts from "../../utils/sumCosts";
+import React from "react";
 
 type Props = {
   expenses: ExpenseType[];
@@ -21,6 +22,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
   const [users, setUsers] = useState<string[]>([]);
 
   const [splitType, setSplitType] = useState("");
+  const [splitCash, setSplitCash] = useState<number[]>([]);
 
   const formatter = new Intl.NumberFormat("pl-PL", {
     style: "currency",
@@ -30,6 +32,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
   const handleChangeSplitType = (type: string) => {
     if (splitType !== type) {
       setSplitType(type);
+      reCalculateSplitCost();
     } else {
       setSplitType("");
     }
@@ -50,6 +53,40 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
       setUsers(result);
     }
   };
+
+  const handleChangeUserCash = (e: any, i: number) => {
+    let newSplitCash: number[] = [];
+
+    splitCash.forEach((c, index) => {
+      if (index === i) {
+        newSplitCash.push(e.target.value);
+      } else {
+        newSplitCash.push(c);
+      }
+    });
+
+    setSplitCash(newSplitCash);
+  };
+
+  const reCalculateSplitCost = () => {
+    let splitCost = cost / users.length;
+    let newSplitCash: number[] = [];
+    members.forEach((u) => {
+      if (users.includes(u)) {
+        newSplitCash.push(splitCost);
+      } else {
+        newSplitCash.push(0);
+      }
+    });
+
+    setSplitCash(newSplitCash);
+  };
+
+  useEffect(() => {
+    if (splitType === "equal") {
+      reCalculateSplitCost();
+    }
+  }, [cost, users]);
 
   return (
     <div>
@@ -72,6 +109,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
               <h3>SUM: {formatter.format(sumCosts(expenses))}</h3>
             </td>
           </tr>
+
           {isShowAddExpenseForm && (
             <tr>
               <td colSpan={5} className="separator-add-expense-form"></td>
@@ -85,76 +123,88 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           {/* TODO! person email and field with number */}
 
           {isShowAddExpenseForm && (
-            <tr>
-              <td colSpan={3}>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  className="input-expense input-name"
-                  placeholder="Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </td>
-              <td>
-                <select name="type" id="type" className="input-expense input-type" value={type} onChange={(e) => setType(e.target.value)}>
-                  <option value="food">🍕</option>
-                  <option value="shop">🛒</option>
-                  <option value="fun">🎡</option>
-                </select>
-              </td>
-              <td>
-                <input
-                  type="number"
-                  name="cost"
-                  id="cost"
-                  className="input-expense input-cost"
-                  value={cost}
-                  onChange={(e) => setCost(Number(e.target.value))}
-                />
-              </td>
-            </tr>
-          )}
-          {isShowAddExpenseForm && (
-            <tr>
-              <td colSpan={5}>
-                <input
-                  type="text"
-                  name="description"
-                  id="description"
-                  className="input-expense input-description"
-                  placeholder="Description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </td>
-            </tr>
-          )}
-          {isShowAddExpenseForm && members.length !== 0 && (
-            <tr>
-              <td colSpan={5} className="add-user-expense">
-                <div className="split-title">
-                  <h3>Split</h3>
-                </div>
-                <div className="info-split">
-                  <label>Equal</label>
-                  <input type="checkbox" name="equal" onChange={() => handleChangeSplitType("equal")} />
-                  {/* TODO! */}
-                  <label>Select</label>
-                  <input type="checkbox" name="select" />
-                </div>
-                <br />
-                {members.map((u) => {
-                  return (
-                    <div key={u}>
-                      <label>{u}</label>
-                      <input type="checkbox" name={u} onChange={(e) => handleChangeUserInExpense(e, u)} />
+            <React.Fragment>
+              <tr>
+                <td colSpan={5}>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="input-expense"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={5}>
+                  <select name="type" id="type" className="input-expense input-type" value={type} onChange={(e) => setType(e.target.value)}>
+                    <option value="food">🍕</option>
+                    <option value="shop">🛒</option>
+                    <option value="fun">🎡</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={5}>
+                  <input
+                    type="number"
+                    required
+                    value={cost <= 0 ? "" : cost}
+                    name="cost"
+                    id="cost"
+                    className="input-expense"
+                    onChange={(e) => setCost(Number(e.target.value))}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={5}>
+                  <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    className="input-expense"
+                    placeholder="Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </td>
+              </tr>
+              {members.length !== 0 && (
+                <tr>
+                  <td colSpan={5} className="add-user-expense">
+                    <div className="info-split">
+                      <label>Equal</label>
+                      <input type="checkbox" name="equal" onChange={() => handleChangeSplitType("equal")} />
                     </div>
-                  );
-                })}
-              </td>
-            </tr>
+                    <br />
+                    {members.map((u, i) => {
+                      return (
+                        <div className="input-expense-user" key={u}>
+                          <div className="input-expense-user-name">
+                            <label>{u}</label>
+                          </div>
+                          <div className="input-expense-user-checkbox">
+                            <input type="checkbox" name={"checkbox" + u} onChange={(e) => handleChangeUserInExpense(e, u)} />
+                          </div>
+                          <div className="input-expense-user-cash">
+                            <input
+                              type="number"
+                              name={"number" + u}
+                              value={splitCash[i] === 0 ? "" : splitCash[i]}
+                              onChange={(e) => handleChangeUserCash(e, i)}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <div style={{ clear: "both" }}></div>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
           )}
           {isShowAddExpenseForm && errorAddExpenseForm.length !== 0 && (
             <tr>

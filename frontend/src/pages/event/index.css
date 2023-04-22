@@ -21,6 +21,14 @@
 
 /* EXPENSE */
 
+table {
+  width: 100%;
+}
+
+th {
+  border-top: 0.1em black solid;
+}
+
 .link-expense-page {
   color: white;
   text-decoration: none;
@@ -44,12 +52,35 @@
   padding-bottom: 0.5em;
 }
 
-table {
+.input-expense {
+  height: 2em;
+  width: 50%;
+}
+
+.input-type {
+  text-align: center;
+}
+
+/* EXPENSE USER */
+
+.input-expense-user {
   width: 100%;
 }
 
-th {
-  border-top: 0.1em black solid;
+.input-expense-user-name {
+  width: 45%;
+  text-align: center;
+  float: left;
+}
+
+.input-expense-user-checkbox {
+  width: 10%;
+  float: left;
+}
+
+.input-expense-user-cash {
+  width: 30%;
+  float: left;
 }
 
 /* USERS */
