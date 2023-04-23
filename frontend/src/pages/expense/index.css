@@ -1,7 +1,7 @@
 table {
   width: 100%;
   margin-top: 1em;
-  border: 0.2em black solid;
+  border: 0.1em solid black;
 }
 
 .row {
@@ -15,11 +15,13 @@ table {
 }
 
 .description-box {
+  margin-top: -2em;
   width: 50%;
   float: left;
 }
 
 .users-box {
+  margin-top: -2em;
   width: 50%;
   float: left;
 }

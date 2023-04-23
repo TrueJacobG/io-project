@@ -19,29 +19,29 @@ const ExpenseRow = ({ exp }: { exp: ExpenseType }) => {
         <td colSpan={4}>
           <div className="bottom-box">
             <div className="description-box">
+              <h3>Description</h3>
               <p>{exp.description}</p>
             </div>
             <div className="users-box">
               <table style={{ border: "0em solid black" }}>
-                <tr>
-                  <th>Paid</th>
-                </tr>
-                <tr>
-                  <td>{exp.author}</td>
-                </tr>
-                <tr>
-                  <th>For</th>
-                </tr>
-                {exp.users.map((u) => {
-                  return (
-                    <tr>
-                      <td>{u}</td>
-                    </tr>
-                  );
-                })}
-                <tr>
-                  <th></th>
-                </tr>
+                <tbody>
+                  <tr>
+                    <th style={{ border: "0em solid black" }}>Paid</th>
+                  </tr>
+                  <tr>
+                    <td>{exp.author}</td>
+                  </tr>
+                  <tr>
+                    <th style={{ border: "0em solid black" }}>For</th>
+                  </tr>
+                  {exp.users.map((u) => {
+                    return (
+                      <tr key={Math.random()}>
+                        <td>{u}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
               </table>
             </div>
             <div style={{ clear: "both" }}></div>

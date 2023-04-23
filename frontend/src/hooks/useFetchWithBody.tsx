@@ -1,12 +1,4 @@
-let link: string;
-
-if (import.meta.env.VITE_FAKE_API !== undefined) {
-  link = import.meta.env.VITE_FAKE_API;
-}
-
-if (import.meta.env.VITE_API !== undefined) {
-  link = import.meta.env.VITE_API;
-}
+const link: string = "https://localhost:7012/api/v1";
 
 const useFetchWithBody = async (url: string, method: string, token: string, body: any) => {
   return fetch(link + url, {

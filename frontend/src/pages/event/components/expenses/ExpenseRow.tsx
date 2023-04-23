@@ -12,7 +12,6 @@ const ExpenseRow = ({ exp, handleDeleteExpense }: { exp: ExpenseType; handleDele
       <th>{exp.name}</th>
       <th>{exp.type}</th>
       <th>{formatter.format(exp.cash)}</th>
-      <th>{exp.author}</th>
       <th>
         <DeleteExpense handleDeleteExpense={handleDeleteExpense} id_expense={exp.id_expense} />
       </th>
