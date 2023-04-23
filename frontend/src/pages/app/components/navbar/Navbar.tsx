@@ -19,7 +19,7 @@ const Navbar = ({
   return (
     <div className="navbar">
       <div className="title">
-        <h1>Cash Split</h1>
+        <img src="logo_full_v2.svg" width={"60%"} />
       </div>
       {!isLogged ? (
         <div>
