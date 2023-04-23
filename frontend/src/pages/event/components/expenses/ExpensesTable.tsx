@@ -54,12 +54,12 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
     }
   };
 
-  const handleChangeUserCash = (e: any, i: number) => {
+  const handleChangeUserCash = (newCash: number, i: number) => {
     let newSplitCash: number[] = [];
 
     splitCash.forEach((c, index) => {
       if (index === i) {
-        newSplitCash.push(e.target.value);
+        newSplitCash.push(newCash);
       } else {
         newSplitCash.push(c);
       }
@@ -147,6 +147,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                     value={cost <= 0 ? "" : cost}
                     name="cost"
                     id="cost"
+                    placeholder="Cost"
                     className="input-expense"
                     onChange={(e) => setCost(Number(e.target.value))}
                   />
@@ -187,7 +188,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                               type="number"
                               name={"number" + u}
                               value={splitCash[i] === 0 ? "" : splitCash[i]}
-                              onChange={(e) => handleChangeUserCash(e, i)}
+                              onChange={(e) => handleChangeUserCash(Number(e.target.value), i)}
                             />
                           </div>
                         </div>

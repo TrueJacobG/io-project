@@ -66,8 +66,6 @@ const Event = () => {
 
     let usersWithCash: any = getUsersWithCash(users, splitCash);
 
-    console.table(usersWithCash);
-
     useFetchWithBody("/event/" + id_event + "/expense", "POST", localStorage.getItem("token") as string, {
       name: name,
       description: description,
