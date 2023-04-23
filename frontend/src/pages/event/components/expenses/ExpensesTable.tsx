@@ -20,9 +20,9 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
   const [type, setType] = useState("food");
   const [cost, setCost] = useState(0);
   const [users, setUsers] = useState<string[]>([]);
+  const [splitCash, setSplitCash] = useState<number[]>([]);
 
   const [splitType, setSplitType] = useState("");
-  const [splitCash, setSplitCash] = useState<number[]>([]);
 
   const formatter = new Intl.NumberFormat("pl-PL", {
     style: "currency",
@@ -54,12 +54,12 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
     }
   };
 
-  const handleChangeUserCash = (e: any, i: number) => {
+  const handleChangeUserCash = (newCash: number, i: number) => {
     let newSplitCash: number[] = [];
 
     splitCash.forEach((c, index) => {
       if (index === i) {
-        newSplitCash.push(e.target.value);
+        newSplitCash.push(newCash);
       } else {
         newSplitCash.push(c);
       }
@@ -96,29 +96,29 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
             <td>Name</td>
             <td>Type</td>
             <td>Cost</td>
-            <td>Paid by</td>
             <td></td>
           </tr>
         </thead>
         <tbody>
           {expenses.map((exp) => {
-            return <ExpenseRow exp={exp} key={exp.id_expense} handleDeleteExpense={handleDeleteExpense} />;
+            return <ExpenseRow exp={exp} key={Math.random()} handleDeleteExpense={handleDeleteExpense} />;
           })}
           <tr>
-            <td colSpan={5}>
+            <td colSpan={4}>
               <h3>SUM: {formatter.format(sumCosts(expenses))}</h3>
             </td>
           </tr>
 
           {isShowAddExpenseForm && (
             <tr>
-              <td colSpan={5} className="separator-add-expense-form"></td>
+              <td colSpan={4} className="separator-add-expense-form"></td>
             </tr>
           )}
+
           {isShowAddExpenseForm && (
             <React.Fragment>
               <tr>
-                <td colSpan={5}>
+                <td colSpan={4}>
                   <input
                     type="text"
                     name="name"
@@ -131,7 +131,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                 </td>
               </tr>
               <tr>
-                <td colSpan={5}>
+                <td colSpan={4}>
                   <select name="type" id="type" className="input-expense input-type" value={type} onChange={(e) => setType(e.target.value)}>
                     <option value="food">🍕</option>
                     <option value="shop">🛒</option>
@@ -147,13 +147,14 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                     value={cost <= 0 ? "" : cost}
                     name="cost"
                     id="cost"
+                    placeholder="Cost"
                     className="input-expense"
                     onChange={(e) => setCost(Number(e.target.value))}
                   />
                 </td>
               </tr>
               <tr>
-                <td colSpan={5}>
+                <td colSpan={4}>
                   <input
                     type="text"
                     name="description"
@@ -167,10 +168,10 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
               </tr>
               {members.length !== 0 && (
                 <tr>
-                  <td colSpan={5} className="add-user-expense">
+                  <td colSpan={4} className="add-user-expense">
                     <div className="info-split">
                       <label>Equal</label>
-                      <input type="checkbox" name="equal" onChange={() => handleChangeSplitType("equal")} />
+                      <input type="checkbox" name="equal" onChange={(e) => handleChangeSplitType("equal")} />
                     </div>
                     <br />
                     {members.map((u, i) => {
@@ -187,7 +188,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                               type="number"
                               name={"number" + u}
                               value={splitCash[i] === 0 ? "" : splitCash[i]}
-                              onChange={(e) => handleChangeUserCash(e, i)}
+                              onChange={(e) => handleChangeUserCash(Number(e.target.value), i)}
                             />
                           </div>
                         </div>
@@ -207,14 +208,15 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
             </tr>
           )}
           <tr>
-            <td colSpan={5} className="add-expense-button">
+            <td colSpan={4} className="add-expense-button">
               <AddExpense
                 handleAddExpense={() => {
-                  handleAddExpense(name, description, type, cost, users, splitType);
+                  handleAddExpense(name, description, type, cost, splitCash, users);
                   setName("");
                   setDescription("");
                   setType("food");
                   setCost(0);
+                  setSplitCash([]);
                   setUsers([]);
                   setSplitType("");
                 }}

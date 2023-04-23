@@ -16,7 +16,7 @@ const Expense = () => {
         setExpenses(exp.expenses);
       })
       .catch((e) => {
-        console.log("something went wrong");
+        console.error("something went wrong");
         console.error(e);
       });
   }, []);

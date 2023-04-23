@@ -11,17 +11,9 @@ import AddUserForm from "./components/member/AddUserForm";
 import ExpensesTable from "./components/expenses/ExpensesTable";
 import { ExpenseType } from "../../types/Expense";
 import convertTypeToEmoji from "./utils/convertTypeToEmoji";
-import getUsersWithCashBySplitType from "./utils/getUsersWithCashBySplitType";
-
-let link: string;
-
-if (import.meta.env.VITE_FAKE_API !== undefined) {
-  link = import.meta.env.VITE_FAKE_API;
-}
-
-if (import.meta.env.VITE_API !== undefined) {
-  link = import.meta.env.VITE_API;
-}
+import getUsersWithCashBySplitType from "./utils/getUsersWithCash";
+import getUsersWithCash from "./utils/getUsersWithCash";
+import sum from "./utils/sum";
 
 const Event = () => {
   const { id_event } = useParams();
@@ -54,7 +46,7 @@ const Event = () => {
       });
   };
 
-  const handleAddExpense = (name: string, description: string, type: string, cash: number, users: string[], splitType: string) => {
+  const handleAddExpense = (name: string, description: string, type: string, cash: number, splitCash: number[], users: string[]) => {
     setErrorAddExpenseForm("");
 
     if (!isShowAddExpenseForm) {
@@ -67,14 +59,12 @@ const Event = () => {
       return;
     }
 
-    if (cash > 2000000000) {
+    if (cash > 2_000_000) {
       setErrorAddExpenseForm("Cash is too big!");
       return;
     }
 
-    let usersWithCash: any = getUsersWithCashBySplitType(users, cash, splitType);
-
-    console.log(usersWithCash);
+    let usersWithCash: any = getUsersWithCash(users, splitCash);
 
     useFetchWithBody("/event/" + id_event + "/expense", "POST", localStorage.getItem("token") as string, {
       name: name,
