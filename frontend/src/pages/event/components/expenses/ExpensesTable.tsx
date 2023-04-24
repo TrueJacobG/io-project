@@ -24,6 +24,8 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
 
   const [splitType, setSplitType] = useState("");
 
+  const [sumError, setSumError] = useState("");
+
   const formatter = new Intl.NumberFormat("pl-PL", {
     style: "currency",
     currency: "PLN",
@@ -66,6 +68,35 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
     });
 
     setSplitCash(newSplitCash);
+  };
+
+  const handleClickAddExpense = () => {
+    setSumError("");
+
+    if (!isShowAddExpenseForm) {
+      handleAddExpense(name, description, type, cost, splitCash, users);
+      return;
+    }
+
+    let sum = 0;
+
+    splitCash.forEach((c) => {
+      sum += c;
+    });
+
+    if (cost !== sum) {
+      setSumError("Sum of member expenses have to be equal to cost!");
+      return;
+    }
+
+    handleAddExpense(name, description, type, cost, splitCash, users);
+    setName("");
+    setDescription("");
+    setType("food");
+    setCost(0);
+    setSplitCash([]);
+    setUsers([]);
+    setSplitType("");
   };
 
   const reCalculateSplitCost = () => {
@@ -209,20 +240,16 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
           )}
           <tr>
             <td colSpan={4} className="add-expense-button">
-              <AddExpense
-                handleAddExpense={() => {
-                  handleAddExpense(name, description, type, cost, splitCash, users);
-                  setName("");
-                  setDescription("");
-                  setType("food");
-                  setCost(0);
-                  setSplitCash([]);
-                  setUsers([]);
-                  setSplitType("");
-                }}
-              />
+              <AddExpense handleAddExpense={() => handleClickAddExpense()} />
             </td>
           </tr>
+          {sumError.length !== 0 && (
+            <tr>
+              <td colSpan={4} className="error">
+                <h3 style={{ color: "red" }}>{sumError}</h3>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

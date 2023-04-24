@@ -115,7 +115,16 @@ const Event = () => {
       });
   };
 
-  const handleFinishEvent = () => {};
+  const handleFinishEvent = () => {
+    useFetch("/event/" + id_event + "/finish", "GET", localStorage.getItem("token") as string)
+      .then(() => {
+        window.location.href = "/";
+      })
+      .catch((e) => {
+        console.error("something went wrong");
+        console.error(e);
+      });
+  };
 
   const handleClickAddMember = () => {
     setIsShowAddUserForm(true);
@@ -159,7 +168,7 @@ const Event = () => {
       .then((data) => {
         setName(data.name);
         setDesc(data.description);
-        setMembers(data.users);
+        setMembers([localStorage.getItem("username") as string, ...data.users]);
       })
       .catch((e) => {
         console.error("something went wrong");

@@ -109,6 +109,11 @@ function App() {
   };
 
   const handleCreateEvent = (name: string, desc: string) => {
+    if (name === null || name.length === 0 || desc === null || desc.length === 0) {
+      console.error("You can't add event with empty name or description!");
+      return;
+    }
+
     useFetchWithBody("/event", "POST", localStorage.getItem("token") as string, {
       name: name,
       description: desc,
