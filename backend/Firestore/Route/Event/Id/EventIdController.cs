@@ -1,6 +1,5 @@
 ﻿using Firebase.Auth;
 using Firestore.Firebase;
-using Firestore.Route.Event.Id.DTO;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
