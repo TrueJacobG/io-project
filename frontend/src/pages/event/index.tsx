@@ -20,7 +20,7 @@ const Event = () => {
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [members, setMembers] = useState<string[]>([]);
+  const [members, setMembers] = useState<any[]>([]);
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
 
   const [isShowAddExpenseForm, setIsShowAddExpenseForm] = useState(false);
@@ -133,8 +133,8 @@ const Event = () => {
   const handleAddUser = (email: string) => {
     useFetchWithBody("/event/" + id_event + "/user", "POST", localStorage.getItem("token") as string, { user_email: email })
       .then((data) => {
-        if (data.ok) {
-          setMembers(() => [...members, email]);
+        if (data.username) {
+          setMembers(() => [...members, { email: email, username: data.username }]);
         }
       })
       .catch((e) => {
@@ -150,7 +150,7 @@ const Event = () => {
         let newMembers: string[] = [];
 
         members.forEach((member) => {
-          if (member !== email) {
+          if (member.email !== email) {
             newMembers.push(member);
           }
         });
