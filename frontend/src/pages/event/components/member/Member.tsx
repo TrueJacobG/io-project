@@ -11,7 +11,7 @@ const Member = ({ member, handleDeleteMember }: { member: any; handleDeleteMembe
         <p className="member-name">{member.username}</p>
       </div>
       <div className="delete-member">
-        <DeleteMember handleClickDeleteMember={handleClickDeleteMember} />
+        {(localStorage.getItem("email") as string) !== member.email && <DeleteMember handleClickDeleteMember={handleClickDeleteMember} />}
       </div>
     </div>
   );

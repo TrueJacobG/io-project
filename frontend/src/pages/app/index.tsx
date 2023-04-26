@@ -157,9 +157,8 @@ function App() {
     useFetch("/event", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         // TODO!
-        // setActiveEvents(data.active_events);
-        // setUserEvents(data.user_events);
-        // setInvitedEvents(data.invited_events);
+        // setUserEvents(data.);
+        // setInvitedEvents(data.);
         setEvents(data);
       })
       .catch((e) => {
@@ -169,6 +168,20 @@ function App() {
   };
 
   useEffect(() => {
+    if ((localStorage.getItem("token") as string) !== null) {
+      useFetch("/auth/validate", "POST", localStorage.getItem("token") as string)
+        .then((data) => {
+          if (data.message === undefined) {
+            console.log("token is valid");
+          } else {
+            localStorage.removeItem("token");
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    }
+
     let username = localStorage.getItem("username");
 
     if (username !== null) {
