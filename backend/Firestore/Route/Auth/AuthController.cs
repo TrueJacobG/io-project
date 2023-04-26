@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Firebase.Auth;
-using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Firestore.FirebaseThings;
 using Firestore.Route.User.Model;
 using FirebaseAdmin.Auth;
+using Firestore.Route.Auth.DTO;
 
 namespace Firestore.Route.User
 {
@@ -23,9 +23,6 @@ namespace Firestore.Route.User
             _logger = logger;
         }
 
-        //TODO::
-        //VALIDATION
-        //TODO:
         [HttpPost]
         [EnableCors("Policy1")]
         [Route("register", Name = "register")]
@@ -51,7 +48,7 @@ namespace Firestore.Route.User
             {
                 await auth.CreateUserWithEmailAndPasswordAsync(registrationModel.email, registrationModel.auth_data, registrationModel.username);
 
-                var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(registrationModel.email, registrationModel.auth_data);
+                FirebaseAuthLink fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(registrationModel.email, registrationModel.auth_data);
 
 
                 string token = fbAuthLink.FirebaseToken;
@@ -72,9 +69,6 @@ namespace Firestore.Route.User
             }
         }
 
-        //TODO::
-        //VALIDATION
-        //TODO:
         [HttpPost]
         [EnableCors("Policy1")]
         [Route("login", Name = "login")]
@@ -106,6 +100,23 @@ namespace Firestore.Route.User
             {
                 _logger.LogError(JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
                 return StatusCode(404, JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
+            }
+        }
+
+
+        [HttpPost]
+        [EnableCors("Policy1")]
+        [Route("validate", Name = "validate")]
+        public async Task<IActionResult> Validate([FromBody] TokenDTO tokenDTO)
+        {
+            if (tokenDTO.Token.ExpiresIn < 0)
+            {
+                //200
+                return StatusCode(200);
+            }
+            else
+            {
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = "Token expired" }));
             }
         }
     }

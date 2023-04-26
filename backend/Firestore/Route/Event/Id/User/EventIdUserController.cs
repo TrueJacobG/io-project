@@ -14,11 +14,9 @@ namespace Firestore.Route.Event.Id.User
     public class EventIdUserController : Controller
     {
         private readonly ILogger<EventController> _logger;
-        FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("Config/userConnection.txt")[0]));
         FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("Config/databaseName.txt"));
 
         private readonly string eventCollection = "event";
-
 
         public EventIdUserController(ILogger<EventController> logger)
         {
@@ -38,10 +36,18 @@ namespace Firestore.Route.Event.Id.User
             {
                 return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email" }));
             }
+
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
 
+
             DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
-            List<string> users = new List<string>();
+
+            if (uid == snapshot.GetValue<string>("creator"))
+            {
+                return StatusCode(403, JsonConvert.SerializeObject(new { message = "Creator is always added." }));
+            }
+
+                List<string> users = new List<string>();
             if (snapshot.Exists)
             {
                 users = snapshot.GetValue<List<string>>("users");
