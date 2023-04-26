@@ -1,5 +1,6 @@
 ﻿using Firebase.Auth;
 using Firestore.Firebase;
+using Firestore.Route.Event.Id.DTO;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -37,12 +38,21 @@ namespace Firestore.Route.Event.Id
             string data = string.Empty;
             if (result.Exists)
             {
-                List<string> users = new List<string>();
+                List<Dictionary<string, string>> users = new List<Dictionary<string, string>>();
 
                 foreach (string item in result.GetValue<string[]>("users"))
                 {
-                    users.Add(await Translator.GetMail(item));
+                    Dictionary<string, string> userDisplays = new Dictionary<string, string>()
+                    {
+                        {"email", await Translator.GetMail(item) },
+                        {"username", await Translator.GetUsername(item) },
+                    };
+
+
+
+                    users.Add(userDisplays);
                 }
+
                 data = JsonConvert.SerializeObject(new
                 {
                     name = result.GetValue<string>("name"),

@@ -49,7 +49,7 @@ namespace Firestore.Route.User
 
                 if (token != null)
                 {
-                    return Ok(JsonConvert.SerializeObject(new { token }));
+                    return Ok(JsonConvert.SerializeObject(new { token = token }));
                 }
                 else
                 {
@@ -86,7 +86,7 @@ namespace Firestore.Route.User
 
                 if (token != null)
                 {
-                    return Ok(JsonConvert.SerializeObject(new { token, username = fbAuthLink.User.DisplayName }));
+                    return Ok(JsonConvert.SerializeObject(new { token = token, username = fbAuthLink.User.DisplayName, email = fbAuthLink.User.Email }));
                 }
                 else
                 {

@@ -121,7 +121,7 @@ namespace Firestore.Route.Event.Id.Expense
         [EnableCors("Policy1")]
         [HttpDelete]
         [Route("{id_event}/expense", Name = "deleteExpense")]
-        public async Task<IActionResult> DeleteExpense(string id_event, [FromBody] ExpenseDeletionModel model)
+        public async Task<IActionResult> DeleteExpense(string id_event, [FromBody] ExpenseDeletionDTO model)
         {
             _logger.LogInformation($"Attempt for deleting expense {model} in event {id_event}");
 

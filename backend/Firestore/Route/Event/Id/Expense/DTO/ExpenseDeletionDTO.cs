@@ -2,7 +2,7 @@
 
 namespace Firestore.Route.Event.Id.Expense.DTO
 {
-    public class ExpenseDeletionModel
+    public class ExpenseDeletionDTO
     {
         [Required]
         public string id_expense { get; set; }
