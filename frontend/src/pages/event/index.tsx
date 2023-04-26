@@ -168,7 +168,10 @@ const Event = () => {
       .then((data) => {
         setName(data.name);
         setDesc(data.description);
-        setMembers([localStorage.getItem("username") as string, ...data.users]);
+        setMembers([
+          { email: localStorage.getItem("email") as string, username: localStorage.getItem("username") as string },
+          ...data.users,
+        ]);
       })
       .catch((e) => {
         console.error("something went wrong");

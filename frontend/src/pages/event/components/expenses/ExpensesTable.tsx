@@ -7,7 +7,7 @@ import React from "react";
 
 type Props = {
   expenses: ExpenseType[];
-  members: string[];
+  members: any[];
   handleDeleteExpense: any;
   handleAddExpense: any;
   isShowAddExpenseForm: any;
@@ -103,7 +103,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
     let splitCost = cost / users.length;
     let newSplitCash: number[] = [];
     members.forEach((u) => {
-      if (users.includes(u)) {
+      if (users.includes(u.email)) {
         newSplitCash.push(splitCost);
       } else {
         newSplitCash.push(0);
@@ -207,17 +207,17 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
                     <br />
                     {members.map((u, i) => {
                       return (
-                        <div className="input-expense-user" key={u}>
+                        <div className="input-expense-user" key={u.email}>
                           <div className="input-expense-user-name">
-                            <label>{u}</label>
+                            <label>{u.username}</label>
                           </div>
                           <div className="input-expense-user-checkbox">
-                            <input type="checkbox" name={"checkbox" + u} onChange={(e) => handleChangeUserInExpense(e, u)} />
+                            <input type="checkbox" name={"checkbox " + u.email} onChange={(e) => handleChangeUserInExpense(e, u.email)} />
                           </div>
                           <div className="input-expense-user-cash">
                             <input
                               type="number"
-                              name={"number" + u}
+                              name={"number " + u.email}
                               value={splitCash[i] === 0 ? "" : splitCash[i]}
                               onChange={(e) => handleChangeUserCash(Number(e.target.value), i)}
                             />

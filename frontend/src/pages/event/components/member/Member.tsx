@@ -1,14 +1,14 @@
 import DeleteMember from "./DeleteMember";
 
-const Member = ({ member, handleDeleteMember }: { member: string; handleDeleteMember: any }) => {
+const Member = ({ member, handleDeleteMember }: { member: any; handleDeleteMember: any }) => {
   const handleClickDeleteMember = () => {
-    handleDeleteMember(member);
+    handleDeleteMember(member.email);
   };
 
   return (
     <div className="member" key={Math.random()}>
       <div className="member-name">
-        <p className="member-name">{member}</p>
+        <p className="member-name">{member.username}</p>
       </div>
       <div className="delete-member">
         <DeleteMember handleClickDeleteMember={handleClickDeleteMember} />

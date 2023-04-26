@@ -53,9 +53,9 @@ function App() {
 
     useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password })
       .then((data) => {
-        if (data.token !== undefined && data.username !== undefined) {
+        if (data.token !== undefined && data.username !== undefined && data.email !== undefined) {
           setEvents([]);
-          setStorageVariables(data.token, data.username);
+          setStorageVariables(data.token, data.username, data.email);
           setIsLogged(true);
           setIsShowAuthForm(0);
           loadEvents();
@@ -83,7 +83,7 @@ function App() {
     })
       .then((data) => {
         setEvents([]);
-        setStorageVariables(data.token, username);
+        setStorageVariables(data.token, username, email);
         setIsLogged(true);
         setIsShowAuthForm(0);
         loadEvents();
@@ -146,10 +146,11 @@ function App() {
     setIsEventButtonDisabled(false);
   };
 
-  const setStorageVariables = (token: string, username: string) => {
+  const setStorageVariables = (token: string, username: string, email: string) => {
     setUsername(username);
     localStorage.setItem("token", token);
     localStorage.setItem("username", username);
+    localStorage.setItem("email", email);
   };
 
   const loadEvents = () => {

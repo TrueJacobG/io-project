@@ -1,7 +1,7 @@
 import Member from "./Member";
 
 type Props = {
-  members: string[];
+  members: any[];
   handleDeleteMember: any;
 };
 
