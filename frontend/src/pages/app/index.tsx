@@ -23,6 +23,9 @@ function App() {
 
   const [events, setEvents] = useState<Event[]>([]);
 
+  const [myEvents, setMyEvents] = useState<Event[]>([]);
+  const [invitedEvents, setInvitedEvents] = useState<Event[]>([]);
+
   const handleLoginClick = () => {
     if (isShowAuthForm === 1) {
       setIsShowAuthForm(0);
@@ -157,8 +160,8 @@ function App() {
     useFetch("/event", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         // TODO!
-        // setUserEvents(data.);
-        // setInvitedEvents(data.);
+        // setUserEvents(data.my_events);
+        // setInvitedEvents(data.invited_events);
         setEvents(data);
       })
       .catch((e) => {
