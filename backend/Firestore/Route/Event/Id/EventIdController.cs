@@ -24,6 +24,7 @@ namespace Firestore.Route.Event.Id
             _logger = logger;
         }
 
+
         [EnableCors("Policy1")]
         [HttpGet]
         [Route("{id_event}", Name = "getEvent")]

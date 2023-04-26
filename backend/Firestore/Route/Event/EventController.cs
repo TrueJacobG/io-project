@@ -10,6 +10,12 @@ using Newtonsoft.Json.Linq;
 using Firestore.FirebaseThings;
 using Firestore.Route.Event.Model;
 
+enum EventStatus
+{
+    Open,
+    Closed,
+}
+
 namespace Firestore.Route.Event
 {
     [ApiController]
@@ -28,7 +34,7 @@ namespace Firestore.Route.Event
             _logger = logger;
         }
 
-
+        // | **event | GET  |  | 200 `{ my_events, invited_events}` | 4XX `{ message}` | get list of user events (open)
         [EnableCors("Policy1")]
         [HttpGet]
         [Route("", Name = "getEvents")]
@@ -104,6 +110,7 @@ namespace Firestore.Route.Event
                 {"description", model.description},
                 {"name", model.name},
                 {"add_date", Timestamp.GetCurrentTimestamp()},
+                {"status", EventStatus.Open.ToString() },
             };
 
             ArrayList users = new ArrayList();

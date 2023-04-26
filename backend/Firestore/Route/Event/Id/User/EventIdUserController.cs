@@ -32,27 +32,37 @@ namespace Firestore.Route.Event.Id.User
 
             string uid = await Translator.GetUidByEmail(userModel.user_email);
 
+            //if uid is empty, do not add, end fucntion here
             if (uid == string.Empty)
             {
                 return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email" }));
             }
 
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
-
-
             DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
 
+            //creator is added by default,
+            //end function
             if (uid == snapshot.GetValue<string>("creator"))
             {
                 return StatusCode(403, JsonConvert.SerializeObject(new { message = "Creator is always added." }));
             }
 
-                List<string> users = new List<string>();
+            List<string> users = new List<string>();
             if (snapshot.Exists)
             {
                 users = snapshot.GetValue<List<string>>("users");
             }
-            users.Add(uid);
+            if(users.Contains(uid))
+            {
+                return StatusCode(403, JsonConvert.SerializeObject(new { message = "This user is already in event" }));
+            }
+            else
+            {
+                users.Add(uid);
+            }
+
+
 
             Dictionary<string, object> updates = new Dictionary<string, object>
                 {

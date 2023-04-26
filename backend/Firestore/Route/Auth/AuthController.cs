@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Firebase.Auth;
+using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Firestore.FirebaseThings;
 using Firestore.Route.User.Model;
