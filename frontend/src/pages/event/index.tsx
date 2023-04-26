@@ -213,7 +213,7 @@ const Event = () => {
         <DeleteEventButton handleDeleteEvent={handleDeleteEvent} />
         <EditEventButton handleEditEvent={handleEditEvent} />
         <div className="finish-event-button global-button-style">
-          <button>Finish</button>
+          <button onClick={handleFinishEvent}>Finish</button>
         </div>
         <div style={{ clear: "both" }}></div>
       </div>
