@@ -171,7 +171,7 @@ const Event = () => {
 
         let newMembers: any = [];
 
-        data.users.foreach((u) => {
+        data.users.forEach((u) => {
           if (u.email !== (localStorage.getItem("email") as string)) {
             newMembers.push(u);
           }
