@@ -1,5 +1,5 @@
 ﻿using Firebase.Auth;
-using Firestore.Firebase;
+using Firestore.FirebaseThings;
 using Firestore.Route.Event.Id.Expense.DTO;
 using Firestore.Route.Event.Id.Expense.Model;
 using Google.Cloud.Firestore;

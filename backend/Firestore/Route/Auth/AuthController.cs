@@ -4,8 +4,9 @@ using Newtonsoft.Json;
 using Firebase.Auth;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
-using Firestore.Firebase;
+using Firestore.FirebaseThings;
 using Firestore.Route.User.Model;
+using FirebaseAdmin.Auth;
 
 namespace Firestore.Route.User
 {
@@ -40,6 +41,14 @@ namespace Firestore.Route.User
 
             try
             {
+                await Translator.GetUidByEmail(registrationModel.email);
+            }
+            catch (Exception)
+            {
+                return StatusCode(409, JsonConvert.SerializeObject(new { message = "Email is already used" }));
+            }
+            try
+            {
                 await auth.CreateUserWithEmailAndPasswordAsync(registrationModel.email, registrationModel.auth_data, registrationModel.username);
 
                 var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(registrationModel.email, registrationModel.auth_data);
@@ -56,7 +65,7 @@ namespace Firestore.Route.User
                     return BadRequest(JsonConvert.SerializeObject(new { message = "Token is null" }));
                 }
             }
-            catch (FirebaseAuthException ex)
+            catch (Firebase.Auth.FirebaseAuthException ex)
             {
                 _logger.LogError(JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
                 return StatusCode(400, JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
@@ -93,7 +102,7 @@ namespace Firestore.Route.User
                     return BadRequest(JsonConvert.SerializeObject(new { message = "Token is null" }));
                 }
             }
-            catch (FirebaseAuthException ex)
+            catch (Firebase.Auth.FirebaseAuthException ex)
             {
                 _logger.LogError(JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
                 return StatusCode(404, JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));

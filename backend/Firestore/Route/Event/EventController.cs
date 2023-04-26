@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Collections;
 using Newtonsoft.Json.Linq;
-using Firestore.Firebase;
+using Firestore.FirebaseThings;
 using Firestore.Route.Event.Model;
 
 namespace Firestore.Route.Event

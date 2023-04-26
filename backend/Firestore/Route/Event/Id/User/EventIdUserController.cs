@@ -1,10 +1,11 @@
 ﻿using Firebase.Auth;
-using Firestore.Firebase;
+using Firestore.FirebaseThings;
 using Firestore.Route.Event.Id.User.DTO;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
 
 namespace Firestore.Route.Event.Id.User
 {
@@ -37,7 +38,6 @@ namespace Firestore.Route.Event.Id.User
             {
                 return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email" }));
             }
-
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
 
             DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
