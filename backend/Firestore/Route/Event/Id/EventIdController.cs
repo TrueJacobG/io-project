@@ -1,10 +1,12 @@
 ﻿using Firebase.Auth;
 using Firestore.FirebaseThings;
+using Firestore.Route.Event.Model;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Collections;
 
 namespace Firestore.Route.Event.Id
 {
@@ -48,9 +50,6 @@ namespace Firestore.Route.Event.Id
 
                 users.Add(author);
 
-
-
-
                 foreach (string item in result.GetValue<string[]>("users"))
                 {
                     Dictionary<string, string> userDisplays = new Dictionary<string, string>()
@@ -70,7 +69,7 @@ namespace Firestore.Route.Event.Id
                     users,
                 });
             }
-            return Ok(data);
+            return StatusCode(200, data);
         }
 
         [EnableCors("Policy1")]
@@ -91,7 +90,50 @@ namespace Firestore.Route.Event.Id
             }
             await eventToDelete.DeleteAsync();
 
-            return Ok(JsonConvert.SerializeObject(new { }));
+            return StatusCode(200, JsonConvert.SerializeObject(new { }));
+        }
+
+        [EnableCors("Policy1")]
+        [HttpDelete]
+        [Route("{id_event}/edit", Name = "editEvent")]
+        public async Task<IActionResult> Edit([FromBody]EventModel model, string id_event)
+        {
+            DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
+            Dictionary<string, object> update = new Dictionary<string, object>
+            {
+                { "description", model.description },
+                { "name", model.name },
+            };
+            await eventToUpdate.SetAsync(update, SetOptions.MergeAll);
+
+            return StatusCode(200, JsonConvert.SerializeObject(new { }));
+
+        }
+
+        //event/:id_event/finish
+        [EnableCors("Policy1")]
+        [HttpGet]
+        [Route("{id_event}/finish", Name = "finishEvent")]
+        public async Task<IActionResult> Finish(string id_event)
+        {
+            _logger.LogInformation($"EventModel finish Attempt for {id_event}");
+
+            try
+            {
+                DocumentReference eventToFinish = firestoreDb.Collection(eventCollection).Document(id_event);
+                Dictionary<string, object> updatedData = new Dictionary<string, object>
+                {
+                    { "status", EventStatus.Closed.ToString() },
+                };
+                await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
+
+
+                return StatusCode(200, JsonConvert.SerializeObject(new { }));
+            }
+            catch (Exception)
+            {
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = "Something went really wrong, it should not show this"}));
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Firestore.Route.User
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"Wrong data model for register attempf for {registrationModel.email}");
-                return BadRequest(JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {registrationModel.email}" }));
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {registrationModel.email}" }));
             }
 
             try
@@ -56,11 +56,11 @@ namespace Firestore.Route.User
 
                 if (token != null)
                 {
-                    return Ok(JsonConvert.SerializeObject(new { token = token }));
+                    return StatusCode(200, JsonConvert.SerializeObject(new { token = token }));
                 }
                 else
                 {
-                    return BadRequest(JsonConvert.SerializeObject(new { message = "Token is null" }));
+                    return StatusCode(400, JsonConvert.SerializeObject(new { message = "Token is null" }));
                 }
             }
             catch (Firebase.Auth.FirebaseAuthException ex)
@@ -80,7 +80,7 @@ namespace Firestore.Route.User
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"Wrong data model for register attempf for {loginModel.email}");
-                return BadRequest(JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {loginModel.email}" }));
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {loginModel.email}" }));
             }
 
             try
@@ -90,11 +90,11 @@ namespace Firestore.Route.User
 
                 if (token != null)
                 {
-                    return Ok(JsonConvert.SerializeObject(new { token = token, username = fbAuthLink.User.DisplayName, email = fbAuthLink.User.Email }));
+                    return StatusCode(200, JsonConvert.SerializeObject(new { token = token, username = fbAuthLink.User.DisplayName, email = fbAuthLink.User.Email }));
                 }
                 else
                 {
-                    return BadRequest(JsonConvert.SerializeObject(new { message = "Token is null" }));
+                    return StatusCode(400, JsonConvert.SerializeObject(new { message = "Token is null" }));
                 }
             }
             catch (Firebase.Auth.FirebaseAuthException ex)
@@ -112,8 +112,7 @@ namespace Firestore.Route.User
         {
             if (tokenDTO.Token.ExpiresIn < 0)
             {
-                //200
-                return StatusCode(200);
+                return StatusCode(200, JsonConvert.SerializeObject(new { }));
             }
             else
             {

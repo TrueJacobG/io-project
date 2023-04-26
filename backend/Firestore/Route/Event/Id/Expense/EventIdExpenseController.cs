@@ -3,6 +3,7 @@ using Firestore.FirebaseThings;
 using Firestore.Route.Event.Id.Expense.DTO;
 using Firestore.Route.Event.Id.Expense.Model;
 using Google.Cloud.Firestore;
+using Google.Type;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -19,7 +20,6 @@ namespace Firestore.Route.Event.Id.Expense
 
         private readonly string eventCollection = "event";
         private readonly string expenseCollection = "expense";
-
 
         public EventIdExpenseController(ILogger<EventController> logger)
         {
@@ -64,7 +64,7 @@ namespace Firestore.Route.Event.Id.Expense
                     data.Add(model);
                 }
             }
-            return Ok(JsonConvert.SerializeObject(new { expenses = data }));
+            return StatusCode(200, JsonConvert.SerializeObject(new { expenses = data }));
         }
 
 
@@ -117,7 +117,7 @@ namespace Firestore.Route.Event.Id.Expense
             };
             await eventToUpdate.UpdateAsync(updates);
 
-            return Ok(JsonConvert.SerializeObject(new { id_expense = a.Id, author = user.Email, date = time.ToDateTime().ToString() }));
+            return StatusCode(200, JsonConvert.SerializeObject(new { id_expense = a.Id, author = user.Email, date = time.ToDateTime().ToString() }));
         }
 
         //TODO:
@@ -147,7 +147,7 @@ namespace Firestore.Route.Event.Id.Expense
             await events.UpdateAsync(updates);
             await firestoreDb.Collection("expenses").Document(model.id_expense).DeleteAsync();
 
-            return Ok(JsonConvert.SerializeObject(new { }));
+            return StatusCode(200, JsonConvert.SerializeObject(new { }));
         }
     }
 }

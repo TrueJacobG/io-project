@@ -44,14 +44,18 @@ namespace Firestore.Route.Event
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
+
+            //two lists, both of events that have field "status: as EventStatus.Open.ToString()
+            //one for events user is creator
+            //one for events user is being part of group
             Query userEvents = firestoreDb.Collection(eventCollection);
-            QuerySnapshot creatorEvents = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
-            QuerySnapshot groupEvents = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
+            QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
+            QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
 
-            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> creatorEvents = new List<Dictionary<string, object>>();
 
-            foreach (DocumentSnapshot documentSnapshot in creatorEvents.Documents)
+            foreach (DocumentSnapshot documentSnapshot in creatorEventsQuery.Documents)
             {
                 Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 var dane = documentSnapshot.ToDictionary();
@@ -66,10 +70,10 @@ namespace Firestore.Route.Event
 
                 Console.WriteLine();
 
-                result.Add(data1);
+                creatorEvents.Add(data1);
             }
-
-            foreach (DocumentSnapshot documentSnapshot in groupEvents.Documents)
+            List<Dictionary<string, object>> invitedEvents = new List<Dictionary<string, object>>();
+            foreach (DocumentSnapshot documentSnapshot in invitedEventsQuery.Documents)
             {
                 Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 var dane = documentSnapshot.ToDictionary();
@@ -84,9 +88,11 @@ namespace Firestore.Route.Event
 
                 Console.WriteLine();
 
-                result.Add(data1);
+                invitedEvents.Add(data1);
             }
-            return Ok(JsonConvert.SerializeObject(result));
+
+            //return Ok(JsonConvert.SerializeObject(new { my_events = creatorEvents, invited_events = invitedEvents }));
+            return StatusCode(200, JsonConvert.SerializeObject(creatorEvents));
         }
 
         [EnableCors("Policy1")]
@@ -99,7 +105,7 @@ namespace Firestore.Route.Event
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"Wrong data model for event addition for {model.name}");
-                return BadRequest(JsonConvert.SerializeObject(new { message = "Wrong model in Event/add"}));
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = "Wrong model in Event/add" }));
             }
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
@@ -120,8 +126,7 @@ namespace Firestore.Route.Event
             data1.Add("expenses", expenses);
 
             var a = await events.AddAsync(data1);
-
-            return Ok(JsonConvert.SerializeObject(new { id_event = a.Id }));
+            return StatusCode(200, JsonConvert.SerializeObject(new { id_event = a.Id }));
         }
     }
 }

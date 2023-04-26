@@ -1,6 +1,7 @@
 ﻿using Firebase.Auth;
 using Firestore.FirebaseThings;
 using Firestore.Route.Event.Id.User.DTO;
+using Firestore.Route.User.Model;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace Firestore.Route.Event.Id.User
             //if uid is empty, do not add, end fucntion here
             if (uid == string.Empty)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { message = "There is no user with that email" }));
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = "There is no user with that email" }));
             }
 
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
@@ -62,8 +63,6 @@ namespace Firestore.Route.Event.Id.User
                 users.Add(uid);
             }
 
-
-
             Dictionary<string, object> updates = new Dictionary<string, object>
                 {
                     { "users", users }
@@ -71,7 +70,7 @@ namespace Firestore.Route.Event.Id.User
 
             await eventToUpdate.UpdateAsync(updates);
 
-            return Ok(JsonConvert.SerializeObject(new { username = await Translator.GetUsernameByUID(uid)}));
+            return StatusCode(400, JsonConvert.SerializeObject(new { username = await Translator.GetUsernameByUID(uid) }));
         }
 
 
@@ -100,7 +99,7 @@ namespace Firestore.Route.Event.Id.User
 
             await events.UpdateAsync(updates);
 
-            return Ok(JsonConvert.SerializeObject(new { }));
+            return StatusCode(200, JsonConvert.SerializeObject(new { }));
         }
     }
 }
