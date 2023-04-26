@@ -39,15 +39,24 @@ namespace Firestore.Route.Event.Id
             {
                 List<Dictionary<string, string>> users = new List<Dictionary<string, string>>();
 
+                Dictionary<string, string> author = new Dictionary<string, string>()
+                    {
+                        { "email", await Translator.GetMailByUID(result.GetValue<string>("creator")) },
+                        { "username", await Translator.GetUsernameByUID(result.GetValue<string>("creator")) },
+                    };
+
+                users.Add(author);
+
+
+
+
                 foreach (string item in result.GetValue<string[]>("users"))
                 {
                     Dictionary<string, string> userDisplays = new Dictionary<string, string>()
                     {
-                        {"email", await Translator.GetMail(item) },
-                        {"username", await Translator.GetUsername(item) },
+                        { "email", await Translator.GetMailByUID(item) },
+                        { "username", await Translator.GetUsernameByUID(item) },
                     };
-
-
 
                     users.Add(userDisplays);
                 }
