@@ -55,7 +55,7 @@ namespace Firestore.Route.Event.Id.User
 
             await eventToUpdate.UpdateAsync(updates);
 
-            return Ok(JsonConvert.SerializeObject(new { ok = "ok" }));
+            return Ok(JsonConvert.SerializeObject(new { username = await Translator.GetUsername(uid)}));
         }
 
 
