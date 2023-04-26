@@ -168,10 +168,18 @@ const Event = () => {
       .then((data) => {
         setName(data.name);
         setDesc(data.description);
-        setMembers([
-          { email: localStorage.getItem("email") as string, username: localStorage.getItem("username") as string },
-          ...data.users,
-        ]);
+
+        let newMembers: any = [];
+
+        data.users.foreach((u) => {
+          if (u.email !== (localStorage.getItem("email") as string)) {
+            newMembers.push(u);
+          }
+        });
+
+        newMembers.splice(0, 0, { email: localStorage.getItem("email") as string, username: localStorage.getItem("username") as string });
+
+        setMembers(newMembers);
       })
       .catch((e) => {
         console.error("something went wrong");
