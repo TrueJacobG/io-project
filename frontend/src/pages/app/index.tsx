@@ -85,11 +85,16 @@ function App() {
       auth_data: password,
     })
       .then((data) => {
-        setEvents([]);
-        setStorageVariables(data.token, username, email);
-        setIsLogged(true);
-        setIsShowAuthForm(0);
-        loadEvents();
+        if (data.message === undefined) {
+          setEvents([]);
+          setStorageVariables(data.token, username, email);
+          setIsLogged(true);
+          setIsShowAuthForm(0);
+          loadEvents();
+        } else {
+          console.error("error");
+          setRegisterError("You cannot register for the existing in database email!");
+        }
       })
       .catch((err) => {
         console.error(err);
