@@ -31,7 +31,7 @@ namespace Firestore.Route.Event.Id.User
         {
             _logger.LogInformation($"Attempt for adding user {userModel.user_email} in event {id_event}");
 
-            string uid = await Translator.GetUid(userModel.user_email);
+            string uid = await Translator.GetUidByEmail(userModel.user_email);
 
             if (uid == string.Empty)
             {
@@ -55,7 +55,7 @@ namespace Firestore.Route.Event.Id.User
 
             await eventToUpdate.UpdateAsync(updates);
 
-            return Ok(JsonConvert.SerializeObject(new { username = await Translator.GetUsername(uid)}));
+            return Ok(JsonConvert.SerializeObject(new { username = await Translator.GetUsernameByUID(uid)}));
         }
 
 
@@ -65,7 +65,7 @@ namespace Firestore.Route.Event.Id.User
         public async Task<IActionResult> DeleteUser([FromBody] UserEmailDTO userModel, string id_event)
         {
             _logger.LogInformation($"Attempt for deleting user {userModel.user_email} in event {id_event}");
-            string uid = await Translator.GetUid(userModel.user_email);
+            string uid = await Translator.GetUidByEmail(userModel.user_email);
 
             DocumentReference events = firestoreDb.Collection(eventCollection).Document(id_event);
 

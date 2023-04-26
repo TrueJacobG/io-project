@@ -48,13 +48,17 @@ namespace Firestore.Route.Event.Id.Expense
 
                     foreach (Dictionary<string, string> userData in expenseData.GetValue<Dictionary<string, string>[]>("users"))
                     {
-                        users.Add(userData["email"]);
+                        users.Add(await Translator.GetUsernameByEmail(userData["email"]));
                     }
 
 
 
-                    ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id, expenseData.GetValue<string>("name"), expenseData.GetValue<string>("description"),
-                       expenseData.GetValue<string>("type"), expenseData.GetValue<double>("cash"), await Translator.GetMail(expenseData.GetValue<string>("creator")),
+                    ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id, 
+                       expenseData.GetValue<string>("name"), 
+                       expenseData.GetValue<string>("description"),
+                       expenseData.GetValue<string>("type"),
+                       expenseData.GetValue<double>("cash"), 
+                       await Translator.GetMailByUID(expenseData.GetValue<string>("creator")),
                        expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), users.ToArray());
 
                     data.Add(model);
