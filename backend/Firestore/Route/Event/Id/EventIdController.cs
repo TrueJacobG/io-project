@@ -3,6 +3,7 @@ using Firestore.Firebase;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace Firestore.Route.Event.Id
@@ -16,6 +17,7 @@ namespace Firestore.Route.Event.Id
         FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("Config/databaseName.txt"));
 
         private readonly string eventCollection = "event";
+        private readonly string expenseCollection = "expense";
 
         public EventIdController(ILogger<EventController> logger)
         {
@@ -62,6 +64,12 @@ namespace Firestore.Route.Event.Id
 
             DocumentReference eventToDelete = firestoreDb.Collection(eventCollection).Document(id_event);
 
+            DocumentSnapshot eventData = await eventToDelete.GetSnapshotAsync();
+            foreach (var expenseId in eventData.GetValue<string[]>("expenses"))
+            {
+                DocumentReference expenseToDelete = firestoreDb.Collection(expenseCollection).Document(expenseId);
+                await expenseToDelete.DeleteAsync();
+            }
             await eventToDelete.DeleteAsync();
 
             return Ok(JsonConvert.SerializeObject(new { }));

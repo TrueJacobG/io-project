@@ -21,7 +21,6 @@ namespace Firestore.Route.Event
         FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("Config/databaseName.txt"));
 
         private readonly string eventCollection = "event";
-        private readonly string expenseCollection = "expense";
 
 
         public EventController(ILogger<EventController> logger)
@@ -39,24 +38,43 @@ namespace Firestore.Route.Event
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
-            Query events = firestoreDb.Collection(eventCollection).WhereEqualTo("creator", user.LocalId);
-            QuerySnapshot snap = await events.GetSnapshotAsync();
+            Query userEvents = firestoreDb.Collection(eventCollection);
+            QuerySnapshot creatorEvents = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
+            QuerySnapshot groupEvents = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
 
             List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
 
-            foreach (DocumentSnapshot documentSnapshot in snap.Documents)
+            foreach (DocumentSnapshot documentSnapshot in creatorEvents.Documents)
             {
                 Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 var dane = documentSnapshot.ToDictionary();
 
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
+                {
+                    {"id_event", documentSnapshot.Id},
+                    {"description", dane["description"]},
+                    {"name", dane["name"] },
+                    {"add_date", dane["add_date"]}
+                };
+
+                Console.WriteLine();
+
+                result.Add(data1);
+            }
+
+            foreach (DocumentSnapshot documentSnapshot in groupEvents.Documents)
             {
-                {"id_event", documentSnapshot.Id},
-                {"description", dane["description"]},
-                {"name", dane["name"] },
-                {"add_date", dane["add_date"]}
-            };
+                Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
+                var dane = documentSnapshot.ToDictionary();
+
+                Dictionary<string, object> data1 = new Dictionary<string, object>()
+                {
+                    {"id_event", documentSnapshot.Id},
+                    {"description", dane["description"]},
+                    {"name", dane["name"] },
+                    {"add_date", dane["add_date"]}
+                };
 
                 Console.WriteLine();
 

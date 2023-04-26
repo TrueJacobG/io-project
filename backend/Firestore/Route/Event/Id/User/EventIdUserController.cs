@@ -24,7 +24,6 @@ namespace Firestore.Route.Event.Id.User
             _logger = logger;
         }
 
-        #region event/{id_event}/user
         [EnableCors("Policy1")]
         [HttpPost]
         [Route("event/{id_event}/user", Name = "addUser")]
@@ -87,6 +86,5 @@ namespace Firestore.Route.Event.Id.User
 
             return Ok(JsonConvert.SerializeObject(new { }));
         }
-        #endregion event/{uid}/user
     }
 }

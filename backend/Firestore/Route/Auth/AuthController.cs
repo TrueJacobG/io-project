@@ -59,7 +59,7 @@ namespace Firestore.Route.User
             catch (FirebaseAuthException ex)
             {
                 _logger.LogError(JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
-                return StatusCode(409, JsonConvert.SerializeObject(new { message = "Something is wrong in Firebase(REGISTER)" }));
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
             }
         }
 
@@ -83,7 +83,6 @@ namespace Firestore.Route.User
             {
                 var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(loginModel.email, loginModel.auth_data);
                 string token = fbAuthLink.FirebaseToken;
-                Console.WriteLine(token);
 
                 if (token != null)
                 {
@@ -97,7 +96,7 @@ namespace Firestore.Route.User
             catch (FirebaseAuthException ex)
             {
                 _logger.LogError(JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message);
-                return StatusCode(404, JsonConvert.SerializeObject(new { message = "Something is wrong in Firebase(LOGIN)" }));
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData).error.message }));
             }
         }
     }
