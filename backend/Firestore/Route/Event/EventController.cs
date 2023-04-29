@@ -48,7 +48,7 @@ namespace Firestore.Route.Event
             //two lists, both of events that have field "status: as EventStatus.Open.ToString()
             //one for events user is creator
             //one for events user is being part of group
-            Query userEvents = firestoreDb.Collection(eventCollection);
+            Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("status",EventStatus.Open.ToString());
             QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 

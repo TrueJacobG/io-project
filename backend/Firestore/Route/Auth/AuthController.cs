@@ -108,13 +108,14 @@ namespace Firestore.Route.User
         [HttpPost]
         [EnableCors("Policy1")]
         [Route("validate", Name = "validate")]
-        public async Task<IActionResult> Validate([FromBody] TokenDTO tokenDTO)
+        public async Task<IActionResult> Validate()
         {
-            if (tokenDTO.Token.ExpiresIn < 0)
+            try
             {
+                var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
                 return StatusCode(200, JsonConvert.SerializeObject(new { }));
             }
-            else
+            catch (Exception)
             {
                 return StatusCode(404, JsonConvert.SerializeObject(new { message = "Token expired" }));
             }
