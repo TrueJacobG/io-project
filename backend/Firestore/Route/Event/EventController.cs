@@ -40,14 +40,10 @@ namespace Firestore.Route.Event
         [Route("", Name = "getEvents")]
         public async Task<IActionResult> GetEvents()
         {
-            _logger.LogInformation($"EventModel get Attempt");
+            _logger.LogInformation($"Event get Attempt");
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
-
-            //two lists, both of events that have field "status: as EventStatus.Open.ToString()
-            //one for events user is creator
-            //one for events user is being part of group
             Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("status",EventStatus.Open.ToString());
             QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
@@ -94,6 +90,66 @@ namespace Firestore.Route.Event
             //return Ok(JsonConvert.SerializeObject(new { my_events = creatorEvents, invited_events = invitedEvents }));
             return StatusCode(200, JsonConvert.SerializeObject(creatorEvents));
         }
+
+
+        //Same as get events, but get only CLOSED
+        [EnableCors("Policy1")]
+        [HttpGet]
+        [Route("archived", Name = "getArchivedEvents")]
+        public async Task<IActionResult> GetArchivedEvents()
+        {
+            _logger.LogInformation($"Event get Attempt");
+
+            var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
+
+            Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("status", EventStatus.Closed.ToString());
+            QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
+            QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
+
+
+            List<Dictionary<string, object>> creatorEvents = new List<Dictionary<string, object>>();
+
+            foreach (DocumentSnapshot documentSnapshot in creatorEventsQuery.Documents)
+            {
+                Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
+                var dane = documentSnapshot.ToDictionary();
+
+                Dictionary<string, object> data1 = new Dictionary<string, object>()
+                {
+                    {"id_event", documentSnapshot.Id},
+                    {"description", dane["description"]},
+                    {"name", dane["name"] },
+                    {"add_date", dane["add_date"]}
+                };
+
+                Console.WriteLine();
+
+                creatorEvents.Add(data1);
+            }
+            List<Dictionary<string, object>> invitedEvents = new List<Dictionary<string, object>>();
+            foreach (DocumentSnapshot documentSnapshot in invitedEventsQuery.Documents)
+            {
+                Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
+                var dane = documentSnapshot.ToDictionary();
+
+                Dictionary<string, object> data1 = new Dictionary<string, object>()
+                {
+                    {"id_event", documentSnapshot.Id},
+                    {"description", dane["description"]},
+                    {"name", dane["name"] },
+                    {"add_date", dane["add_date"]}
+                };
+
+                Console.WriteLine();
+
+                invitedEvents.Add(data1);
+            }
+
+            //return Ok(JsonConvert.SerializeObject(new { my_events = creatorEvents, invited_events = invitedEvents }));
+            return StatusCode(200, JsonConvert.SerializeObject(creatorEvents));
+        }
+
+
 
         [EnableCors("Policy1")]
         [HttpPost]
