@@ -70,7 +70,7 @@ namespace Firestore.Route.Event.Id.User
 
             await eventToUpdate.UpdateAsync(updates);
 
-            return StatusCode(400, JsonConvert.SerializeObject(new { username = await Translator.GetUsernameByUID(uid) }));
+            return StatusCode(200, JsonConvert.SerializeObject(new { username = await Translator.GetUsernameByUID(uid) }));
         }
 
 
