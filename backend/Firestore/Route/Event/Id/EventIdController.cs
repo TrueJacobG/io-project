@@ -120,11 +120,13 @@ namespace Firestore.Route.Event.Id
             try
             {
                 DocumentReference eventToFinish = firestoreDb.Collection(eventCollection).Document(id_event);
-                Dictionary<string, object> updatedData = new Dictionary<string, object>
-                {
-                    { "status", EventStatus.Closed.ToString() },
-                };
-                await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
+
+
+                //Dictionary<string, object> updatedData = new Dictionary<string, object>
+                //{
+                //    { "status", EventStatus.Closed.ToString() },
+                //};
+                //await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
 
 
                 return StatusCode(200, JsonConvert.SerializeObject(new { }));
