@@ -110,7 +110,6 @@ namespace Firestore.Route.Event.Id
 
         }
 
-        //event/:id_event/finish
         [EnableCors("Policy1")]
         [HttpGet]
         [Route("{id_event}/finish", Name = "finishEvent")]

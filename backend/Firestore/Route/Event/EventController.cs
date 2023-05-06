@@ -87,8 +87,7 @@ namespace Firestore.Route.Event
                 invitedEvents.Add(data1);
             }
 
-            //return Ok(JsonConvert.SerializeObject(new { my_events = creatorEvents, invited_events = invitedEvents }));
-            return StatusCode(200, JsonConvert.SerializeObject(creatorEvents));
+            return Ok(JsonConvert.SerializeObject(new { my_events = creatorEvents, invited_events = invitedEvents }));
         }
 
 
