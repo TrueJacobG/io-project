@@ -21,8 +21,6 @@ function App() {
 
   const [isEventButtonDisabled, setIsEventButtonDisabled] = useState(false);
 
-  const [events, setEvents] = useState<Event[]>([]);
-
   const [myEvents, setMyEvents] = useState<Event[]>([]);
   const [invitedEvents, setInvitedEvents] = useState<Event[]>([]);
 
@@ -57,7 +55,8 @@ function App() {
     useFetchWithBody("/auth/login", "POST", "", { email: email, auth_data: password })
       .then((data) => {
         if (data.token !== undefined && data.username !== undefined && data.email !== undefined) {
-          setEvents([]);
+          setMyEvents([]);
+          setInvitedEvents([]);
           setStorageVariables(data.token, data.username, data.email);
           setIsLogged(true);
           setIsShowAuthForm(0);
@@ -86,7 +85,8 @@ function App() {
     })
       .then((data) => {
         if (data.message === undefined) {
-          setEvents([]);
+          setMyEvents([]);
+          setInvitedEvents([]);
           setStorageVariables(data.token, username, email);
           setIsLogged(true);
           setIsShowAuthForm(0);
@@ -103,7 +103,7 @@ function App() {
   };
 
   const handleAddEvent = () => {
-    setEvents((ev) => [
+    setMyEvents((ev) => [
       {
         type: "create",
         id_event: "",
@@ -127,7 +127,7 @@ function App() {
       description: desc,
     })
       .then((data) => {
-        setEvents((ev) => {
+        setMyEvents((ev) => {
           let newEvents: Event[] = [];
 
           ev.forEach((e) => {
@@ -164,10 +164,8 @@ function App() {
   const loadEvents = () => {
     useFetch("/event", "GET", localStorage.getItem("token") as string)
       .then((data) => {
-        // TODO!
-        // setUserEvents(data.my_events);
-        // setInvitedEvents(data.invited_events);
-        setEvents(data);
+        setMyEvents(data.my_events);
+        setInvitedEvents(data.invited_events);
       })
       .catch((e) => {
         console.error("something went wrong");
@@ -219,7 +217,7 @@ function App() {
       {isLogged ? (
         <div>
           <AddEventButton handleAddEvent={handleAddEvent} isEventButtonDisabled={isEventButtonDisabled} />
-          <Events events={events} handleCreateEvent={handleCreateEvent} />
+          <Events myEvents={myEvents} invitedEvents={invitedEvents} handleCreateEvent={handleCreateEvent} />
         </div>
       ) : (
         <NotLogged />

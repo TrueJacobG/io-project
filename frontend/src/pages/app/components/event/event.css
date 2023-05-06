@@ -1,4 +1,8 @@
 /* MAIN PAGE */
+a {
+  color: white;
+}
+
 .add-event {
   width: 100%;
 }
