@@ -441,235 +441,6 @@
 							"response": []
 						}
 					]
-				},
-				{
-					"name": "Register Copy",
-					"item": [
-						{
-							"name": "Register_get_correct_status_random_data",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"\r",
-											"var requestBody = pm.request.body.raw;\r",
-											"var requestJson = JSON.parse(requestBody);\r",
-											"var email_new = requestJson.email;\r",
-											"console.log(email_new);\r",
-											"pm.environment.set(\"email\", email_new);\r",
-											"\r",
-											"var auth_data_new = requestJson.auth_data;\r",
-											"console.log(auth_data_new);\r",
-											"pm.environment.set(\"auth_data\", auth_data_new);\r",
-											"\r",
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"email\":  \"{{$randomEmail}}\",\r\n    \"auth_data\": \"{{$randomPassword}}\",\r\n    \"username\": \"{{$randomUserName}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/auth/register",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"auth",
-										"register"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Register_no_username_status",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status code is 400\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"auth_data\": \"{{$randomPassword}}\",\r\n    \"username\": \"\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/auth/register",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"auth",
-										"register"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Register_no_email_status",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status code is 400\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"\",\r\n    \"auth_data\": \"{{auth_data}}\",\r\n    \"username\": \"{{$randomUserName}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/auth/register",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"auth",
-										"register"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Register_no_password_status",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status code is 400\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"auth_data\": \"\",\r\n    \"username\": \"{{$randomUserName}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/auth/register",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"auth",
-										"register"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Register_existing_email_status",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status code is 409\", function () {\r",
-											"    pm.response.to.have.status(409);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"email\":  \"{{email}}\",\r\n    \"auth_data\": \"{{$randomPassword}}\",\r\n    \"username\": \"{{$randomUserName}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/auth/register",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"auth",
-										"register"
-									]
-								}
-							},
-							"response": []
-						}
-					]
 				}
 			]
 		},
@@ -684,16 +455,11 @@
 							"script": {
 								"exec": [
 									"\r",
-									"var requestBody = pm.request.body.raw;\r",
-									"var requestJson = JSON.parse(requestBody);\r",
-									"var email_new = requestJson.email;\r",
-									"console.log(email_new);\r",
-									"pm.environment.set(\"email\", email_new);\r",
+									"var res = pm.response.json();\r",
+									"//console.log(res);\r",
 									"\r",
-									"var auth_data_new = requestJson.auth_data;\r",
-									"console.log(auth_data_new);\r",
-									"pm.environment.set(\"auth_data\", auth_data_new);\r",
-									"\r",
+									"var token = res.token;\r",
+									"pm.environment.set(\"token\", token);\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
@@ -706,9 +472,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {\r",
-									"    console.log(response.json());\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -719,7 +483,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":  \"sarowski1@gmail.com\",\r\n    \"auth_data\": \"sarowski1\"\r\n}",
+							"raw": "{\r\n    \"email\":  \"test1@gmail.com\",\r\n    \"auth_data\": \"test1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -734,6 +498,44 @@
 							"path": [
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check auth/validate is 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"{{token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/validate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"validate"
 							]
 						}
 					},
@@ -838,6 +640,84 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all events",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();\r",
+									"//console.log(res);\r",
+									"\r",
+									"var id_event = res.id_event;\r",
+									"console.log(id_event);\r",
+									"pm.environment.set(\"id_event\", id_event);\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
