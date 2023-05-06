@@ -1,4 +1,4 @@
-const link: string = "https://localhost:7012/api/v1";
+const link: string = "https://192.168.50.81:7012/api/v1";
 
 const useFetchWithBody = async (url: string, method: string, token: string, body: any) => {
   return fetch(link + url, {
