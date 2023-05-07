@@ -3,9 +3,11 @@
     public class Utilities
     {
 
-        //public async Task<IActionResult> CheckAuthorization()
-        //{
-
-        //}
+        public static async Task CheckAuthorization(string token)
+        {
+            if(token == "null")
+            {
+            }
+        }
     }
 }

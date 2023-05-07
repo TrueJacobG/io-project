@@ -120,6 +120,57 @@ namespace Firestore.Route.Event.Id
             try
             {
                 DocumentReference eventToFinish = firestoreDb.Collection(eventCollection).Document(id_event);
+                DocumentSnapshot eventData = await eventToFinish.GetSnapshotAsync();
+
+
+
+
+                //Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>();
+                //userCash.Add(await Translator.GetMailByUID(eventData.GetValue<string>("creator")), new Dictionary<string, double>());
+
+                //foreach (var item in userCash)
+                //{
+                //    Console.WriteLine(item.Key);
+                //    foreach (var value in item.Value)
+                //    {
+                //        Console.WriteLine()
+                //    }
+                //}
+
+
+
+                Dictionary<string, double> userCash = new Dictionary<string, double>();
+                userCash.Add(await Translator.GetMailByUID(eventData.GetValue<string>("creator")), 0);
+                foreach (string user in eventData.GetValue<string[]>("users"))
+                {
+                    userCash.Add(await Translator.GetMailByUID(user),0);
+                }
+
+
+                foreach (var item in userCash)
+                {
+                    Console.WriteLine($"{item.Key} {item.Value}");
+                }
+                Console.WriteLine();
+
+                foreach (var expenseId in eventData.GetValue<string[]>("expenses"))
+                {
+                    DocumentSnapshot expense = await firestoreDb.Collection(expenseCollection).Document(expenseId).GetSnapshotAsync();
+
+                    foreach (Dictionary<string, string> expenseUserCash in expense.GetValue<List<Dictionary<string, string>>>("users"))
+                    {
+                        userCash[expenseUserCash["email"]] += Convert.ToDouble(expenseUserCash["value"]);
+                    }
+
+
+
+                    foreach (var item in userCash)
+                    {
+                        Console.WriteLine($"{item.Key} {item.Value}");
+                    }
+                    Console.WriteLine();
+
+                }
 
 
                 //Dictionary<string, object> updatedData = new Dictionary<string, object>

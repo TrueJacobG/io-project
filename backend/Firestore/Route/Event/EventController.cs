@@ -42,11 +42,7 @@ namespace Firestore.Route.Event
         {
             _logger.LogInformation($"Event get Attempt");
 
-            //if (Request.Headers["authorization"] == "null")
-            //{
-
-            //}
-
+            await Utilities.CheckAuthorization(Request.Headers["authorization"]);
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
