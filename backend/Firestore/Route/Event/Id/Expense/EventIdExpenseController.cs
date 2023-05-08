@@ -58,7 +58,7 @@ namespace Firestore.Route.Event.Id.Expense
                        expenseData.GetValue<string>("description"),
                        expenseData.GetValue<string>("type"),
                        expenseData.GetValue<double>("cash"), 
-                       await Translator.GetMailByUID(expenseData.GetValue<string>("creator")),
+                       await Translator.GetUsernameByUID(expenseData.GetValue<string>("creator")),
                        expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), users.ToArray());
 
                     data.Add(model);
