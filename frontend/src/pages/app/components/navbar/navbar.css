@@ -10,7 +10,7 @@
 .login-button button {
   text-align: center;
   font-size: 1.8em;
-  width: 60%;
+  width: auto;
 }
 
 /* LOGOUT BUTTON */
