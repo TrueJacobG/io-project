@@ -1,6 +1,6 @@
 /* LOGIN BUTTON */
 .login-button {
-  width: 40%;
+  width: 50%;
   float: left;
   text-align: center;
   vertical-align: middle;
@@ -45,7 +45,7 @@
 
 /* REGISTER BUTTON */
 .register-button {
-  width: 40%;
+  width: 50%;
   float: left;
   text-align: center;
   vertical-align: middle;
