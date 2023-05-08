@@ -9,8 +9,8 @@
 
 .login-button button {
   text-align: center;
-  font-size: 2em;
-  width: 3em;
+  font-size: 1.8em;
+  width: auto;
 }
 
 /* LOGOUT BUTTON */
@@ -54,8 +54,8 @@
 
 .register-button button {
   text-align: center;
-  font-size: 2em;
-  width: 3em;
+  font-size: 1.8em;
+  width: auto;
 }
 
 .title {
