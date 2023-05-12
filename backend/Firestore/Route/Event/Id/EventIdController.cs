@@ -1,5 +1,6 @@
 ﻿using Firebase.Auth;
 using Firestore.FirebaseThings;
+using Firestore.Route.Event.Id.User.DTO;
 using Firestore.Route.Event.Model;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
@@ -96,7 +97,7 @@ namespace Firestore.Route.Event.Id
         [EnableCors("Policy1")]
         [HttpDelete]
         [Route("{id_event}/edit", Name = "editEvent")]
-        public async Task<IActionResult> Edit([FromBody]EventModel model, string id_event)
+        public async Task<IActionResult> Edit([FromBody] EventModel model, string id_event)
         {
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
             Dictionary<string, object> update = new Dictionary<string, object>
@@ -120,7 +121,53 @@ namespace Firestore.Route.Event.Id
             try
             {
                 DocumentReference eventToFinish = firestoreDb.Collection(eventCollection).Document(id_event);
-                DocumentSnapshot eventData = await eventToFinish.GetSnapshotAsync();
+                DocumentSnapshot eventToFinishData = await eventToFinish.GetSnapshotAsync();
+                //all users and theirs expense user data
+                Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>
+                {
+                    { eventToFinishData.GetValue<string>("creator"), new Dictionary<string, double>{ } },
+                };
+
+                foreach (string user in eventToFinishData.GetValue<string[]>("users"))
+                {
+                    userCash.Add(user, new Dictionary<string, double>());
+                }
+                //for all expenses
+                foreach (string expense in eventToFinishData.GetValue<string[]>("expenses"))
+                {
+                    Console.WriteLine($"EXPENSE:{expense}");
+
+                    DocumentSnapshot eventToFinishExpense = await firestoreDb.Collection(expenseCollection).Document(expense).GetSnapshotAsync();
+                    Console.WriteLine($"CREATOR:{await Translator.GetMailByUID(eventToFinishExpense.GetValue<string>("creator"))}");
+                    //for all users in one expense
+                    foreach (Dictionary<string, string> item in eventToFinishExpense.GetValue<Dictionary<string, string>[]>("users"))
+                    {
+                        Console.WriteLine($"{item["email"]}//{item["value"]}");
+                        //add data about user and their cash to proper userCash column
+                        //userCash[eventToFinishExpense?.GetValue<string>("creator")].Add(item?["email"], Convert.ToDouble(item?["value"]));
+                    }
+
+
+
+                    Console.WriteLine();
+
+
+                }
+
+
+                foreach (var item in userCash)
+                {
+                    Console.Write($"{await Translator.GetUsernameByUID(item.Key)}");
+                    foreach (var values in item.Value)
+                    {
+                        Console.Write($"[{values.Key}/{values.Value}]");
+                    }
+                    Console.WriteLine();
+
+                }
+
+
+
 
 
 
@@ -128,49 +175,40 @@ namespace Firestore.Route.Event.Id
                 //Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>();
                 //userCash.Add(await Translator.GetMailByUID(eventData.GetValue<string>("creator")), new Dictionary<string, double>());
 
-                //foreach (var item in userCash)
+
+                //Dictionary<string, double> userCash = new Dictionary<string, double>();
+                //userCash.Add(await Translator.GetMailByUID(eventData.GetValue<string>("creator")), 0);
+                //foreach (string user in eventData.GetValue<string[]>("users"))
                 //{
-                //    Console.WriteLine(item.Key);
-                //    foreach (var value in item.Value)
-                //    {
-                //        Console.WriteLine()
-                //    }
+                //    userCash.Add(await Translator.GetMailByUID(user),0);
                 //}
 
 
+                //foreach (var item in userCash)
+                //{
+                //    Console.WriteLine($"{item.Key} {item.Value}");
+                //}
+                //Console.WriteLine();
 
-                Dictionary<string, double> userCash = new Dictionary<string, double>();
-                userCash.Add(await Translator.GetMailByUID(eventData.GetValue<string>("creator")), 0);
-                foreach (string user in eventData.GetValue<string[]>("users"))
-                {
-                    userCash.Add(await Translator.GetMailByUID(user),0);
-                }
+                //foreach (var expenseId in eventData.GetValue<string[]>("expenses"))
+                //{
+                //    DocumentSnapshot expense = await firestoreDb.Collection(expenseCollection).Document(expenseId).GetSnapshotAsync();
 
-
-                foreach (var item in userCash)
-                {
-                    Console.WriteLine($"{item.Key} {item.Value}");
-                }
-                Console.WriteLine();
-
-                foreach (var expenseId in eventData.GetValue<string[]>("expenses"))
-                {
-                    DocumentSnapshot expense = await firestoreDb.Collection(expenseCollection).Document(expenseId).GetSnapshotAsync();
-
-                    foreach (Dictionary<string, string> expenseUserCash in expense.GetValue<List<Dictionary<string, string>>>("users"))
-                    {
-                        userCash[expenseUserCash["email"]] += Convert.ToDouble(expenseUserCash["value"]);
-                    }
+                //    foreach (Dictionary<string, string> expenseUserCash in expense.GetValue<List<Dictionary<string, string>>>("users"))
+                //    {
+                //        userCash[expenseUserCash["email"]] += Convert.ToDouble(expenseUserCash["value"]);
+                //    }
 
 
 
-                    foreach (var item in userCash)
-                    {
-                        Console.WriteLine($"{item.Key} {item.Value}");
-                    }
-                    Console.WriteLine();
 
-                }
+                //    Console.WriteLine();
+
+                //}
+                //foreach (var item in userCash)
+                //{
+                //    Console.WriteLine($"{item.Key} {item.Value}");
+                //}
 
 
                 //Dictionary<string, object> updatedData = new Dictionary<string, object>
@@ -184,7 +222,7 @@ namespace Firestore.Route.Event.Id
             }
             catch (Exception)
             {
-                return StatusCode(404, JsonConvert.SerializeObject(new { message = "Something went really wrong, it should not show this"}));
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = "Something went really wrong, it should not show this" }));
             }
         }
     }

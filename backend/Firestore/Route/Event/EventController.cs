@@ -46,7 +46,7 @@ namespace Firestore.Route.Event
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
-            Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("status",EventStatus.Open.ToString());
+            Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("status", EventStatus.Open.ToString());
             QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
@@ -146,7 +146,6 @@ namespace Firestore.Route.Event
                 invitedEvents.Add(data1);
             }
 
-            //return Ok(JsonConvert.SerializeObject(new { my_events = creatorEvents, invited_events = invitedEvents }));
             return StatusCode(200, JsonConvert.SerializeObject(creatorEvents));
         }
 
