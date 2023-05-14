@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite -m api",
-    "fake-dev": "vite -m fake-api",
-    "server": "node ./fake_api/server.cjs",
+    "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
