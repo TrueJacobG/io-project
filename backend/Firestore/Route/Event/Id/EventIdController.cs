@@ -196,8 +196,8 @@ namespace Firestore.Route.Event.Id
                             }
                             else
                             {
-                                userCash[item.Key][pair.Key] = pair.Value - userCash[pair.Key][item.Key];
-                                userCash[pair.Key][item.Key] = 0;
+                                userCash[pair.Key][item.Key] = userCash[pair.Key][item.Key]- pair.Value;
+                                userCash[item.Key][pair.Key] = 0;
                                 Console.WriteLine("Second bigger");
                             }
                         }
