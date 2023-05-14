@@ -526,7 +526,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoidGVzdDEyMzQiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2FzaHNwbGl0ZGJhcGl0ZXN0IiwiYXVkIjoiY2FzaHNwbGl0ZGJhcGl0ZXN0IiwiYXV0aF90aW1lIjoxNjgzNDkxMDkzLCJ1c2VyX2lkIjoiMjBadnBic2szRlp2c3loM05UdmNSNEVkVXF6MSIsInN1YiI6IjIwWnZwYnNrM0ZadnN5aDNOVHZjUjRFZFVxejEiLCJpYXQiOjE2ODM0OTEwOTMsImV4cCI6MTY4MzQ5NDY5MywiZW1haWwiOiJ0ZXN0MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdDFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.NaGYbpdQSCOsWDGfIu68G9VezH-0Dw4FegC7c4-uN0ztr3lPo0dwo2Gu6P9oJmODjeZyaz-KeirFPP0a5EdaeIG6yHBJ5BIx-z5veOpOxnYM-s9KrdFJa-yvgqhbozH1ar2HP5HMdAmZZXjJh3Ga_bmvwm5mnYcSv6_fl2Joxx2h7j7jm-1hWvQJ_wZWWn3p4Thjl9qHe0T2pC_2RADowNLx95VRmkz7vguH6eCDpxz-scCfInXomA2K_XP7LUb6Pv6Knnl6tdnL2w6PBb8dKUDagX-j61velu_ZgRbCx1zDCm4Cq8XZolJZdTTQjhMlSfd00sVmL8-r2YPBnbT4bg",
+										"value": "{{token}}",
 										"type": "text"
 									}
 								],
@@ -571,7 +571,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoidGVzdDEyMzQiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2FzaHNwbGl0ZGJhcGl0ZXN0IiwiYXVkIjoiY2FzaHNwbGl0ZGJhcGl0ZXN0IiwiYXV0aF90aW1lIjoxNjgzNDkxMDkzLCJ1c2VyX2lkIjoiMjBadnBic2szRlp2c3loM05UdmNSNEVkVXF6MSIsInN1YiI6IjIwWnZwYnNrM0ZadnN5aDNOVHZjUjRFZFVxejEiLCJpYXQiOjE2ODM0OTEwOTMsImV4cCI6MTY4MzQ5NDY5MywiZW1haWwiOiJ0ZXN0MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdDFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.NaGYbpdQSCOsWDGfIu68G9VezH-0Dw4FegC7c4-uN0ztr3lPo0dwo2Gu6P9oJmODjeZyaz-KeirFPP0a5EdaeIG6yHBJ5BIx-z5veOpOxnYM-s9KrdFJa-yvgqhbozH1ar2HP5HMdAmZZXjJh3Ga_bmvwm5mnYcSv6_fl2Joxx2h7j7jm-1hWvQJ_wZWWn3p4Thjl9qHe0T2pC_2RADowNLx95VRmkz7vguH6eCDpxz-scCfInXomA2K_XP7LUb6Pv6Knnl6tdnL2w6PBb8dKUDagX-j61velu_ZgRbCx1zDCm4Cq8XZolJZdTTQjhMlSfd00sVmL8-r2YPBnbT4bg",
+										"value": "{{token}}",
 										"type": "text"
 									}
 								],
@@ -654,7 +654,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoidGVzdDEyMzQiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2FzaHNwbGl0ZGJhcGl0ZXN0IiwiYXVkIjoiY2FzaHNwbGl0ZGJhcGl0ZXN0IiwiYXV0aF90aW1lIjoxNjgzNDkxMDkzLCJ1c2VyX2lkIjoiMjBadnBic2szRlp2c3loM05UdmNSNEVkVXF6MSIsInN1YiI6IjIwWnZwYnNrM0ZadnN5aDNOVHZjUjRFZFVxejEiLCJpYXQiOjE2ODM0OTEwOTMsImV4cCI6MTY4MzQ5NDY5MywiZW1haWwiOiJ0ZXN0MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdDFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.NaGYbpdQSCOsWDGfIu68G9VezH-0Dw4FegC7c4-uN0ztr3lPo0dwo2Gu6P9oJmODjeZyaz-KeirFPP0a5EdaeIG6yHBJ5BIx-z5veOpOxnYM-s9KrdFJa-yvgqhbozH1ar2HP5HMdAmZZXjJh3Ga_bmvwm5mnYcSv6_fl2Joxx2h7j7jm-1hWvQJ_wZWWn3p4Thjl9qHe0T2pC_2RADowNLx95VRmkz7vguH6eCDpxz-scCfInXomA2K_XP7LUb6Pv6Knnl6tdnL2w6PBb8dKUDagX-j61velu_ZgRbCx1zDCm4Cq8XZolJZdTTQjhMlSfd00sVmL8-r2YPBnbT4bg",
+										"value": "{{token}}",
 										"type": "text"
 									}
 								],
@@ -667,45 +667,6 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{url}}/event",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"event"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Post event",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
 								"url": {
 									"raw": "{{url}}/event",
 									"host": [
@@ -791,7 +752,54 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"user_email\": \"sarowianek12@gmail.com\"\r\n}",
+									"raw": "{\r\n    \"user_email\": \"sarowianek123@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/AQbqPSAV3YS8JU95impL/user",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"AQbqPSAV3YS8JU95impL",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add new member without email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -815,7 +823,7 @@
 					]
 				},
 				{
-					"name": "Get Methods",
+					"name": "*** Get Methods",
 					"item": [
 						{
 							"name": "Get all events",
@@ -824,18 +832,11 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"// var res = pm.response.json();\r",
-											"// //console.log(res);\r",
-											"\r",
-											"// ///var id_event = res.id_event;\r",
-											"// console.log(res);\r",
-											"// var my_ev = res.my_enets;\r",
-											"\r",
-											"// const regular = /{\\\\\"id_event\\\\\":\\\\\"\\S{20}/;\r",
-											"\r",
-											"// console.log(res.match(/{\\\\\"id_event\\\\\":\\\\\"\\S{20}/));\r",
-											"\r",
-											"//pm.environment.set(\"id_event\", id_event);\r",
+											"var res = pm.response.json();\r",
+											"console.log(res);\r",
+											"var resParse=JSON.parse(res);\r",
+											"var id_Eve=resParse.my_events[0]?.id_event;\r",
+											"pm.environment.set(\"id_event\", id_Eve);\r",
 											"\r",
 											"\r",
 											"pm.test(\"Status code is 200\", function () {\r",
@@ -976,7 +977,7 @@
 							"response": []
 						},
 						{
-							"name": "Get event archived",
+							"name": "*** Get event archived",
 							"event": [
 								{
 									"listen": "test",
@@ -990,6 +991,9 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
 								"method": "GET",
 								"header": [
@@ -999,6 +1003,15 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/event/archived",
 									"host": [
@@ -1014,70 +1027,6 @@
 											"value": null,
 											"disabled": true
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get events good id_event",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{url}}/event/AQbqPSAV3YS8JU95impL/expense",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"event",
-										"AQbqPSAV3YS8JU95impL",
-										"expense"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get events good id_event Copy",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{url}}/event/WRONGID/expense",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"event",
-										"WRONGID",
-										"expense"
 									]
 								}
 							},
@@ -1161,7 +1110,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"sarowianek123@gmail.com\"\r\n}",
+									"raw": "{\r\n    \"user_email\": \"sarowianek123@gmail.com\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1207,7 +1156,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"\"\r\n}",
+									"raw": "{\r\n    \"user_email\": \"\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1230,7 +1179,359 @@
 					]
 				},
 				{
-					"name": "PUT Methods",
+					"name": "*** PUT Methods",
+					"item": [
+						{
+							"name": "*** Edit event name/description",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"name\",\r\n    \"description\": \"description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/UK6PmTc8TaWV0L9gMER6",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"UK6PmTc8TaWV0L9gMER6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Expense",
+			"item": [
+				{
+					"name": "Post Methods",
+					"item": [
+						{
+							"name": "*** Add new expense return 200",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"wydatek1\",\r\n    \"description\": \"opis_wydatku\",\r\n    \"type\": \"\",\r\n    \"cash\": \"123.34\", \r\n    \"users\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}/expense",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Methods",
+					"item": [
+						{
+							"name": "Get expenses good id_event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"var res = pm.response.json();\r",
+											"var id_exp= res.expenses[0]?.id_expense;\r",
+											"pm.environment.set(\"id_expense\", id_exp);\r",
+											"\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/UK6PmTc8TaWV0L9gMER6/expense",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"UK6PmTc8TaWV0L9gMER6",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get expenses wrong id_event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/WRONGID/expense",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"WRONGID",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "*** Delete Methods",
+					"item": [
+						{
+							"name": "*** Delete existing expense",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_expense\": \"{{id_expense}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}/expense",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete expense without id_expenses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_expense\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}/expense",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete expense wrong id_expenses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_expense\": \"WRONG\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}/expense",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "*** PUT Methods",
 					"item": []
 				}
 			]
