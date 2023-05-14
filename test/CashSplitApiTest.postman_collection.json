@@ -1175,6 +1175,80 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Delete event right id_event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete event wrong id_event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/event/WRONGIDEVENT",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"WRONGIDEVENT"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
