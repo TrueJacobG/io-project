@@ -78,8 +78,14 @@ namespace Firestore.Route.Event.Id.Expense
         {
 
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
+            DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
+
+            if (snapshot.GetValue<string[]>("users").Contains(user.LocalId))
+            {
+                return StatusCode(400);
+            }
 
             CollectionReference expense = firestoreDb.Collection(expenseCollection);
             Timestamp time = Timestamp.GetCurrentTimestamp();
@@ -104,7 +110,6 @@ namespace Firestore.Route.Event.Id.Expense
 
             var a = await expense.AddAsync(data1);
 
-            DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
             List<string> expenses = new List<string>();
             if (snapshot.Exists)
             {
@@ -136,7 +141,7 @@ namespace Firestore.Route.Event.Id.Expense
             List<string> expenses = new List<string>();
             if (snapshot.Exists)
             {
-                expenses = snapshot.GetValue<List<string>>(expenseCollection);
+                expenses = snapshot.GetValue<List<string>>("expenses");
             }
             expenses.Remove(model.id_expense);
 
@@ -146,7 +151,7 @@ namespace Firestore.Route.Event.Id.Expense
             };
 
             await events.UpdateAsync(updates);
-            await firestoreDb.Collection("expenses").Document(model.id_expense).DeleteAsync();
+            await firestoreDb.Collection(expenseCollection).Document(model.id_expense).DeleteAsync();
 
             return StatusCode(200, JsonConvert.SerializeObject(new { }));
         }
