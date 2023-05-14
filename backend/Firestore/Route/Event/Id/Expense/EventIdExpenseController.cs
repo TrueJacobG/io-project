@@ -143,6 +143,10 @@ namespace Firestore.Route.Event.Id.Expense
             {
                 expenses = snapshot.GetValue<List<string>>("expenses");
             }
+            else
+            {
+                return StatusCode(400);
+            }
             expenses.Remove(model.id_expense);
 
             Dictionary<string, object> updates = new Dictionary<string, object>
