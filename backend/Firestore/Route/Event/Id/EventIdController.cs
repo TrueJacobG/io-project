@@ -96,8 +96,8 @@ namespace Firestore.Route.Event.Id
         }
 
         [EnableCors("Policy1")]
-        [HttpDelete]
-        [Route("{id_event}/edit", Name = "editEvent")]
+        [HttpPut]
+        [Route("{id_event}", Name = "editEvent")]
         public async Task<IActionResult> Edit([FromBody] EventModel model, string id_event)
         {
             DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);

@@ -135,9 +135,9 @@ namespace Firestore.Route.Event.Id.Expense
         {
             _logger.LogInformation($"Attempt for deleting expense {model} in event {id_event}");
 
-            DocumentReference events = firestoreDb.Collection(eventCollection).Document(id_event);
+            DocumentReference eventToUpdate = firestoreDb.Collection(eventCollection).Document(id_event);
 
-            DocumentSnapshot snapshot = await events.GetSnapshotAsync();
+            DocumentSnapshot snapshot = await eventToUpdate.GetSnapshotAsync();
             List<string> expenses = new List<string>();
             if (snapshot.Exists)
             {
@@ -154,7 +154,8 @@ namespace Firestore.Route.Event.Id.Expense
                 { "expenses", expenses }
             };
 
-            await events.UpdateAsync(updates);
+            await eventToUpdate.UpdateAsync(updates);
+
             await firestoreDb.Collection(expenseCollection).Document(model.id_expense).DeleteAsync();
 
             return StatusCode(200, JsonConvert.SerializeObject(new { }));
