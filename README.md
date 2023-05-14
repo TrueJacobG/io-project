@@ -4,4 +4,4 @@ Wykorzystujemy technologię:
   - C#                        [REST API]
   - Firebase/Firestore        [DATABASE]
   - Postman                   [TESTING]
-  - JavaScript/Html/Css/React [WebSite]
+  - React + Typescript + Css  [WebSite]
