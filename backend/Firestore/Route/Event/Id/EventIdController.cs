@@ -196,7 +196,7 @@ namespace Firestore.Route.Event.Id
                             }
                             else
                             {
-                                userCash[pair.Key][item.Key] = userCash[pair.Key][item.Key]- pair.Value;
+                                userCash[pair.Key][item.Key] = userCash[pair.Key][item.Key] - pair.Value;
                                 userCash[item.Key][pair.Key] = 0;
                                 Console.WriteLine("Second bigger");
                             }
@@ -221,11 +221,11 @@ namespace Firestore.Route.Event.Id
 
                 }
 
-                //Dictionary<string, object> updatedData = new Dictionary<string, object>
-                //{
-                //    { "status", EventStatus.Closed.ToString() },
-                //};
-                //await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
+                Dictionary<string, object> updatedData = new Dictionary<string, object>
+                {
+                    { "status", EventStatus.Closed.ToString() },
+                };
+                await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
 
 
                 return StatusCode(200, JsonConvert.SerializeObject(new { }));

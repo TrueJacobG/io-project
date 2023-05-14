@@ -50,11 +50,11 @@ namespace Firestore.Route.Event.Id.Expense
                         users.Add(await Translator.GetUsernameByEmail(userData["email"]));
                     }
 
-                    ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id, 
-                       expenseData.GetValue<string>("name"), 
+                    ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id,
+                       expenseData.GetValue<string>("name"),
                        expenseData.GetValue<string>("description"),
                        expenseData.GetValue<string>("type"),
-                       expenseData.GetValue<double>("cash"), 
+                       expenseData.GetValue<double>("cash"),
                        await Translator.GetUsernameByUID(expenseData.GetValue<string>("creator")),
                        expenseData.GetValue<Timestamp>("add_date").ToDateTime().ToString(), users.ToArray());
 
