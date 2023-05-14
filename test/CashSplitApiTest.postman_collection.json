@@ -680,6 +680,51 @@
 							"response": []
 						},
 						{
+							"name": "Create_event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response time is less than 400ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"testowy event\",\r\n    \"description\": \"testowy opis\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Add new member right email",
 							"event": [
 								{
@@ -713,13 +758,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/event/AQbqPSAV3YS8JU95impL/user",
+									"raw": "{{url}}/event/{{id_event}}/user",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"event",
-										"AQbqPSAV3YS8JU95impL",
+										"{{id_event}}",
 										"user"
 									]
 								}
@@ -760,13 +805,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/event/AQbqPSAV3YS8JU95impL/user",
+									"raw": "{{url}}/event/{{id_event}}/user",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"event",
-										"AQbqPSAV3YS8JU95impL",
+										"{{id_event}}",
 										"user"
 									]
 								}
@@ -807,13 +852,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/event/AQbqPSAV3YS8JU95impL/user",
+									"raw": "{{url}}/event/{{id_event}}/user",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"event",
-										"AQbqPSAV3YS8JU95impL",
+										"{{id_event}}",
 										"user"
 									]
 								}
@@ -1071,13 +1116,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/event/AQbqPSAV3YS8JU95impL/user",
+									"raw": "{{url}}/event/{{id_event}}/user",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"event",
-										"AQbqPSAV3YS8JU95impL",
+										"{{id_event}}",
 										"user"
 									]
 								}
@@ -1118,12 +1163,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/AQbqPSAV3YS8JU95impL/user",
+									"raw": "{{url}}/event/{{id_event}}/user",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
-										"AQbqPSAV3YS8JU95impL",
+										"event",
+										"{{id_event}}",
 										"user"
 									]
 								}
@@ -1164,12 +1210,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/AQbqPSAV3YS8JU95impL/user",
+									"raw": "{{url}}/event/{{id_event}}/user",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
-										"AQbqPSAV3YS8JU95impL",
+										"event",
+										"{{id_event}}",
 										"user"
 									]
 								}
@@ -1253,10 +1300,10 @@
 					]
 				},
 				{
-					"name": "*** PUT Methods",
+					"name": "PUT Methods",
 					"item": [
 						{
-							"name": "*** Edit event name/description",
+							"name": "Edit event name/description",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -1276,13 +1323,79 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/event/UK6PmTc8TaWV0L9gMER6",
+									"raw": "{{url}}/event/{{id_event}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"event",
-										"UK6PmTc8TaWV0L9gMER6"
+										"{{id_event}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit event name/description no name",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"description no name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit event name/description no name Copy",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"name no desc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}"
 									]
 								}
 							},
@@ -1299,12 +1412,16 @@
 					"name": "Post Methods",
 					"item": [
 						{
-							"name": "*** Add new expense return 200",
+							"name": "Add new expense return 200",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
+											"var res = pm.response.json();\r",
+											"var id_exp=res.id_expense;\r",
+											"pm.environment.set(\"id_expense\", id_exp);\r",
+											"\r",
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
@@ -1324,7 +1441,54 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"wydatek1\",\r\n    \"description\": \"opis_wydatku\",\r\n    \"type\": \"\",\r\n    \"cash\": \"123.34\", \r\n    \"users\": \"\"\r\n}",
+									"raw": "{\r\n\"name\": \"obiad\",\r\n\"description\": \"na miescie\",\r\n\"type\": \"food\",\r\n\"cash\": 20,\r\n\"users\":\r\n  [\r\n    {\"email\":\"test1@gmail.com\",\"value\":\"10\"},\r\n    {\"email\":\"sarowianek12@gmail.com\",\"value\":\"10\"}\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}/expense",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add new expense return 400 bad emails",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"obiad\",\r\n\"description\": \"na miescie\",\r\n\"type\": \"food\",\r\n\"cash\": 200,\r\n\"users\":\r\n  [\r\n    {\"email\":\"test1@gmail.com\",\"value\":\"10\"},\r\n    {\"email\":\"WRONGDATA@GMAIL.GMBH\",\"value\":\"10\"}\r\n  ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1393,13 +1557,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/event/UK6PmTc8TaWV0L9gMER6/expense",
+									"raw": "{{url}}/event/{{id_event}}/expense",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"event",
-										"UK6PmTc8TaWV0L9gMER6",
+										"{{id_event}}",
 										"expense"
 									]
 								}
@@ -1462,7 +1626,7 @@
 					"name": "*** Delete Methods",
 					"item": [
 						{
-							"name": "*** Delete existing expense",
+							"name": "Delete existing expense",
 							"event": [
 								{
 									"listen": "test",
@@ -1556,7 +1720,7 @@
 							"response": []
 						},
 						{
-							"name": "Delete expense wrong id_expenses",
+							"name": "*** Delete expense wrong id_expenses",
 							"event": [
 								{
 									"listen": "test",
