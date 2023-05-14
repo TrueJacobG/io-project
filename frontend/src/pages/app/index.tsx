@@ -173,7 +173,7 @@ function App() {
         console.error(e);
       });
 
-    useFetch("event/archived", "GET", localStorage.getItem("token") as string)
+    useFetch("/event/archived", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setArchivedEvents(data.archived_events);
       })
