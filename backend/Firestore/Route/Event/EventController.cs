@@ -104,7 +104,7 @@ namespace Firestore.Route.Event
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
 
-            List<Dictionary<string, object>> creatorEvents = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> archived_events = new List<Dictionary<string, object>>();
 
             foreach (DocumentSnapshot documentSnapshot in creatorEventsQuery.Documents)
             {
@@ -119,9 +119,8 @@ namespace Firestore.Route.Event
                     {"add_date", dane["add_date"]}
                 };
 
-                creatorEvents.Add(data1);
+                archived_events.Add(data1);
             }
-            List<Dictionary<string, object>> invitedEvents = new List<Dictionary<string, object>>();
             foreach (DocumentSnapshot documentSnapshot in invitedEventsQuery.Documents)
             {
                 var dane = documentSnapshot.ToDictionary();
@@ -136,10 +135,10 @@ namespace Firestore.Route.Event
 
                 Console.WriteLine();
 
-                invitedEvents.Add(data1);
+                archived_events.Add(data1);
             }
 
-            return StatusCode(200, JsonConvert.SerializeObject(creatorEvents));
+            return StatusCode(200, JsonConvert.SerializeObject(new { archived_events = archived_events }));
         }
 
 
