@@ -9,7 +9,7 @@
         "GOOGLE_APPLICATION_CREDENTIALS": "keys.json"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7012"
+      "applicationUrl": "http://192.168.50.81:7012"
     },
     "IIS Express": {
       "commandName": "IISExpress",
