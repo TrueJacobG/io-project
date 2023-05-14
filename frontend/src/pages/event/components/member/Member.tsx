@@ -1,6 +1,8 @@
 import DeleteMember from "./DeleteMember";
 
-const Member = ({ member, handleDeleteMember }: { member: any; handleDeleteMember: any }) => {
+type Props = { archived: boolean; member: any; handleDeleteMember: any };
+
+const Member = ({ archived, member, handleDeleteMember }: Props) => {
   const handleClickDeleteMember = () => {
     handleDeleteMember(member.email);
   };
@@ -11,7 +13,9 @@ const Member = ({ member, handleDeleteMember }: { member: any; handleDeleteMembe
         <p className="member-name">{member.username}</p>
       </div>
       <div className="delete-member">
-        {(localStorage.getItem("email") as string) !== member.email && <DeleteMember handleClickDeleteMember={handleClickDeleteMember} />}
+        {(localStorage.getItem("email") as string) !== member.email && !archived && (
+          <DeleteMember handleClickDeleteMember={handleClickDeleteMember} />
+        )}
       </div>
     </div>
   );

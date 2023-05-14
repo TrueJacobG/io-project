@@ -247,7 +247,7 @@ const Event = ({ archived }: { archived: boolean }) => {
         <h1>Members</h1>
         {!archived && <AddMember handleClickAddMember={handleClickAddMember} isShowAddUserForm={isShowAddUserForm} />}
         {isShowAddUserForm && <AddUserForm handleAddUser={handleAddUser} />}
-        <Members members={members} handleDeleteMember={handleDeleteMember} />
+        <Members archived={archived} members={members} handleDeleteMember={handleDeleteMember} />
       </div>
       {archived && <div>TODO!</div>}
     </div>
