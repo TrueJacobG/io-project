@@ -82,9 +82,15 @@ namespace Firestore.Route.Event.Id.Expense
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
-            if (!snapshot.GetValue<string[]>("users").Contains(user.LocalId))
+            List<string> eventUsers = snapshot.GetValue<List<string>>("users");
+            eventUsers.Add(snapshot.GetValue<string>("creator"));
+
+            foreach (var modelUser in model.users)
             {
-                return StatusCode(400);
+                if (!eventUsers.Contains(await Translator.GetUidByEmail(modelUser["email"])))
+                {
+                    return StatusCode(400);
+                }
             }
 
             CollectionReference expense = firestoreDb.Collection(expenseCollection);
@@ -99,12 +105,6 @@ namespace Firestore.Route.Event.Id.Expense
                 {"cash", model.cash },
                 {"add_date", time},
             };
-
-            foreach (Dictionary<string, string> item in model.users)
-            {
-                Console.WriteLine(item["email"]);
-                Console.WriteLine(item["value"]);
-            }
 
             data1.Add("users", model.users);
 
