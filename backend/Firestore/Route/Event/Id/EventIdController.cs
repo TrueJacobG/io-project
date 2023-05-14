@@ -1,13 +1,10 @@
 ﻿using Firebase.Auth;
 using Firestore.FirebaseThings;
-using Firestore.Route.Event.Id.User.DTO;
 using Firestore.Route.Event.Model;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Collections;
 
 namespace Firestore.Route.Event.Id
 {
@@ -123,99 +120,93 @@ namespace Firestore.Route.Event.Id
                 DocumentReference eventToFinish = firestoreDb.Collection(eventCollection).Document(id_event);
                 DocumentSnapshot eventToFinishData = await eventToFinish.GetSnapshotAsync();
                 //all users and theirs expense user data
-                Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>
-                {
-                    { eventToFinishData.GetValue<string>("creator"), new Dictionary<string, double>{ } },
-                };
+                Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>();
+                userCash.Add(eventToFinishData.GetValue<string>("creator"), new Dictionary<string, double>());
+
+
 
                 foreach (string user in eventToFinishData.GetValue<string[]>("users"))
                 {
-                    userCash.Add(user, new Dictionary<string, double>());
+                        userCash.Add(user, new Dictionary<string, double>());
+
                 }
+
                 //for all expenses
                 foreach (string expense in eventToFinishData.GetValue<string[]>("expenses"))
                 {
-                    Console.WriteLine($"EXPENSE:{expense}");
-
                     DocumentSnapshot eventToFinishExpense = await firestoreDb.Collection(expenseCollection).Document(expense).GetSnapshotAsync();
-                    Console.WriteLine($"CREATOR:{await Translator.GetMailByUID(eventToFinishExpense.GetValue<string>("creator"))}");
+
+                    Console.WriteLine($"EXPENSE:::{expense}");
+                    string creatorEmail = await Translator.GetMailByUID(eventToFinishExpense.GetValue<string>("creator"));
+                    Console.WriteLine($"CREATOR:::{creatorEmail}");
+
                     //for all users in one expense
                     foreach (Dictionary<string, string> item in eventToFinishExpense.GetValue<Dictionary<string, string>[]>("users"))
                     {
-                        Console.WriteLine($"{item["email"]}//{item["value"]}");
                         //add data about user and their cash to proper userCash column
-                        //userCash[eventToFinishExpense?.GetValue<string>("creator")].Add(item?["email"], Convert.ToDouble(item?["value"]));
+                        if (item["email"] != creatorEmail)
+                        {
+                            Console.WriteLine($"FOUND -> {item["email"]}");
+                            if (userCash[eventToFinishExpense.GetValue<string>("creator")].Keys.Contains(item["email"])){
+                                userCash[await Translator.GetUidByEmail(item["email"])][eventToFinishExpense.GetValue<string>("creator")] += Convert.ToDouble(item["value"]);
+                            }
+                            else
+                            {
+                                userCash[await Translator.GetUidByEmail(item["email"])].Add(eventToFinishExpense.GetValue<string>("creator"), Convert.ToDouble(item["value"]));
+                            }
+                        }
                     }
 
-
-
                     Console.WriteLine();
-
-
                 }
 
+                Console.WriteLine("[(userCash)]");
 
                 foreach (var item in userCash)
                 {
-                    Console.Write($"{await Translator.GetUsernameByUID(item.Key)}");
-                    foreach (var values in item.Value)
+                    Console.WriteLine($"[{await Translator.GetUsernameByUID(item.Key)}]");
+                    foreach (KeyValuePair<string,double> pair in item.Value)
                     {
-                        Console.Write($"[{values.Key}/{values.Value}]");
+                        Console.WriteLine($"[{await Translator.GetUsernameByUID(pair.Key)}]--->{pair.Value}");
+                        if (userCash[item.Key].Keys.Contains(pair.Key) && userCash[pair.Key].Keys.Contains(item.Key))
+                        {
+                            Console.WriteLine($"{await Translator.GetUsernameByUID(item.Key)}[{pair.Value}]///{await Translator.GetUsernameByUID(pair.Key)}[{userCash[pair.Key][item.Key]}]");
+                            if(pair.Value >= userCash[pair.Key][item.Key])
+                            {
+                                Console.WriteLine($"First bigger {await Translator.GetUsernameByUID(item.Key)}-{pair.Key}=={pair.Value - userCash[pair.Key][item.Key]}");
+                                userCash[item.Key][pair.Key] = pair.Value - userCash[pair.Key][item.Key];
+                                userCash[pair.Key][item.Key] = 0;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Second bigger");
+                            }
+                        }
                     }
                     Console.WriteLine();
 
                 }
 
+                Console.WriteLine("FINAL:");
+                foreach (var item in userCash)
+                {
+                    Console.WriteLine($"[{await Translator.GetUsernameByUID(item.Key)}]");
+                    foreach (KeyValuePair<string, double> pair in item.Value)
+                    {
+                        if (pair.Value !=0)
+                        {
+                            Console.WriteLine($"[{await Translator.GetUsernameByUID(pair.Key)}]--->{pair.Value}");
+                        }
+                    }
+                    Console.WriteLine();
 
+                }
 
-
-
-
-
-                //Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>();
-                //userCash.Add(await Translator.GetMailByUID(eventData.GetValue<string>("creator")), new Dictionary<string, double>());
-
-
-                //Dictionary<string, double> userCash = new Dictionary<string, double>();
-                //userCash.Add(await Translator.GetMailByUID(eventData.GetValue<string>("creator")), 0);
-                //foreach (string user in eventData.GetValue<string[]>("users"))
-                //{
-                //    userCash.Add(await Translator.GetMailByUID(user),0);
-                //}
-
-
-                //foreach (var item in userCash)
-                //{
-                //    Console.WriteLine($"{item.Key} {item.Value}");
-                //}
-                //Console.WriteLine();
-
-                //foreach (var expenseId in eventData.GetValue<string[]>("expenses"))
-                //{
-                //    DocumentSnapshot expense = await firestoreDb.Collection(expenseCollection).Document(expenseId).GetSnapshotAsync();
-
-                //    foreach (Dictionary<string, string> expenseUserCash in expense.GetValue<List<Dictionary<string, string>>>("users"))
-                //    {
-                //        userCash[expenseUserCash["email"]] += Convert.ToDouble(expenseUserCash["value"]);
-                //    }
-
-
-
-
-                //    Console.WriteLine();
-
-                //}
-                //foreach (var item in userCash)
-                //{
-                //    Console.WriteLine($"{item.Key} {item.Value}");
-                //}
-
-
-                //Dictionary<string, object> updatedData = new Dictionary<string, object>
-                //{
-                //    { "status", EventStatus.Closed.ToString() },
-                //};
-                //await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
+                Dictionary<string, object> updatedData = new Dictionary<string, object>
+                {
+                    { "status", EventStatus.Closed.ToString() },
+                };
+                await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
 
 
                 return StatusCode(200, JsonConvert.SerializeObject(new { }));

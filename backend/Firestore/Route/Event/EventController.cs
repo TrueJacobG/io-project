@@ -55,7 +55,6 @@ namespace Firestore.Route.Event
 
             foreach (DocumentSnapshot documentSnapshot in creatorEventsQuery.Documents)
             {
-                Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 var dane = documentSnapshot.ToDictionary();
 
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
