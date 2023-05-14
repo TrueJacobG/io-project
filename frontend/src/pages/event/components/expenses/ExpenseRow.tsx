@@ -1,7 +1,9 @@
 import { ExpenseType } from "../../../../types/Expense";
 import DeleteExpense from "./DeleteExense";
 
-const ExpenseRow = ({ exp, handleDeleteExpense }: { exp: ExpenseType; handleDeleteExpense: any }) => {
+type Props = { archived: boolean; exp: ExpenseType; handleDeleteExpense: any };
+
+const ExpenseRow = ({ archived, exp, handleDeleteExpense }: Props) => {
   const formatter = new Intl.NumberFormat("pl-PL", {
     style: "currency",
     currency: "PLN",
@@ -12,9 +14,11 @@ const ExpenseRow = ({ exp, handleDeleteExpense }: { exp: ExpenseType; handleDele
       <th>{exp.name}</th>
       <th>{exp.type}</th>
       <th>{formatter.format(exp.cash)}</th>
-      <th>
-        <DeleteExpense handleDeleteExpense={handleDeleteExpense} id_expense={exp.id_expense} />
-      </th>
+      {!archived && (
+        <th>
+          <DeleteExpense handleDeleteExpense={handleDeleteExpense} id_expense={exp.id_expense} />
+        </th>
+      )}
     </tr>
   );
 };

@@ -23,6 +23,7 @@ function App() {
 
   const [myEvents, setMyEvents] = useState<Event[]>([]);
   const [invitedEvents, setInvitedEvents] = useState<Event[]>([]);
+  const [archivedEvents, setArchivedEvents] = useState<Event[]>([]);
 
   const handleLoginClick = () => {
     if (isShowAuthForm === 1) {
@@ -166,6 +167,7 @@ function App() {
       .then((data) => {
         setMyEvents(data.my_events);
         setInvitedEvents(data.invited_events);
+        //setArchivedEvents(data.archived_events);
       })
       .catch((e) => {
         console.error("something went wrong");
@@ -217,7 +219,7 @@ function App() {
       {isLogged ? (
         <div>
           <AddEventButton handleAddEvent={handleAddEvent} isEventButtonDisabled={isEventButtonDisabled} />
-          <Events myEvents={myEvents} invitedEvents={invitedEvents} handleCreateEvent={handleCreateEvent} />
+          <Events myEvents={myEvents} invitedEvents={invitedEvents} archivedEvents={archivedEvents} handleCreateEvent={handleCreateEvent} />
         </div>
       ) : (
         <NotLogged />

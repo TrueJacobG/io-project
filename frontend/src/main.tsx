@@ -21,7 +21,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/event/:id_event",
-    element: <Event />,
+    element: <Event archived={false} />,
+  },
+  {
+    path: "/event/archived/:id_event",
+    element: <Event archived={true} />,
   },
   {
     path: "/event/:id_event/expense",

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./event.css";
 
 const EditEventButton = ({ handleEditEvent }: { handleEditEvent: any }) => {

@@ -6,6 +6,7 @@ import sumCosts from "../../utils/sumCosts";
 import React from "react";
 
 type Props = {
+  archived: boolean;
   expenses: ExpenseType[];
   members: any[];
   handleDeleteExpense: any;
@@ -14,7 +15,15 @@ type Props = {
   errorAddExpenseForm: string;
 };
 
-const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpense, isShowAddExpenseForm, errorAddExpenseForm }: Props) => {
+const ExpensesTable = ({
+  archived,
+  expenses,
+  members,
+  handleDeleteExpense,
+  handleAddExpense,
+  isShowAddExpenseForm,
+  errorAddExpenseForm,
+}: Props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("food");
@@ -132,7 +141,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
         </thead>
         <tbody>
           {expenses.map((exp) => {
-            return <ExpenseRow exp={exp} key={Math.random()} handleDeleteExpense={handleDeleteExpense} />;
+            return <ExpenseRow key={Math.random()} archived={archived} exp={exp} handleDeleteExpense={handleDeleteExpense} />;
           })}
           <tr>
             <td colSpan={4}>
@@ -146,7 +155,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
             </tr>
           )}
 
-          {isShowAddExpenseForm && (
+          {isShowAddExpenseForm && !archived && (
             <React.Fragment>
               <tr>
                 <td colSpan={4}>
@@ -231,6 +240,7 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
               )}
             </React.Fragment>
           )}
+
           {isShowAddExpenseForm && errorAddExpenseForm.length !== 0 && (
             <tr>
               <td colSpan={5} className="add-expense-form-error">
@@ -238,11 +248,15 @@ const ExpensesTable = ({ expenses, members, handleDeleteExpense, handleAddExpens
               </td>
             </tr>
           )}
-          <tr>
-            <td colSpan={4} className="add-expense-button">
-              <AddExpense handleAddExpense={() => handleClickAddExpense()} />
-            </td>
-          </tr>
+
+          {!archived && (
+            <tr>
+              <td colSpan={4} className="add-expense-button">
+                <AddExpense handleAddExpense={() => handleClickAddExpense()} />
+              </td>
+            </tr>
+          )}
+
           {sumError.length !== 0 && (
             <tr>
               <td colSpan={4} className="error">

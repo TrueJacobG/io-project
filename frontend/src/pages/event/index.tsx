@@ -14,8 +14,9 @@ import convertTypeToEmoji from "./utils/convertTypeToEmoji";
 import getUsersWithCashBySplitType from "./utils/getUsersWithCash";
 import getUsersWithCash from "./utils/getUsersWithCash";
 import sum from "./utils/sum";
+import FinishEventButton from "./components/FinishEventButton";
 
-const Event = () => {
+const Event = ({ archived }: { archived: boolean }) => {
   const { id_event } = useParams();
 
   const [name, setName] = useState("");
@@ -221,11 +222,9 @@ const Event = () => {
       <p>{desc}</p>
       <hr />
       <div className="buttons">
-        <DeleteEventButton handleDeleteEvent={handleDeleteEvent} />
-        <EditEventButton handleEditEvent={handleEditEvent} />
-        <div className="finish-event-button global-button-style">
-          <button onClick={handleFinishEvent}>Finish</button>
-        </div>
+        {!archived && <DeleteEventButton handleDeleteEvent={handleDeleteEvent} />}
+        {!archived && <EditEventButton handleEditEvent={handleEditEvent} />}
+        {!archived && <FinishEventButton handleFinishEvent={handleFinishEvent} />}
         <div style={{ clear: "both" }}></div>
       </div>
       <hr />
@@ -234,6 +233,7 @@ const Event = () => {
           <h1>Expenses</h1>
         </Link>
         <ExpensesTable
+          archived={archived}
           expenses={expenses}
           members={members}
           handleDeleteExpense={handleDeleteExpense}
@@ -245,10 +245,11 @@ const Event = () => {
       <hr />
       <div className="bottom">
         <h1>Members</h1>
-        <AddMember handleClickAddMember={handleClickAddMember} isShowAddUserForm={isShowAddUserForm} />
-        {isShowAddUserForm ? <AddUserForm handleAddUser={handleAddUser} /> : <></>}
+        {!archived && <AddMember handleClickAddMember={handleClickAddMember} isShowAddUserForm={isShowAddUserForm} />}
+        {isShowAddUserForm && <AddUserForm handleAddUser={handleAddUser} />}
         <Members members={members} handleDeleteMember={handleDeleteMember} />
       </div>
+      {archived && <div>TODO!</div>}
     </div>
   );
 };
