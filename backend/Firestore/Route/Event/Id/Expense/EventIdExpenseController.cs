@@ -35,11 +35,11 @@ namespace Firestore.Route.Event.Id.Expense
             DocumentReference eventReference = firestoreDb.Collection(eventCollection).Document(id_event);
             DocumentSnapshot eventData = await eventReference.GetSnapshotAsync();
 
-            //expense[] -> {id_expense, name, description, type, cost, author, date}[]
+            //TODO: CHECH TOKEN
+
             List<ExpenseLoadModel> data = new List<ExpenseLoadModel>();
             if (eventData.Exists)
             {
-
                 foreach (string item in eventData.GetValue<string[]>("expenses"))
                 {
                     DocumentSnapshot expenseData = await firestoreDb.Collection(expenseCollection).Document(item).GetSnapshotAsync();
@@ -63,6 +63,10 @@ namespace Firestore.Route.Event.Id.Expense
 
                     data.Add(model);
                 }
+            }
+            else
+            {
+                return StatusCode(400);
             }
             return StatusCode(200, JsonConvert.SerializeObject(new { expenses = data }));
         }
