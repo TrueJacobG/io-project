@@ -5,6 +5,7 @@ using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace Firestore.Route.Event.Id
 {
@@ -81,7 +82,6 @@ namespace Firestore.Route.Event.Id
         {
             _logger.LogInformation($"EventModel delete Attempt for {id_event}");
 
-
             DocumentReference eventToDelete = firestoreDb.Collection(eventCollection).Document(id_event);
 
             DocumentSnapshot eventData = await eventToDelete.GetSnapshotAsync();
@@ -126,21 +126,23 @@ namespace Firestore.Route.Event.Id
                 //all users and theirs expense user data
                 Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>();
                 userCash.Add(eventToFinishData.GetValue<string>("creator"), new Dictionary<string, double>());
-
-
-
                 foreach (string user in eventToFinishData.GetValue<string[]>("users"))
                 {
-                        userCash.Add(user, new Dictionary<string, double>());
-
+                    userCash.Add(user, new Dictionary<string, double>());
                 }
+
+                foreach (var item in userCash.Keys)
+                {
+                    Console.WriteLine($"USER:{item}->{await Translator.GetUsernameByUID(item)}");
+                }
+
+                Console.WriteLine();
 
                 //for all expenses
                 foreach (string expense in eventToFinishData.GetValue<string[]>("expenses"))
                 {
                     DocumentSnapshot eventToFinishExpense = await firestoreDb.Collection(expenseCollection).Document(expense).GetSnapshotAsync();
 
-                    Console.WriteLine($"EXPENSE:::{expense}");
                     string creatorEmail = await Translator.GetMailByUID(eventToFinishExpense.GetValue<string>("creator"));
                     Console.WriteLine($"CREATOR:::{creatorEmail}");
 
@@ -151,12 +153,23 @@ namespace Firestore.Route.Event.Id
                         if (item["email"] != creatorEmail)
                         {
                             Console.WriteLine($"FOUND -> {item["email"]}");
-                            if (userCash[eventToFinishExpense.GetValue<string>("creator")].Keys.Contains(item["email"])){
-                                userCash[await Translator.GetUidByEmail(item["email"])][eventToFinishExpense.GetValue<string>("creator")] += Convert.ToDouble(item["value"]);
-                            }
-                            else
+                            Console.WriteLine($"{item["email"]}/{item["value"]}");
+                            Console.WriteLine($"{eventToFinishExpense.GetValue<string>("creator")}////{await Translator.GetUidByEmail(item["email"])}");
+
+                            try
                             {
-                                userCash[await Translator.GetUidByEmail(item["email"])].Add(eventToFinishExpense.GetValue<string>("creator"), Convert.ToDouble(item["value"]));
+                                if (userCash[await Translator.GetUidByEmail(item["email"])].Keys.Contains(eventToFinishExpense.GetValue<string>("creator")))
+                                {
+                                    userCash[await Translator.GetUidByEmail(item["email"])][eventToFinishExpense.GetValue<string>("creator")] += double.Parse(item["value"], CultureInfo.InvariantCulture);
+                                }
+                                else
+                                {
+                                    userCash[await Translator.GetUidByEmail(item["email"])].Add(eventToFinishExpense.GetValue<string>("creator"), double.Parse(item["value"], CultureInfo.InvariantCulture));
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine($"{e.Message}");
                             }
                         }
                     }
@@ -169,13 +182,13 @@ namespace Firestore.Route.Event.Id
                 foreach (var item in userCash)
                 {
                     Console.WriteLine($"[{await Translator.GetUsernameByUID(item.Key)}]");
-                    foreach (KeyValuePair<string,double> pair in item.Value)
+                    foreach (KeyValuePair<string, double> pair in item.Value)
                     {
                         Console.WriteLine($"[{await Translator.GetUsernameByUID(pair.Key)}]--->{pair.Value}");
                         if (userCash[item.Key].Keys.Contains(pair.Key) && userCash[pair.Key].Keys.Contains(item.Key))
                         {
                             Console.WriteLine($"{await Translator.GetUsernameByUID(item.Key)}[{pair.Value}]///{await Translator.GetUsernameByUID(pair.Key)}[{userCash[pair.Key][item.Key]}]");
-                            if(pair.Value >= userCash[pair.Key][item.Key])
+                            if (pair.Value >= userCash[pair.Key][item.Key])
                             {
                                 Console.WriteLine($"First bigger {await Translator.GetUsernameByUID(item.Key)}-{pair.Key}=={pair.Value - userCash[pair.Key][item.Key]}");
                                 userCash[item.Key][pair.Key] = pair.Value - userCash[pair.Key][item.Key];
@@ -183,6 +196,8 @@ namespace Firestore.Route.Event.Id
                             }
                             else
                             {
+                                userCash[item.Key][pair.Key] = pair.Value - userCash[pair.Key][item.Key];
+                                userCash[pair.Key][item.Key] = 0;
                                 Console.WriteLine("Second bigger");
                             }
                         }
@@ -197,7 +212,7 @@ namespace Firestore.Route.Event.Id
                     Console.WriteLine($"[{await Translator.GetUsernameByUID(item.Key)}]");
                     foreach (KeyValuePair<string, double> pair in item.Value)
                     {
-                        if (pair.Value !=0)
+                        if (pair.Value != 0)
                         {
                             Console.WriteLine($"[{await Translator.GetUsernameByUID(pair.Key)}]--->{pair.Value}");
                         }
@@ -206,11 +221,11 @@ namespace Firestore.Route.Event.Id
 
                 }
 
-                Dictionary<string, object> updatedData = new Dictionary<string, object>
-                {
-                    { "status", EventStatus.Closed.ToString() },
-                };
-                await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
+                //Dictionary<string, object> updatedData = new Dictionary<string, object>
+                //{
+                //    { "status", EventStatus.Closed.ToString() },
+                //};
+                //await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
 
 
                 return StatusCode(200, JsonConvert.SerializeObject(new { }));

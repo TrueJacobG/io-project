@@ -31,7 +31,6 @@ namespace Firestore.Route.Event.Id.Expense
         [Route("{id_event}/expense", Name = "getExpenses")]
         public async Task<IActionResult> GetExpenses(string id_event)
         {
-
             DocumentReference eventReference = firestoreDb.Collection(eventCollection).Document(id_event);
             DocumentSnapshot eventData = await eventReference.GetSnapshotAsync();
 
@@ -50,8 +49,6 @@ namespace Firestore.Route.Event.Id.Expense
                     {
                         users.Add(await Translator.GetUsernameByEmail(userData["email"]));
                     }
-
-
 
                     ExpenseLoadModel model = new ExpenseLoadModel(expenseData.Id, 
                        expenseData.GetValue<string>("name"), 

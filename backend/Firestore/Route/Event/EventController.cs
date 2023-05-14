@@ -65,14 +65,11 @@ namespace Firestore.Route.Event
                     {"add_date", dane["add_date"]}
                 };
 
-                Console.WriteLine();
-
                 creatorEvents.Add(data1);
             }
             List<Dictionary<string, object>> invitedEvents = new List<Dictionary<string, object>>();
             foreach (DocumentSnapshot documentSnapshot in invitedEventsQuery.Documents)
             {
-                Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 var dane = documentSnapshot.ToDictionary();
 
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
@@ -122,14 +119,11 @@ namespace Firestore.Route.Event
                     {"add_date", dane["add_date"]}
                 };
 
-                Console.WriteLine();
-
                 creatorEvents.Add(data1);
             }
             List<Dictionary<string, object>> invitedEvents = new List<Dictionary<string, object>>();
             foreach (DocumentSnapshot documentSnapshot in invitedEventsQuery.Documents)
             {
-                Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 var dane = documentSnapshot.ToDictionary();
 
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
