@@ -82,7 +82,7 @@ namespace Firestore.Route.Event.Id.Expense
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
-            if (snapshot.GetValue<string[]>("users").Contains(user.LocalId))
+            if (!snapshot.GetValue<string[]>("users").Contains(user.LocalId))
             {
                 return StatusCode(400);
             }
