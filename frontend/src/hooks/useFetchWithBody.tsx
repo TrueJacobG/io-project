@@ -1,6 +1,6 @@
 let link: string;
 
-if (import.meta.env.LOCALHOST === undefined) {
+if (import.meta.env.VITE_LOCALHOST === undefined) {
   link = "http://192.168.50.81:7012/api/v1";
 } else {
   link = "http://localhost:7012/api/v1";
