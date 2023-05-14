@@ -167,7 +167,15 @@ function App() {
       .then((data) => {
         setMyEvents(data.my_events);
         setInvitedEvents(data.invited_events);
-        //setArchivedEvents(data.archived_events);
+      })
+      .catch((e) => {
+        console.error("something went wrong");
+        console.error(e);
+      });
+
+    useFetch("event/archived", "GET", localStorage.getItem("token") as string)
+      .then((data) => {
+        setArchivedEvents(data.archived_events);
       })
       .catch((e) => {
         console.error("something went wrong");
