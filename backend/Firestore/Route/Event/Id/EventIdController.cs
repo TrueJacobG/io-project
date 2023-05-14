@@ -67,6 +67,10 @@ namespace Firestore.Route.Event.Id
                     users,
                 });
             }
+            else
+            {
+                return StatusCode(400);
+            }
             return StatusCode(200, data);
         }
 

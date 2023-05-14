@@ -90,6 +90,14 @@ namespace Firestore.Route.Event.Id.User
             {
                 users = snapshot.GetValue<List<string>>("users");
             }
+            else
+            {
+                return StatusCode(400);
+            }
+            if(!users.Contains(uid)) 
+            {
+                return StatusCode(400);
+            }
             users.Remove(uid);
 
             Dictionary<string, object> updates = new Dictionary<string, object>
