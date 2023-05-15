@@ -187,9 +187,7 @@ function App() {
     if ((localStorage.getItem("token") as string) !== null) {
       useFetch("/auth/validate", "POST", localStorage.getItem("token") as string)
         .then((data) => {
-          if (data.message === undefined) {
-            console.log("token is valid");
-          } else {
+          if (data.message !== undefined) {
             localStorage.removeItem("token");
           }
         })
