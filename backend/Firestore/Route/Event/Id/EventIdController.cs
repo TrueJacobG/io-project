@@ -88,34 +88,43 @@ namespace Firestore.Route.Event.Id
             DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
             DocumentSnapshot result = await eventFromId.GetSnapshotAsync();
 
-            var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
-
-            string data = string.Empty;
             if (result.Exists)
             {
                 DocumentSnapshot summary = await firestoreDb.Collection(summaryCollection).Document(result.GetValue<string>("summary")).GetSnapshotAsync();
 
                 if (summary.Exists)
                 {
-                    Dictionary<string, double> debtors = new Dictionary<string, double>();
+                    Dictionary<string, Dictionary<string, double>> givers = new Dictionary<string, Dictionary<string, double>>();
+                    givers.Add(result.GetValue<string>("creator"), new Dictionary<string, double>());
 
-                    foreach (var item in summary.GetValue<Dictionary<string,double>>(user.LocalId))
+                    List<string> users = new List<string>();
+                    users.Add(result.GetValue<string>("creator"));
+
+                    foreach (var item in result.GetValue<List<string>>("users"))
                     {
-                        Console.WriteLine(item.Key + "       " + item.Value);
-                        debtors.Add(await Translator.GetMailByUID(item.Key), item.Value);
+                        givers.Add(item, new Dictionary<string, double>());
+                        users.Add(item);
                     }
-                    return StatusCode(200, JsonConvert.SerializeObject(new { debtors = debtors }));
+
+                    foreach (var item in users)
+                    {
+                        foreach (var data in summary.GetValue<Dictionary<string, double>>(item))
+                        {
+                            givers[item].Add(data.Key, data.Value);
+                        }
+                    }
+
+                    return StatusCode(200, JsonConvert.SerializeObject(new { data = givers.ToArray() }));
                 }
                 else
                 {
-                    return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event summary"}));
+                    return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event summary" }));
                 }
             }
             else
             {
                 return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event" }));
             }
-            return StatusCode(200, JsonConvert.SerializeObject( new { result}));
         }
 
         [EnableCors("Policy1")]
@@ -268,8 +277,6 @@ namespace Firestore.Route.Event.Id
                 CollectionReference summarys = firestoreDb.Collection(summaryCollection);
 
                 var summary = await summarys.AddAsync(userCash);
-
-                Console.WriteLine(summary.Id);
 
                 Dictionary<string, object> eventSummaryUpdate = new Dictionary<string, object>
                 {
