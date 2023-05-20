@@ -1,25 +1,4 @@
 {
-  "profiles": {
-    "Firestore": {
-      "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "GOOGLE_APPLICATION_CREDENTIALS": "keys.json"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://192.168.50.81:7012"
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": false,
-      "launchUrl": "",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    }
-  },
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -27,6 +6,23 @@
     "iisExpress": {
       "applicationUrl": "http://localhost:3645",
       "sslPort": 44304
+    }
+  },
+  "profiles": {
+    "Firestore": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:7012",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "GOOGLE_APPLICATION_CREDENTIALS": "keys.json"
+      },
+      "dotnetRunMessages": true
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }
