@@ -15,6 +15,8 @@ import getUsersWithCashBySplitType from "./utils/getUsersWithCash";
 import getUsersWithCash from "./utils/getUsersWithCash";
 import sum from "./utils/sum";
 import FinishEventButton from "./components/FinishEventButton";
+import GoBackButton from "./components/GoBackButton";
+import Loading from "./components/loading/Loading";
 
 const Event = ({ archived }: { archived: boolean }) => {
   const { id_event } = useParams();
@@ -23,6 +25,8 @@ const Event = ({ archived }: { archived: boolean }) => {
   const [desc, setDesc] = useState("");
   const [members, setMembers] = useState<any[]>([]);
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isShowAddExpenseForm, setIsShowAddExpenseForm] = useState(false);
 
@@ -65,7 +69,7 @@ const Event = ({ archived }: { archived: boolean }) => {
       return;
     }
 
-    let usersWithCash: any = getUsersWithCash(users, splitCash);
+    let usersWithCash: any = getUsersWithCash(members, users, splitCash);
 
     useFetchWithBody("/event/" + id_event + "/expense", "POST", localStorage.getItem("token") as string, {
       name: name,
@@ -187,6 +191,7 @@ const Event = ({ archived }: { archived: boolean }) => {
         console.error(e);
       });
 
+    setIsLoading(true);
     useFetch("/event/" + id_event + "/expense", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         let expenses: ExpenseType[] = [];
@@ -206,8 +211,10 @@ const Event = ({ archived }: { archived: boolean }) => {
         });
 
         setExpenses(expenses);
+        setIsLoading(false);
       })
       .catch((e) => {
+        setIsLoading(false);
         console.error("something went wrong");
         console.error(e);
       });
@@ -215,37 +222,46 @@ const Event = ({ archived }: { archived: boolean }) => {
 
   return (
     <div>
-      <Link to={"/"} className="link-back-page">
-        🔙
-      </Link>
       <h1>{name}</h1>
       <p>{desc}</p>
       <hr />
       <div className="buttons">
+        <GoBackButton />
         {!archived && <DeleteEventButton handleDeleteEvent={handleDeleteEvent} />}
         {!archived && <EditEventButton handleEditEvent={handleEditEvent} />}
         {!archived && <FinishEventButton handleFinishEvent={handleFinishEvent} />}
         <div style={{ clear: "both" }}></div>
       </div>
-      <hr />
+
       <div className="expenses">
         <Link to={"/event/" + id_event + "/expense"} className="link-expense-page">
           <h1>Expenses</h1>
         </Link>
-        <ExpensesTable
-          archived={archived}
-          expenses={expenses}
-          members={members}
-          handleDeleteExpense={handleDeleteExpense}
-          handleAddExpense={handleAddExpense}
-          isShowAddExpenseForm={isShowAddExpenseForm}
-          errorAddExpenseForm={errorAddExpenseForm}
-        />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <ExpensesTable
+            archived={archived}
+            expenses={expenses}
+            members={members}
+            handleDeleteExpense={handleDeleteExpense}
+            handleAddExpense={handleAddExpense}
+            isShowAddExpenseForm={isShowAddExpenseForm}
+            errorAddExpenseForm={errorAddExpenseForm}
+          />
+        )}
       </div>
-      <hr />
       <div className="bottom">
-        <h1>Members</h1>
-        {!archived && <AddMember handleClickAddMember={handleClickAddMember} isShowAddUserForm={isShowAddUserForm} />}
+        <div className="members-title-box">
+          <div className="members-title">
+            <h1>Members</h1>
+          </div>
+          <div className="members-title-add">
+            {!archived && <AddMember handleClickAddMember={handleClickAddMember} isShowAddUserForm={isShowAddUserForm} />}
+          </div>
+          <div style={{ clear: "both" }}></div>
+        </div>
+
         {isShowAddUserForm && <AddUserForm handleAddUser={handleAddUser} />}
         <Members archived={archived} members={members} handleDeleteMember={handleDeleteMember} />
       </div>
