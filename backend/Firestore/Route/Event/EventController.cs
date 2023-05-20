@@ -10,11 +10,6 @@ using Newtonsoft.Json.Linq;
 using Firestore.FirebaseThings;
 using Firestore.Route.Event.Model;
 
-enum EventStatus
-{
-    Open,
-    Closed,
-}
 
 namespace Firestore.Route.Event
 {
@@ -46,10 +41,16 @@ namespace Firestore.Route.Event
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
-            Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("status", EventStatus.Open.ToString());
+            Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("summary", string.Empty);
+
             QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
+
+            if (creatorEventsQuery.Count() == 0)
+            {
+                return StatusCode(20, "there are no events created by user");
+            }
 
             List<Dictionary<string, object>> creatorEvents = new List<Dictionary<string, object>>();
 
@@ -99,10 +100,11 @@ namespace Firestore.Route.Event
 
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
-            Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("status", EventStatus.Closed.ToString());
+            Query userEvents = firestoreDb.Collection(eventCollection).WhereNotEqualTo("summary",string.Empty);
             QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
+            Console.WriteLine("summary");
 
             List<Dictionary<string, object>> archived_events = new List<Dictionary<string, object>>();
 
@@ -112,12 +114,12 @@ namespace Firestore.Route.Event
                 var dane = documentSnapshot.ToDictionary();
 
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
-                {
-                    {"id_event", documentSnapshot.Id},
-                    {"description", dane["description"]},
-                    {"name", dane["name"] },
-                    {"add_date", dane["add_date"]}
-                };
+                    {
+                        {"id_event", documentSnapshot.Id},
+                        {"description", dane["description"]},
+                        {"name", dane["name"] },
+                        {"add_date", dane["add_date"]}
+                    };
 
                 archived_events.Add(data1);
             }
@@ -126,21 +128,20 @@ namespace Firestore.Route.Event
                 var dane = documentSnapshot.ToDictionary();
 
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
-                {
-                    {"id_event", documentSnapshot.Id},
-                    {"description", dane["description"]},
-                    {"name", dane["name"] },
-                    {"add_date", dane["add_date"]}
-                };
+                    {
+                        {"id_event", documentSnapshot.Id},
+                        {"description", dane["description"]},
+                        {"name", dane["name"] },
+                        {"add_date", dane["add_date"]}
+                    };
 
                 Console.WriteLine();
 
                 archived_events.Add(data1);
             }
-
             return StatusCode(200, JsonConvert.SerializeObject(new { archived_events = archived_events }));
-        }
 
+        }
 
 
         [EnableCors("Policy1")]
@@ -164,7 +165,7 @@ namespace Firestore.Route.Event
                 {"description", model.description},
                 {"name", model.name},
                 {"add_date", Timestamp.GetCurrentTimestamp()},
-                {"status", EventStatus.Open.ToString() },
+                {"summary", "" },
             };
 
             ArrayList users = new ArrayList();

@@ -12,11 +12,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Policy1",
         policy =>
         {
-            policy.WithOrigins("http://192.168.50.81:5173",
-                "http://192.168.50.81:7012", 
+            policy.WithOrigins(
                 "http://localhost:5173", 
-                "http://127.0.0.1:5173", 
-                "http://192.168.50.171:5173").AllowAnyHeader().AllowAnyMethod();
+                "http://localhost:7012").AllowAnyHeader().AllowAnyMethod();
         }) ;
 });
 
