@@ -1,13 +1,16 @@
+import AddIcon from "@mui/icons-material/Add";
+import { IconButton } from "@mui/material";
+
 const AddExpense = ({ handleAddExpense }: { handleAddExpense: any }) => {
   return (
     <div className="global-button-style">
-      <button
+      <IconButton
         onClick={() => {
           handleAddExpense();
         }}
       >
-        Add
-      </button>
+        <AddIcon />
+      </IconButton>
     </div>
   );
 };

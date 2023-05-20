@@ -11,9 +11,8 @@ const ExpenseRow = ({ archived, exp, handleDeleteExpense }: Props) => {
 
   return (
     <tr>
-      <th>{exp.name}</th>
-      <th>{exp.type}</th>
-      <th>{formatter.format(exp.cash)}</th>
+      <th className="expense-font">{exp.name}</th>
+      <th className="expense-font">{formatter.format(exp.cash)}</th>
       {!archived && (
         <th>
           <DeleteExpense handleDeleteExpense={handleDeleteExpense} id_expense={exp.id_expense} />

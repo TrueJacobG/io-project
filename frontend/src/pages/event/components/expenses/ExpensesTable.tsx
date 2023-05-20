@@ -4,6 +4,7 @@ import AddExpense from "./AddExpense";
 import ExpenseRow from "./ExpenseRow";
 import sumCosts from "../../utils/sumCosts";
 import React from "react";
+import Loading from "../loading/Loading";
 
 type Props = {
   archived: boolean;
@@ -134,7 +135,6 @@ const ExpensesTable = ({
         <thead>
           <tr>
             <td>Name</td>
-            <td>Type</td>
             <td>Cost</td>
             <td></td>
           </tr>

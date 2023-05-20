@@ -2,19 +2,25 @@
   text-align: center;
 }
 
+.go-back-button1 {
+  width: 25%;
+  float: left;
+  padding-top: 1em;
+}
+
 .delete-event-button {
-  width: 33%;
+  width: 25%;
   float: left;
 }
 
 .edit-event-button {
-  width: 33%;
+  width: 25%;
   float: left;
   padding-top: 1em;
 }
 
 .finish-event-button {
-  width: 33%;
+  width: 25%;
   float: left;
   padding-top: 1em;
 }
@@ -23,10 +29,6 @@
 
 table {
   width: 100%;
-}
-
-th {
-  border-top: 0.1em black solid;
 }
 
 .link-expense-page {
@@ -83,14 +85,15 @@ th {
   float: left;
 }
 
+/* EXPENSES */
+.expense-font {
+  font-size: 1.3em;
+}
+
 /* USERS */
 
 .bottom {
   width: 100%;
-}
-
-.add-member {
-  padding-bottom: 1em;
 }
 
 .members {
@@ -133,4 +136,28 @@ th {
 
 .add-user-expense {
   margin-top: 1em;
+}
+
+/* MEMBERS */
+.members {
+  border: 0.1em solid black;
+}
+
+.members-title-box {
+  width: 100%;
+}
+
+.members-title {
+  width: 50%;
+  float: left;
+  text-align: right;
+}
+
+.members-title-add {
+  width: 50%;
+  float: left;
+}
+
+.add-member {
+  padding-top: 1.5em;
 }
