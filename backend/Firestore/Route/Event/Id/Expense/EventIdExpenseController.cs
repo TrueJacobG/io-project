@@ -85,8 +85,13 @@ namespace Firestore.Route.Event.Id.Expense
             List<string> eventUsers = snapshot.GetValue<List<string>>("users");
             eventUsers.Add(snapshot.GetValue<string>("creator"));
 
+
             foreach (var modelUser in model.users)
             {
+                foreach (var item in modelUser)
+                {
+                    Console.WriteLine(item.Key + " " + item.Value);
+                }
                 if (!eventUsers.Contains(await Translator.GetUidByEmail(modelUser["email"])))
                 {
                     return StatusCode(400);

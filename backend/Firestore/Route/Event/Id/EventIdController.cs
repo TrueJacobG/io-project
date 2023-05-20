@@ -17,8 +17,9 @@ namespace Firestore.Route.Event.Id
         FirebaseAuthProvider auth = new FirebaseAuthProvider(new FirebaseConfig(System.IO.File.ReadAllLines("Config/userConnection.txt")[0]));
         FirestoreDb firestoreDb = FirestoreDb.Create(System.IO.File.ReadAllText("Config/databaseName.txt"));
 
-        private readonly string eventCollection = "event";
-        private readonly string expenseCollection = "expense";
+        private const string eventCollection = "event";
+        private const string expenseCollection = "expense";
+        private const string summaryCollection = "summary";
 
         public EventIdController(ILogger<EventController> logger)
         {
@@ -75,6 +76,48 @@ namespace Firestore.Route.Event.Id
             return StatusCode(200, data);
         }
 
+
+        [EnableCors("Policy1")]
+        [HttpGet]
+        [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
+        public async Task<IActionResult> GetFinishedEventData(string id_event)
+        {
+            _logger.LogInformation($"EventModel get finished data Attempt");
+            Console.WriteLine(id_event);
+
+            DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
+            DocumentSnapshot result = await eventFromId.GetSnapshotAsync();
+
+            var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
+
+            string data = string.Empty;
+            if (result.Exists)
+            {
+                DocumentSnapshot summary = await firestoreDb.Collection(summaryCollection).Document(result.GetValue<string>("summary")).GetSnapshotAsync();
+
+                if (summary.Exists)
+                {
+                    Dictionary<string, double> debtors = new Dictionary<string, double>();
+
+                    foreach (var item in summary.GetValue<Dictionary<string,double>>(user.LocalId))
+                    {
+                        Console.WriteLine(item.Key + "       " + item.Value);
+                        debtors.Add(await Translator.GetMailByUID(item.Key), item.Value);
+                    }
+                    return StatusCode(200, JsonConvert.SerializeObject(new { debtors = debtors }));
+                }
+                else
+                {
+                    return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event summary"}));
+                }
+            }
+            else
+            {
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event" }));
+            }
+            return StatusCode(200, JsonConvert.SerializeObject( new { result}));
+        }
+
         [EnableCors("Policy1")]
         [HttpDelete]
         [Route("{id_event}", Name = "deleteEvent")]
@@ -123,6 +166,7 @@ namespace Firestore.Route.Event.Id
             {
                 DocumentReference eventToFinish = firestoreDb.Collection(eventCollection).Document(id_event);
                 DocumentSnapshot eventToFinishData = await eventToFinish.GetSnapshotAsync();
+
                 //all users and theirs expense user data
                 Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>();
                 userCash.Add(eventToFinishData.GetValue<string>("creator"), new Dictionary<string, double>());
@@ -221,13 +265,18 @@ namespace Firestore.Route.Event.Id
 
                 }
 
-                //here
-                //Dictionary<string, object> updatedData = new Dictionary<string, object>
-                //{
-                //    { "status", EventStatus.Closed.ToString() },
-                //};
-                //await eventToFinish.SetAsync(updatedData, SetOptions.MergeAll);
+                CollectionReference summarys = firestoreDb.Collection(summaryCollection);
 
+                var summary = await summarys.AddAsync(userCash);
+
+                Console.WriteLine(summary.Id);
+
+                Dictionary<string, object> eventSummaryUpdate = new Dictionary<string, object>
+                {
+                    {"summary", summary.Id }
+                };
+
+                await eventToFinish.UpdateAsync(eventSummaryUpdate);
 
                 return StatusCode(200, JsonConvert.SerializeObject(new { }));
             }

@@ -29,7 +29,6 @@ namespace Firestore.Route.Event
             _logger = logger;
         }
 
-        // | **event | GET  |  | 200 `{ my_events, invited_events}` | 4XX `{ message}` | get list of user events (open)
         [EnableCors("Policy1")]
         [HttpGet]
         [Route("", Name = "getEvents")]
@@ -42,15 +41,9 @@ namespace Firestore.Route.Event
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;
 
             Query userEvents = firestoreDb.Collection(eventCollection).WhereEqualTo("summary", string.Empty);
-
             QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
-
-            if (creatorEventsQuery.Count() == 0)
-            {
-                return StatusCode(20, "there are no events created by user");
-            }
 
             List<Dictionary<string, object>> creatorEvents = new List<Dictionary<string, object>>();
 
@@ -90,7 +83,6 @@ namespace Firestore.Route.Event
         }
 
 
-        //Same as get events, but get only CLOSED
         [EnableCors("Policy1")]
         [HttpGet]
         [Route("archived", Name = "getArchivedEvents")]
@@ -104,13 +96,10 @@ namespace Firestore.Route.Event
             QuerySnapshot creatorEventsQuery = await userEvents.WhereEqualTo("creator", user.LocalId).GetSnapshotAsync();
             QuerySnapshot invitedEventsQuery = await userEvents.WhereArrayContains("users", user.LocalId).GetSnapshotAsync();
 
-            Console.WriteLine("summary");
-
             List<Dictionary<string, object>> archived_events = new List<Dictionary<string, object>>();
 
             foreach (DocumentSnapshot documentSnapshot in creatorEventsQuery.Documents)
             {
-                Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 var dane = documentSnapshot.ToDictionary();
 
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
