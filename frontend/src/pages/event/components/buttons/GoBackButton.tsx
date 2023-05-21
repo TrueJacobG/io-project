@@ -2,9 +2,11 @@ import { IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from "react-router-dom";
 
-const GoBackButton = () => {
+const GoBackButton = ({ archived }: { archived: boolean }) => {
+  const classDiv = archived ? "global-button-style go-back-button1-archived" : "global-button-style go-back-button1";
+
   return (
-    <div className="global-button-style go-back-button1">
+    <div className={classDiv}>
       <Link to={"/"}>
         <IconButton>
           <ArrowBackIcon />

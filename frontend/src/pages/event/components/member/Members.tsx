@@ -1,3 +1,4 @@
+import React from "react";
 import Member from "./Member";
 
 type Props = {
@@ -9,14 +10,16 @@ type Props = {
 const Members = ({ archived, members, handleDeleteMember }: Props) => {
   return (
     <div className="members">
-      {members.map((member) => {
-        return (
-          <div className="row" key={Math.random()}>
-            <Member archived={archived} member={member} handleDeleteMember={handleDeleteMember} />
-            <div style={{ clear: "both" }}></div>
-          </div>
-        );
-      })}
+      <React.Fragment>
+        {members.map((member) => {
+          return (
+            <div className="row" key={Math.random()}>
+              <Member archived={archived} member={member} handleDeleteMember={handleDeleteMember} />
+            </div>
+          );
+        })}
+        <div style={{ clear: "both" }}></div>
+      </React.Fragment>
     </div>
   );
 };

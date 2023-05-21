@@ -8,6 +8,10 @@
   padding-top: 1em;
 }
 
+.go-back-button1-archived {
+  width: 100%;
+}
+
 .delete-event-button {
   width: 25%;
   float: left;
@@ -98,17 +102,31 @@ table {
 
 .members {
   width: 100%;
+  height: auto;
+}
+
+.row {
+  width: 100%;
+  height: 2.5em;
 }
 
 .member {
+  text-align: center;
   width: 100%;
-  background-color: green;
 }
 
 .member-name {
   width: 50%;
   float: left;
   padding-left: 1.7em;
+}
+
+.member-name-archived {
+  width: 100%;
+}
+
+.member-username {
+  text-align: center;
 }
 
 .delete-member {
@@ -153,6 +171,11 @@ table {
   text-align: right;
 }
 
+.members-title-archived {
+  width: 100%;
+  text-align: center;
+}
+
 .members-title-add {
   width: 50%;
   float: left;
@@ -160,4 +183,11 @@ table {
 
 .add-member {
   padding-top: 1.5em;
+}
+
+/* FINISHED DATA */
+.finished-data-box {
+}
+
+.finished-data {
 }

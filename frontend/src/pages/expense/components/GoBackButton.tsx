@@ -2,10 +2,12 @@ import { IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from "react-router-dom";
 
-const GoBackButton = ({ id_event }: { id_event: any }) => {
+const GoBackButton = ({ archived, id_event }: { archived: boolean; id_event: any }) => {
+  const link = archived ? "/event/archived/" + id_event : "/event/" + id_event;
+
   return (
     <div className="global-button-style go-back-button">
-      <Link to={"/event/" + id_event}>
+      <Link to={link}>
         <IconButton>
           <ArrowBackIcon />
         </IconButton>

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import useFetchWithBody from "../../hooks/useFetchWithBody";
-import DeleteEventButton from "./components/DeleteEventButton";
-import EditEventButton from "./components/EditEventButton";
+import DeleteEventButton from "./components/buttons/DeleteEventButton";
+import EditEventButton from "./components/buttons/EditEventButton";
 import Members from "./components/member/Members";
 import AddMember from "./components/member/AddMember";
 import AddUserForm from "./components/member/AddUserForm";
@@ -14,9 +14,10 @@ import convertTypeToEmoji from "./utils/convertTypeToEmoji";
 import getUsersWithCashBySplitType from "./utils/getUsersWithCash";
 import getUsersWithCash from "./utils/getUsersWithCash";
 import sum from "./utils/sum";
-import FinishEventButton from "./components/FinishEventButton";
-import GoBackButton from "./components/GoBackButton";
+import FinishEventButton from "./components/buttons/FinishEventButton";
+import GoBackButton from "./components/buttons/GoBackButton";
 import Loading from "./components/loading/Loading";
+import ArchivedTable from "./components/archived/ArchivedTable";
 
 const Event = ({ archived }: { archived: boolean }) => {
   const { id_event } = useParams();
@@ -31,6 +32,8 @@ const Event = ({ archived }: { archived: boolean }) => {
   const [isShowAddExpenseForm, setIsShowAddExpenseForm] = useState(false);
 
   const [errorAddExpenseForm, setErrorAddExpenseForm] = useState("");
+
+  const [finishedData, setFinishedData] = useState<any[]>([]);
 
   const handleDeleteExpense = (id_expense: string) => {
     useFetchWithBody("/event/" + id_event + "/expense", "DELETE", localStorage.getItem("token") as string, { id_expense: id_expense })
@@ -168,6 +171,17 @@ const Event = ({ archived }: { archived: boolean }) => {
       });
   };
 
+  const handleGetFinishedData = () => {
+    useFetch("/event/" + id_event + "/finished_data", "GET", localStorage.getItem("token") as string)
+      .then((data) => {
+        setFinishedData(data.data);
+      })
+      .catch((e) => {
+        console.error("something went wrong");
+        console.error(e);
+      });
+  };
+
   useEffect(() => {
     useFetch("/event/" + id_event, "GET", localStorage.getItem("token") as string)
       .then((data) => {
@@ -218,7 +232,13 @@ const Event = ({ archived }: { archived: boolean }) => {
         console.error("something went wrong");
         console.error(e);
       });
+
+    handleGetFinishedData();
   }, []);
+
+  const linkToExpenses = archived ? "/event/archived/" + id_event + "/expense" : "/event/" + id_event + "/expense";
+
+  const styleMembersTitle = archived ? "members-title-archived" : "members-title";
 
   return (
     <div>
@@ -226,7 +246,7 @@ const Event = ({ archived }: { archived: boolean }) => {
       <p>{desc}</p>
       <hr />
       <div className="buttons">
-        <GoBackButton />
+        <GoBackButton archived={archived} />
         {!archived && <DeleteEventButton handleDeleteEvent={handleDeleteEvent} />}
         {!archived && <EditEventButton handleEditEvent={handleEditEvent} />}
         {!archived && <FinishEventButton handleFinishEvent={handleFinishEvent} />}
@@ -234,7 +254,7 @@ const Event = ({ archived }: { archived: boolean }) => {
       </div>
 
       <div className="expenses">
-        <Link to={"/event/" + id_event + "/expense"} className="link-expense-page">
+        <Link to={linkToExpenses} className="link-expense-page">
           <h1>Expenses</h1>
         </Link>
         {isLoading ? (
@@ -253,7 +273,7 @@ const Event = ({ archived }: { archived: boolean }) => {
       </div>
       <div className="bottom">
         <div className="members-title-box">
-          <div className="members-title">
+          <div className={styleMembersTitle}>
             <h1>Members</h1>
           </div>
           <div className="members-title-add">
@@ -265,7 +285,7 @@ const Event = ({ archived }: { archived: boolean }) => {
         {isShowAddUserForm && <AddUserForm handleAddUser={handleAddUser} />}
         <Members archived={archived} members={members} handleDeleteMember={handleDeleteMember} />
       </div>
-      {archived && <div>TODO!</div>}
+      {archived && <ArchivedTable finishedData={finishedData} />}
     </div>
   );
 };

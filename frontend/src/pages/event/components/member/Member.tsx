@@ -7,10 +7,12 @@ const Member = ({ archived, member, handleDeleteMember }: Props) => {
     handleDeleteMember(member.email);
   };
 
+  const classDiv = archived ? "member-name-archived" : "member-name";
+
   return (
     <div className="member" key={Math.random()}>
-      <div className="member-name">
-        <p className="member-name">{member.username}</p>
+      <div className={classDiv}>
+        <p className="member-username">{member.username}</p>
       </div>
       <div className="delete-member">
         {(localStorage.getItem("email") as string) !== member.email && !archived && (

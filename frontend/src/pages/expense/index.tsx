@@ -7,7 +7,7 @@ import { ExpenseType } from "../../types/Expense";
 import GoBackButton from "./components/GoBackButton";
 import Loading from "./components/loading/Loading";
 
-const Expense = () => {
+const Expense = ({ archived }: { archived: boolean }) => {
   const { id_event } = useParams();
 
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
@@ -30,7 +30,7 @@ const Expense = () => {
 
   return (
     <div>
-      <GoBackButton id_event={id_event} />
+      <GoBackButton archived={archived} id_event={id_event} />
       {isLoading ? <Loading /> : <ExpensesTable expenses={expenses} />}
     </div>
   );
