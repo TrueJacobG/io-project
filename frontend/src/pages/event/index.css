@@ -186,8 +186,33 @@ table {
 }
 
 /* FINISHED DATA */
+.finish-data-all-box {
+}
+
 .finished-data-box {
+  border: 0.1em solid black;
+  font-size: 1em;
 }
 
 .finished-data {
+  width: 100%;
+  border-bottom: 0.1em solid black;
+}
+
+.debtor-color {
+  background-color: rgb(37, 228, 37);
+}
+
+.debtor {
+  width: 50%;
+  float: left;
+}
+
+.have-to-pay-color {
+  background-color: rgb(159, 10, 10);
+}
+
+.have-to-pay {
+  width: 50%;
+  float: left;
 }
