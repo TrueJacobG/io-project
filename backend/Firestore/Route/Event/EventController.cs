@@ -142,7 +142,7 @@ namespace Firestore.Route.Event
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError($"Wrong data model for event addition for {model.name}");
+                _logger.LogError($"Wrong debtors model for event addition for {model.name}");
                 return StatusCode(400, JsonConvert.SerializeObject(new { message = "Wrong model in Event/add" }));
             }
             var user = auth.GetUserAsync(Request.Headers["authorization"]).Result;

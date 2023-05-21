@@ -1,5 +1,6 @@
 ﻿using Firebase.Auth;
 using Firestore.FirebaseThings;
+using Firestore.Route.Event.Id.DTO;
 using Firestore.Route.Event.Model;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
@@ -82,7 +83,7 @@ namespace Firestore.Route.Event.Id
         [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
         public async Task<IActionResult> GetFinishedEventData(string id_event)
         {
-            _logger.LogInformation($"EventModel get finished data Attempt");
+            _logger.LogInformation($"EventModel get finished debtors Attempt");
             Console.WriteLine(id_event);
 
             DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
@@ -94,27 +95,50 @@ namespace Firestore.Route.Event.Id
 
                 if (summary.Exists)
                 {
-                    Dictionary<string, Dictionary<string, double>> givers = new Dictionary<string, Dictionary<string, double>>();
-                    givers.Add(result.GetValue<string>("creator"), new Dictionary<string, double>());
-
-                    List<string> users = new List<string>();
-                    users.Add(result.GetValue<string>("creator"));
-
-                    foreach (var item in result.GetValue<List<string>>("users"))
+                    List<string> users = new List<string>
                     {
-                        givers.Add(item, new Dictionary<string, double>());
-                        users.Add(item);
-                    }
+                        result.GetValue<string>("creator")
+                    };
+                    users.AddRange(result.GetValue<List<string>>("users"));
+
+
+                    List<PayerDataDTO> a = new List<PayerDataDTO>();
+
 
                     foreach (var item in users)
                     {
-                        foreach (var data in summary.GetValue<Dictionary<string, double>>(item))
+                        PayerDataDTO payerData = new PayerDataDTO(await Translator.GetMailByUID(item));
+
+                        Console.WriteLine(item);
+
+                        foreach (var debtors in summary.GetValue<Dictionary<string, double>>(item))
                         {
-                            givers[item].Add(data.Key, data.Value);
+                            payerData.debtors.Add(new Dictionary<string, string>()
+                            {
+                                {"email", await Translator.GetMailByUID(debtors.Key) },
+                                {"cash", debtors.Value.ToString()}
+                            });
+
+                           
+                            //givers[user].Add("email", await Translator.GetMailByUID(debtors.Key));
+                            //givers[user].Add("cash", debtors.Value.ToString());
                         }
+
+                        a.Add(payerData);
                     }
 
-                    return StatusCode(200, JsonConvert.SerializeObject(new { data = givers.ToArray() }));
+
+                    //foreach (var item in givers)
+                    //{
+                    //    Console.WriteLine(item.Key);
+                    //    foreach (var item2 in givers[item.Key])
+                    //    {
+                    //        Console.WriteLine($"{item2.Key}    {item2.Value}");
+                    //    }
+                    //}
+
+
+                    return StatusCode(200, JsonConvert.SerializeObject(new { data = a }));
                 }
                 else
                 {
@@ -176,7 +200,7 @@ namespace Firestore.Route.Event.Id
                 DocumentReference eventToFinish = firestoreDb.Collection(eventCollection).Document(id_event);
                 DocumentSnapshot eventToFinishData = await eventToFinish.GetSnapshotAsync();
 
-                //all users and theirs expense user data
+                //all users and theirs expense user debtors
                 Dictionary<string, Dictionary<string, double>> userCash = new Dictionary<string, Dictionary<string, double>>();
                 userCash.Add(eventToFinishData.GetValue<string>("creator"), new Dictionary<string, double>());
                 foreach (string user in eventToFinishData.GetValue<string[]>("users"))
@@ -202,7 +226,7 @@ namespace Firestore.Route.Event.Id
                     //for all users in one expense
                     foreach (Dictionary<string, string> item in eventToFinishExpense.GetValue<Dictionary<string, string>[]>("users"))
                     {
-                        //add data about user and their cash to proper userCash column
+                        //add debtors about user and their cash to proper userCash column
                         if (item["email"] != creatorEmail)
                         {
                             Console.WriteLine($"FOUND -> {item["email"]}");

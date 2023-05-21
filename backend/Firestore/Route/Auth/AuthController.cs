@@ -33,8 +33,8 @@ namespace Firestore.Route.User
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError($"Wrong data model for register attempf for {registrationModel.email}");
-                return StatusCode(400, JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {registrationModel.email}" }));
+                _logger.LogError($"Wrong debtors model for register attempf for {registrationModel.email}");
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = $"Wrong debtors model for register attempf for {registrationModel.email}" }));
             }
 
             try
@@ -79,8 +79,8 @@ namespace Firestore.Route.User
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError($"Wrong data model for register attempf for {loginModel.email}");
-                return StatusCode(400, JsonConvert.SerializeObject(new { message = $"Wrong data model for register attempf for {loginModel.email}" }));
+                _logger.LogError($"Wrong debtors model for register attempf for {loginModel.email}");
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = $"Wrong debtors model for register attempf for {loginModel.email}" }));
             }
 
             try
