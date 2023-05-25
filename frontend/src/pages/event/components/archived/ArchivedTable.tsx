@@ -1,7 +1,12 @@
 import React from "react";
 
-const ArchivedTable = ({ finishedData }: { finishedData: any[] }) => {
-  console.log(finishedData);
+const ArchivedTable = ({ finishedData, members }: { finishedData: any[]; members: any[] }) => {
+  const handleDebtorReturnedMoney = (element: any) => {
+    const data = { payer: element.payer, receiver: element.debtors[0].email, cash: element.debtors[0].cash };
+  };
+  const handlePayerReceivedMoney = (element: any) => {
+    const data = { payer: element.payer, receiver: element.debtors[0].email, cash: element.debtors[0].cash };
+  };
 
   return (
     <div className="finished-data-all-box">
@@ -22,12 +27,23 @@ const ArchivedTable = ({ finishedData }: { finishedData: any[] }) => {
               {el.debtors.length > 0 && (
                 <div className="debtor">
                   <h3>{el.payer}</h3>
+                  {localStorage.getItem("email") == el.payer && (
+                    <div className="global-button-style debtor-button">
+                      <button onClick={() => handleDebtorReturnedMoney(el)}>Returned money!</button>
+                    </div>
+                  )}
+                  {localStorage.getItem("email") == el.debtors[0].email && (
+                    <div className="global-button-style payer-button">
+                      <button onClick={() => handlePayerReceivedMoney(el)}>Received money!</button>
+                    </div>
+                  )}
                 </div>
               )}
               <div className="have-to-pay">
                 {el.debtors.map((deb) => {
+                  // TODO?
                   return (
-                    <React.Fragment>
+                    <React.Fragment key={Math.random()}>
                       <p>{deb.cash} zł</p>
                       <p>to</p>
                       <p>{deb.email}</p>

@@ -285,7 +285,7 @@ const Event = ({ archived }: { archived: boolean }) => {
         {isShowAddUserForm && <AddUserForm handleAddUser={handleAddUser} />}
         <Members archived={archived} members={members} handleDeleteMember={handleDeleteMember} />
       </div>
-      {archived && <ArchivedTable finishedData={finishedData} />}
+      {archived && <ArchivedTable finishedData={finishedData} members={members} />}
     </div>
   );
 };

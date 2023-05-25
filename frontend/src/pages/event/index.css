@@ -216,3 +216,9 @@ table {
   width: 50%;
   float: left;
 }
+
+.payer-button,
+.debtor-button {
+  margin-left: 25%;
+  width: 0.5em;
+}
