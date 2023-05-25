@@ -1,14 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 
-const AddExpense = ({ handleAddExpense }: { handleAddExpense: any }) => {
+type Props = {
+  handleAddExpense: () => void;
+};
+
+const AddExpense = ({ handleAddExpense }: Props) => {
   return (
     <div className="global-button-style">
-      <IconButton
-        onClick={() => {
-          handleAddExpense();
-        }}
-      >
+      <IconButton onClick={handleAddExpense}>
         <AddIcon />
       </IconButton>
     </div>

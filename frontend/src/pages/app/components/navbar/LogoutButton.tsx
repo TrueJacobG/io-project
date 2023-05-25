@@ -1,6 +1,8 @@
 import "./navbar.css";
 
-const LogoutButton = ({ handleLogoutClick }: { handleLogoutClick: any }) => {
+type Props = { handleLogoutClick: () => void };
+
+const LogoutButton = ({ handleLogoutClick }: Props) => {
   return (
     <div className="logout-button global-button-style">
       <button onClick={handleLogoutClick}>Logout</button>

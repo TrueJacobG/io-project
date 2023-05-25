@@ -4,15 +4,15 @@ import AddExpense from "./AddExpense";
 import ExpenseRow from "./ExpenseRow";
 import sumCosts from "../../utils/sumCosts";
 import React from "react";
-import Loading from "../loading/Loading";
+import { Member } from "../../../../types/MemberType";
 
 type Props = {
   archived: boolean;
   expenses: ExpenseType[];
-  members: any[];
-  handleDeleteExpense: any;
-  handleAddExpense: any;
-  isShowAddExpenseForm: any;
+  members: Member[];
+  handleDeleteExpense: () => void;
+  handleAddExpense: () => void;
+  isShowAddExpenseForm: () => void;
   errorAddExpenseForm: string;
 };
 
@@ -50,7 +50,7 @@ const ExpensesTable = ({
     }
   };
 
-  const handleChangeUserInExpense = (e: any, u: string) => {
+  const handleChangeUserInExpense = (e: React.MouseEvent<HTMLButtonElement>, u: string) => {
     if (e.target.checked) {
       setUsers([...users, u]);
     } else {

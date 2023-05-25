@@ -2,7 +2,12 @@ import "./event.css";
 import { useState } from "react";
 import { Event } from "../../../../types/Event";
 
-const CreateEventCard = ({ event, handleCreateEvent }: { event: Event; handleCreateEvent: any }) => {
+type Props = {
+  event: Event;
+  handleCreateEvent: (name: string, desc: string) => void;
+};
+
+const CreateEventCard = ({ event, handleCreateEvent }: Props) => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
 

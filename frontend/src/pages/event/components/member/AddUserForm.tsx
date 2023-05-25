@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-const AddUserForm = ({ handleAddUser }: { handleAddUser: any }) => {
+type Props = {
+  handleAddUser: (email: string) => void;
+};
+
+const AddUserForm = ({ handleAddUser }: Props) => {
   const [email, setEmail] = useState("");
 
   return (

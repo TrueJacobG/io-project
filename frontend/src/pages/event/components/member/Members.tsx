@@ -1,10 +1,11 @@
 import React from "react";
 import Member from "./Member";
+import { MemberType } from "../../../../types/MemberType";
 
 type Props = {
   archived: boolean;
-  members: any[];
-  handleDeleteMember: any;
+  members: MemberType[];
+  handleDeleteMember: () => void;
 };
 
 const Members = ({ archived, members, handleDeleteMember }: Props) => {

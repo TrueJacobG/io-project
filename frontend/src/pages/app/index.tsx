@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import "./index.css";
+
 import AuthForm from "./components/auth/AuthForm";
 import Events from "./components/event/Events";
 import AddEventButton from "./components/event/AddEventButton";
 import Navbar from "./components/navbar/Navbar";
 
-import { Event } from "../../types/Event";
 import NotLogged from "./components/error/NotLogged";
 import useFetch from "../../hooks/useFetch";
 import setWrongPasswordMessage from "./utils/setWrongPasswordErrorMessage";
 import useFetchWithBody from "../../hooks/useFetchWithBody";
 
+import { Event } from "../../types/Event";
+
 function App() {
   const [isShowAuthForm, setIsShowAuthForm] = useState(0);
   const [isLogged, setIsLogged] = useState(false);
-  const [username, setUsername] = useState("Anonymous");
 
   const [loginError, setLoginError] = useState("");
   const [registerError, setRegisterError] = useState("");
@@ -43,12 +44,11 @@ function App() {
 
   const handleLogoutClick = () => {
     setIsLogged(false);
-    setUsername("Anonymous");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
   };
 
-  const loginEvent = (e: any, email: string, password: string) => {
+  const loginEvent = (e: React.MouseEvent<HTMLButtonElement>, email: string, password: string) => {
     e.preventDefault();
 
     setLoginError("");
@@ -70,7 +70,7 @@ function App() {
       });
   };
 
-  const registerEvent = (e: any, username: string, email: string, password: string, rpassword: string) => {
+  const registerEvent = (e: React.MouseEvent<HTMLButtonElement>, username: string, email: string, password: string, rpassword: string) => {
     e.preventDefault();
 
     if (setWrongPasswordMessage(username, email, password, rpassword, setRegisterError)) {
@@ -119,6 +119,7 @@ function App() {
 
   const handleCreateEvent = (name: string, desc: string) => {
     if (name === null || name.length === 0 || desc === null || desc.length === 0) {
+      // TODO
       console.error("You can't add event with empty name or description!");
       return;
     }
@@ -156,13 +157,12 @@ function App() {
   };
 
   const setStorageVariables = (token: string, username: string, email: string) => {
-    setUsername(username);
     localStorage.setItem("token", token);
     localStorage.setItem("username", username);
     localStorage.setItem("email", email);
   };
 
-  const loadEvents = () => {
+  const loadActiveEvents = () => {
     useFetch("/event", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setMyEvents(data.my_events);
@@ -172,7 +172,9 @@ function App() {
         console.error("something went wrong");
         console.error(e);
       });
+  };
 
+  const loadArchivedEvents = () => {
     useFetch("/event/archived", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setArchivedEvents(data.archived_events);
@@ -181,6 +183,11 @@ function App() {
         console.error("something went wrong");
         console.error(e);
       });
+  };
+
+  const loadEvents = () => {
+    loadActiveEvents();
+    loadArchivedEvents();
   };
 
   useEffect(() => {
@@ -194,12 +201,11 @@ function App() {
         .catch((e) => {
           console.error(e);
         });
+    } else {
+      handleLogoutClick();
     }
 
-    let username = localStorage.getItem("username");
-
-    if (username !== null) {
-      setUsername(username);
+    if (localStorage.getItem("username") !== null) {
       setIsLogged(true);
       loadEvents();
     }
@@ -212,7 +218,6 @@ function App() {
         handleRegisterClick={handleRegisterClick}
         handleLogoutClick={handleLogoutClick}
         isLogged={isLogged}
-        username={username}
       />
       <AuthForm
         isShowAuthForm={isShowAuthForm}

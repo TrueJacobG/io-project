@@ -1,6 +1,8 @@
 import "./navbar.css";
 
-const LoginButton = ({ handleLoginClick }: { handleLoginClick: any }) => {
+type Props = { handleLoginClick: () => void };
+
+const LoginButton = ({ handleLoginClick }: Props) => {
   return (
     <div className="login-button global-button-style">
       <button onClick={handleLoginClick}>Login</button>

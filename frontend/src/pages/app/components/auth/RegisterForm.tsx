@@ -3,8 +3,8 @@ import { useState } from "react";
 import getPasswordLevelName from "../../utils/getPasswordLevelName";
 
 type Props = {
-  registerEvent: any;
-  changeForms: any;
+  registerEvent: (e: React.MouseEvent<HTMLButtonElement>, username: string, email: string, password: string, rpassword: string) => void;
+  changeForms: React.Dispatch<React.SetStateAction<number>>;
   registerError: string;
 };
 
@@ -16,10 +16,28 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
 
   const [isOnFocusPassword, setIsOnFocusPassword] = useState(false);
 
+  const clearInputs = () => {
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setRpassword("");
+  };
+
+  const handleRegisterClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    username: string,
+    email: string,
+    password: string,
+    rpassword: string
+  ) => {
+    registerEvent(e, username, email, password, rpassword);
+    clearInputs();
+  };
+
   return (
     <div className="register-form">
       <div className="form-box">
-        <form>
+        <form autoComplete="off">
           <h1>Register</h1>
           <label>Username</label>
           <br />
@@ -92,7 +110,7 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
           <button
             className="auth-button"
             onClick={(e) => {
-              registerEvent(e, username, email, password, rpassword);
+              handleRegisterClick(e, username, email, password, rpassword);
             }}
           >
             Register
@@ -103,7 +121,8 @@ const RegisterForm = ({ registerEvent, changeForms, registerError }: Props) => {
       <button
         className="change-form-button"
         onClick={() => {
-          changeForms((i: any) => !i);
+          changeForms((i) => (i === 0 ? 1 : 0));
+          clearInputs();
         }}
       >
         Do you have an account? Login now

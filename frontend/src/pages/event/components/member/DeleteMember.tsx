@@ -1,15 +1,14 @@
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const DeleteMember = ({ handleClickDeleteMember }: { handleClickDeleteMember: any }) => {
+type Props = {
+  handleClickDeleteMember: () => void;
+};
+
+const DeleteMember = ({ handleClickDeleteMember }: Props) => {
   return (
     <div className="">
-      <IconButton
-        aria-label="delete"
-        onClick={() => {
-          handleClickDeleteMember();
-        }}
-      >
+      <IconButton aria-label="delete" onClick={handleClickDeleteMember}>
         <DeleteIcon />
       </IconButton>
     </div>

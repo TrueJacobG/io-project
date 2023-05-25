@@ -4,9 +4,9 @@ import RegisterForm from "./RegisterForm";
 
 type Props = {
   isShowAuthForm: number;
-  setIsShowAuthForm: any;
-  loginEvent: any;
-  registerEvent: any;
+  setIsShowAuthForm: React.Dispatch<React.SetStateAction<number>>;
+  loginEvent: (e: React.MouseEvent<HTMLButtonElement>, email: string, password: string) => void;
+  registerEvent: (e: React.MouseEvent<HTMLButtonElement>, username: string, email: string, password: string, rpassword: string) => void;
   loginError: string;
   registerError: string;
 };

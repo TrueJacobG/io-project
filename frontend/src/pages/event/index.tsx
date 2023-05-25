@@ -1,6 +1,7 @@
-import "./index.css";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import "./index.css";
+
 import useFetch from "../../hooks/useFetch";
 import useFetchWithBody from "../../hooks/useFetchWithBody";
 import DeleteEventButton from "./components/buttons/DeleteEventButton";
@@ -9,34 +10,39 @@ import Members from "./components/member/Members";
 import AddMember from "./components/member/AddMember";
 import AddUserForm from "./components/member/AddUserForm";
 import ExpensesTable from "./components/expenses/ExpensesTable";
-import { ExpenseType } from "../../types/Expense";
-import convertTypeToEmoji from "./utils/convertTypeToEmoji";
-import getUsersWithCashBySplitType from "./utils/getUsersWithCash";
-import getUsersWithCash from "./utils/getUsersWithCash";
-import sum from "./utils/sum";
 import FinishEventButton from "./components/buttons/FinishEventButton";
 import GoBackButton from "./components/buttons/GoBackButton";
 import Loading from "./components/loading/Loading";
 import ArchivedTable from "./components/archived/ArchivedTable";
 
+import convertTypeToEmoji from "./utils/convertTypeToEmoji";
+import getUsersWithCash from "./utils/getUsersWithCash";
+
+import { ExpenseType } from "../../types/Expense";
+import { Member } from "../../types/MemberType";
+import { FinishedData } from "../../types/FinishedData";
+import { UserWithCash } from "../../types/UserWithCash";
+
 const Event = ({ archived }: { archived: boolean }) => {
-  const { id_event } = useParams();
+  const { idEvent } = useParams();
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [members, setMembers] = useState<any[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
+  const [finishedData, setFinishedData] = useState<FinishedData[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isShowAddUserForm, setIsShowAddUserForm] = useState(false);
   const [isShowAddExpenseForm, setIsShowAddExpenseForm] = useState(false);
-
   const [errorAddExpenseForm, setErrorAddExpenseForm] = useState("");
 
-  const [finishedData, setFinishedData] = useState<any[]>([]);
+  const linkToExpenses = archived ? "/event/archived/" + idEvent + "/expense" : "/event/" + idEvent + "/expense";
+  const styleMembersTitle = archived ? "members-title-archived" : "members-title";
 
   const handleDeleteExpense = (id_expense: string) => {
-    useFetchWithBody("/event/" + id_event + "/expense", "DELETE", localStorage.getItem("token") as string, { id_expense: id_expense })
+    useFetchWithBody("/event/" + idEvent + "/expense", "DELETE", localStorage.getItem("token") as string, { id_expense: id_expense })
       .then(() => {
         let newExpenses: ExpenseType[] = [];
 
@@ -72,9 +78,9 @@ const Event = ({ archived }: { archived: boolean }) => {
       return;
     }
 
-    let usersWithCash: any = getUsersWithCash(members, users, splitCash);
+    let usersWithCash: UserWithCash[] = getUsersWithCash(members, users, splitCash);
 
-    useFetchWithBody("/event/" + id_event + "/expense", "POST", localStorage.getItem("token") as string, {
+    useFetchWithBody("/event/" + idEvent + "/expense", "POST", localStorage.getItem("token") as string, {
       name: name,
       description: description,
       type: type,
@@ -101,10 +107,8 @@ const Event = ({ archived }: { archived: boolean }) => {
       });
   };
 
-  const [isShowAddUserForm, setIsShowAddUserForm] = useState(false);
-
   const handleDeleteEvent = () => {
-    useFetch("/event/" + id_event, "DELETE", localStorage.getItem("token") as string)
+    useFetch("/event/" + idEvent, "DELETE", localStorage.getItem("token") as string)
       .then(() => {
         window.location.href = "/";
       })
@@ -115,7 +119,7 @@ const Event = ({ archived }: { archived: boolean }) => {
   };
 
   const handleEditEvent = (name: string, description: string) => {
-    useFetchWithBody("/event/" + id_event, "PUT", localStorage.getItem("token") as string, { name: name, description: description })
+    useFetchWithBody("/event/" + idEvent, "PUT", localStorage.getItem("token") as string, { name: name, description: description })
       .then(() => {})
       .catch((e) => {
         console.error("something went wrong");
@@ -124,7 +128,7 @@ const Event = ({ archived }: { archived: boolean }) => {
   };
 
   const handleFinishEvent = () => {
-    useFetch("/event/" + id_event + "/finish", "GET", localStorage.getItem("token") as string)
+    useFetch("/event/" + idEvent + "/finish", "GET", localStorage.getItem("token") as string)
       .then(() => {
         window.location.href = "/";
       })
@@ -139,7 +143,7 @@ const Event = ({ archived }: { archived: boolean }) => {
   };
 
   const handleAddUser = (email: string) => {
-    useFetchWithBody("/event/" + id_event + "/user", "POST", localStorage.getItem("token") as string, { user_email: email })
+    useFetchWithBody("/event/" + idEvent + "/user", "POST", localStorage.getItem("token") as string, { user_email: email })
       .then((data) => {
         if (data.username) {
           setMembers(() => [...members, { email: email, username: data.username }]);
@@ -153,7 +157,7 @@ const Event = ({ archived }: { archived: boolean }) => {
   };
 
   const handleDeleteMember = (email: string) => {
-    useFetchWithBody("/event/" + id_event + "/user", "DELETE", localStorage.getItem("token") as string, { user_email: email })
+    useFetchWithBody("/event/" + idEvent + "/user", "DELETE", localStorage.getItem("token") as string, { user_email: email })
       .then(() => {
         let newMembers: string[] = [];
 
@@ -171,8 +175,8 @@ const Event = ({ archived }: { archived: boolean }) => {
       });
   };
 
-  const handleGetFinishedData = () => {
-    useFetch("/event/" + id_event + "/finished_data", "GET", localStorage.getItem("token") as string)
+  const loadFinishedData = () => {
+    useFetch("/event/" + idEvent + "/finished_data", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setFinishedData(data.data);
       })
@@ -182,13 +186,13 @@ const Event = ({ archived }: { archived: boolean }) => {
       });
   };
 
-  useEffect(() => {
-    useFetch("/event/" + id_event, "GET", localStorage.getItem("token") as string)
+  const loadEventInfoAndMembers = () => {
+    useFetch("/event/" + idEvent, "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setName(data.name);
         setDesc(data.description);
 
-        let newMembers: any = [];
+        let newMembers: Member[] = [];
 
         data.users.forEach((u) => {
           if (u.email !== (localStorage.getItem("email") as string)) {
@@ -204,9 +208,11 @@ const Event = ({ archived }: { archived: boolean }) => {
         console.error("something went wrong");
         console.error(e);
       });
+  };
 
+  const loadExpenses = () => {
     setIsLoading(true);
-    useFetch("/event/" + id_event + "/expense", "GET", localStorage.getItem("token") as string)
+    useFetch("/event/" + idEvent + "/expense", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         let expenses: ExpenseType[] = [];
 
@@ -232,13 +238,15 @@ const Event = ({ archived }: { archived: boolean }) => {
         console.error("something went wrong");
         console.error(e);
       });
+  };
 
-    handleGetFinishedData();
+  useEffect(() => {
+    loadEventInfoAndMembers();
+    loadExpenses();
+    if (archived) {
+      loadFinishedData();
+    }
   }, []);
-
-  const linkToExpenses = archived ? "/event/archived/" + id_event + "/expense" : "/event/" + id_event + "/expense";
-
-  const styleMembersTitle = archived ? "members-title-archived" : "members-title";
 
   return (
     <div>

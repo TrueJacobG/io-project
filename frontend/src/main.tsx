@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./index.css";
-import Info from "./pages/info";
 import Event from "./pages/event";
 import WrongUrl from "./pages/error";
 import App from "./pages/app";
@@ -16,23 +15,19 @@ const router = createBrowserRouter([
     errorElement: <WrongUrl />,
   },
   {
-    path: "/info",
-    element: <Info />,
-  },
-  {
-    path: "/event/:id_event",
+    path: "/event/:idEvent",
     element: <Event archived={false} />,
   },
   {
-    path: "/event/archived/:id_event",
+    path: "/event/archived/:idEvent",
     element: <Event archived={true} />,
   },
   {
-    path: "/event/:id_event/expense",
+    path: "/event/:idEvent/expense",
     element: <Expense archived={false} />,
   },
   {
-    path: "/event/archived/:id_event/expense",
+    path: "/event/archived/:idEvent/expense",
     element: <Expense archived={true} />,
   },
 ]);

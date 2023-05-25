@@ -3,19 +3,14 @@ import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 import RegisterButton from "./RegisterButton";
 
-const Navbar = ({
-  handleLoginClick,
-  handleRegisterClick,
-  handleLogoutClick,
-  isLogged,
-  username,
-}: {
-  handleLoginClick: any;
-  handleRegisterClick: any;
-  handleLogoutClick: any;
+type Props = {
+  handleLoginClick: () => void;
+  handleRegisterClick: () => void;
+  handleLogoutClick: () => void;
   isLogged: boolean;
-  username: string;
-}) => {
+};
+
+const Navbar = ({ handleLoginClick, handleRegisterClick, handleLogoutClick, isLogged }: Props) => {
   return (
     <div className="navbar">
       <div className="title">
@@ -29,7 +24,7 @@ const Navbar = ({
       ) : (
         <div>
           <div className="info">
-            <h2>{username}</h2>
+            <h2>{localStorage.getItem("username") !== undefined ? localStorage.getItem("username") : "Anonymous"}</h2>
           </div>
           <LogoutButton handleLogoutClick={handleLogoutClick} />
         </div>

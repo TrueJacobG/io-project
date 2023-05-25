@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
 import { Event } from "../../../../types/Event";
 import CreateEventCard from "./CreateEventCard";
 import EventArchivedCard from "./EventArchivedCard";
 
-type Props = { myEvents: Event[]; invitedEvents: Event[]; archivedEvents: Event[]; handleCreateEvent: any };
+type Props = {
+  myEvents: Event[];
+  invitedEvents: Event[];
+  archivedEvents: Event[];
+  handleCreateEvent: () => void;
+};
 
 const Events = ({ myEvents, invitedEvents, archivedEvents, handleCreateEvent }: Props) => {
   return (

@@ -2,8 +2,8 @@ import "./auth.css";
 import { useState } from "react";
 
 type Props = {
-  loginEvent: any;
-  changeForms: any;
+  loginEvent: (e: React.MouseEvent<HTMLButtonElement>, email: string, password: string) => void;
+  changeForms: React.Dispatch<React.SetStateAction<number>>;
   loginError: string;
 };
 
@@ -48,7 +48,7 @@ const LoginForm = ({ loginEvent, changeForms, loginError }: Props) => {
       <button
         className="change-form-button"
         onClick={() => {
-          changeForms((i: any) => (i === 1 ? 2 : 1));
+          changeForms((i) => (i === 1 ? 2 : 1));
         }}
       >
         Don't have an account? Register now

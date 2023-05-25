@@ -1,6 +1,10 @@
 import "./navbar.css";
 
-const RegisterButton = ({ handleRegisterClick }: { handleRegisterClick: any }) => {
+type Props = {
+  handleRegisterClick: () => void;
+};
+
+const RegisterButton = ({ handleRegisterClick }: Props) => {
   return (
     <div className="register-button global-button-style">
       <button onClick={handleRegisterClick}>Register</button>

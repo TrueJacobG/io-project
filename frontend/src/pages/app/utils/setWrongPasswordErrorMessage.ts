@@ -1,4 +1,10 @@
-const setWrongPasswordMessage = (username: string, email: string, password: string, rpassword: string, setRegisterError: any): boolean => {
+const setWrongPasswordMessage = (
+  username: string,
+  email: string,
+  password: string,
+  rpassword: string,
+  setRegisterError: React.Dispatch<React.SetStateAction<string>>
+): boolean => {
   if (password !== rpassword) {
     setRegisterError("Passwords are not equal!");
     return true;

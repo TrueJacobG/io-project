@@ -1,6 +1,11 @@
+import { MemberType } from "../../../../types/MemberType";
 import DeleteMember from "./DeleteMember";
 
-type Props = { archived: boolean; member: any; handleDeleteMember: any };
+type Props = {
+  archived: boolean;
+  member: MemberType;
+  handleDeleteMember: (email: string) => void;
+};
 
 const Member = ({ archived, member, handleDeleteMember }: Props) => {
   const handleClickDeleteMember = () => {

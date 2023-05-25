@@ -1,11 +1,18 @@
 import React from "react";
+import { Member } from "../../../../types/MemberType";
+import { FinishedData } from "../../../../types/FinishedData";
 
-const ArchivedTable = ({ finishedData, members }: { finishedData: any[]; members: any[] }) => {
-  const handleDebtorReturnedMoney = (element: any) => {
-    const data = { payer: element.payer, receiver: element.debtors[0].email, cash: element.debtors[0].cash };
+type Props = {
+  finishedData: FinishedData[];
+  members: Member[];
+};
+
+const ArchivedTable = ({ finishedData, members }: Props) => {
+  const handleDebtorReturnedMoney = (element: FinishedData) => {
+    const data = { payer: element.payer, receiver: element.debtors[0].email };
   };
-  const handlePayerReceivedMoney = (element: any) => {
-    const data = { payer: element.payer, receiver: element.debtors[0].email, cash: element.debtors[0].cash };
+  const handlePayerReceivedMoney = (element: FinishedData) => {
+    const data = { payer: element.payer, receiver: element.debtors[0].email };
   };
 
   return (

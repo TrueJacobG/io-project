@@ -1,5 +1,8 @@
-const getUsersWithCash = (members: any[], users: string[], cash: number[]) => {
-  let newUsers: any = [];
+import { MemberType } from "../../../types/MemberType";
+import { UserWithCash } from "../../../types/UserWithCash";
+
+const getUsersWithCash = (members: MemberType[], users: string[], cash: number[]): UserWithCash[] => {
+  let newUsers: UserWithCash[] = [];
 
   let userIndex = 0;
   for (let i = 0; i < cash.length; i++) {
