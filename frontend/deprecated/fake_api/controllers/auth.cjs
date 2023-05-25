@@ -30,7 +30,7 @@ module.exports = function (app, prefix, db, id) {
         res.send(JSON.stringify({ auth_data: body.auth_data }));
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
         res.status(409);
         res.send(JSON.stringify({ message: "Can't register to database!" }));
       });
