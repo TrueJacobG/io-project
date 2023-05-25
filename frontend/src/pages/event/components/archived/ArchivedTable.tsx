@@ -8,6 +8,11 @@ type Props = {
 };
 
 const ArchivedTable = ({ finishedData, members }: Props) => {
+  const formatter = new Intl.NumberFormat("pl-PL", {
+    style: "currency",
+    currency: "PLN",
+  });
+
   const handleDebtorReturnedMoney = (element: FinishedData) => {
     const data = { payer: element.payer, receiver: element.debtors[0].email };
   };
@@ -51,7 +56,7 @@ const ArchivedTable = ({ finishedData, members }: Props) => {
                   // TODO?
                   return (
                     <React.Fragment key={Math.random()}>
-                      <p>{deb.cash} zł</p>
+                      <p>{formatter.format(Number(deb.cash))}</p>
                       <p>to</p>
                       <p>{deb.email}</p>
                     </React.Fragment>
