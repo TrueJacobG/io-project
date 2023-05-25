@@ -3,13 +3,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import "./event.css";
 
 type Props = {
-  handleEditEvent: () => void;
+  handleEditEvent: (name: string, description: string) => void;
 };
 
 const EditEventButton = ({ handleEditEvent }: Props) => {
   return (
     <div className="edit-event-button global-button-style">
-      <IconButton onClick={handleEditEvent}>
+      <IconButton onClick={() => handleEditEvent("todo", "todo")}>
         <EditIcon />
       </IconButton>
     </div>

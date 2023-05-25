@@ -1,10 +1,10 @@
 import React from "react";
-import { Member } from "../../../../types/MemberType";
+import { MemberType } from "../../../../types/MemberType";
 import { FinishedData } from "../../../../types/FinishedData";
 
 type Props = {
   finishedData: FinishedData[];
-  members: Member[];
+  members: MemberType[];
 };
 
 const ArchivedTable = ({ finishedData, members }: Props) => {

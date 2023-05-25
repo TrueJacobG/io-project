@@ -8,7 +8,7 @@ import GoBackButton from "./components/GoBackButton";
 import Loading from "./components/loading/Loading";
 
 const Expense = ({ archived }: { archived: boolean }) => {
-  const { id_event } = useParams();
+  const { idEvent } = useParams();
 
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
 
@@ -16,7 +16,7 @@ const Expense = ({ archived }: { archived: boolean }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    useFetch("/event/" + id_event + "/expense", "GET", localStorage.getItem("token") as string)
+    useFetch("/event/" + idEvent + "/expense", "GET", localStorage.getItem("token") as string)
       .then((exp) => {
         setExpenses(exp.expenses);
         setIsLoading(false);
@@ -30,7 +30,7 @@ const Expense = ({ archived }: { archived: boolean }) => {
 
   return (
     <div>
-      <GoBackButton archived={archived} id_event={id_event} />
+      <GoBackButton archived={archived} idEvent={idEvent === undefined ? "" : idEvent} />
       {isLoading ? <Loading /> : <ExpensesTable expenses={expenses} />}
     </div>
   );

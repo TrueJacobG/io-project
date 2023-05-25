@@ -7,7 +7,7 @@ type Props = {
   myEvents: Event[];
   invitedEvents: Event[];
   archivedEvents: Event[];
-  handleCreateEvent: () => void;
+  handleCreateEvent: (name: string, desc: string) => void;
 };
 
 const Events = ({ myEvents, invitedEvents, archivedEvents, handleCreateEvent }: Props) => {

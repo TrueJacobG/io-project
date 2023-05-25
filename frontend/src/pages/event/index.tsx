@@ -19,7 +19,7 @@ import convertTypeToEmoji from "./utils/convertTypeToEmoji";
 import getUsersWithCash from "./utils/getUsersWithCash";
 
 import { ExpenseType } from "../../types/Expense";
-import { Member } from "../../types/MemberType";
+import { MemberType } from "../../types/MemberType";
 import { FinishedData } from "../../types/FinishedData";
 import { UserWithCash } from "../../types/UserWithCash";
 
@@ -28,7 +28,7 @@ const Event = ({ archived }: { archived: boolean }) => {
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members, setMembers] = useState<MemberType[]>([]);
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
   const [finishedData, setFinishedData] = useState<FinishedData[]>([]);
 
@@ -41,13 +41,13 @@ const Event = ({ archived }: { archived: boolean }) => {
   const linkToExpenses = archived ? "/event/archived/" + idEvent + "/expense" : "/event/" + idEvent + "/expense";
   const styleMembersTitle = archived ? "members-title-archived" : "members-title";
 
-  const handleDeleteExpense = (id_expense: string) => {
-    useFetchWithBody("/event/" + idEvent + "/expense", "DELETE", localStorage.getItem("token") as string, { id_expense: id_expense })
+  const handleDeleteExpense = (idExpense: string) => {
+    useFetchWithBody("/event/" + idEvent + "/expense", "DELETE", localStorage.getItem("token") as string, { id_expense: idExpense })
       .then(() => {
         let newExpenses: ExpenseType[] = [];
 
         expenses.forEach((exp) => {
-          if (exp.id_expense !== id_expense) {
+          if (exp.id_expense !== idExpense) {
             newExpenses.push(exp);
           }
         });
@@ -159,7 +159,7 @@ const Event = ({ archived }: { archived: boolean }) => {
   const handleDeleteMember = (email: string) => {
     useFetchWithBody("/event/" + idEvent + "/user", "DELETE", localStorage.getItem("token") as string, { user_email: email })
       .then(() => {
-        let newMembers: string[] = [];
+        let newMembers: MemberType[] = [];
 
         members.forEach((member) => {
           if (member.email !== email) {
@@ -167,7 +167,7 @@ const Event = ({ archived }: { archived: boolean }) => {
           }
         });
 
-        setMembers(() => newMembers);
+        setMembers(newMembers);
       })
       .catch((e) => {
         console.error("something went wrong");
@@ -192,9 +192,9 @@ const Event = ({ archived }: { archived: boolean }) => {
         setName(data.name);
         setDesc(data.description);
 
-        let newMembers: Member[] = [];
+        let newMembers: MemberType[] = [];
 
-        data.users.forEach((u) => {
+        data.users.forEach((u: MemberType) => {
           if (u.email !== (localStorage.getItem("email") as string)) {
             newMembers.push(u);
           }

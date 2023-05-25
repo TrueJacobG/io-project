@@ -5,7 +5,7 @@ import { MemberType } from "../../../../types/MemberType";
 type Props = {
   archived: boolean;
   members: MemberType[];
-  handleDeleteMember: () => void;
+  handleDeleteMember: (email: string) => void;
 };
 
 const Members = ({ archived, members, handleDeleteMember }: Props) => {

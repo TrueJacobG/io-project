@@ -4,17 +4,19 @@ import AddExpense from "./AddExpense";
 import ExpenseRow from "./ExpenseRow";
 import sumCosts from "../../utils/sumCosts";
 import React from "react";
-import { Member } from "../../../../types/MemberType";
+import { MemberType } from "../../../../types/MemberType";
 
 type Props = {
   archived: boolean;
   expenses: ExpenseType[];
-  members: Member[];
-  handleDeleteExpense: () => void;
-  handleAddExpense: () => void;
-  isShowAddExpenseForm: () => void;
+  members: MemberType[];
+  handleDeleteExpense: (idExpense: string) => void;
+  handleAddExpense: (name: string, description: string, type: string, cost: number, splitCash: number[], users: string[]) => void;
+  isShowAddExpenseForm: boolean;
   errorAddExpenseForm: string;
 };
+
+// THIS COMPONENT IS MESSY I AM SORRY
 
 const ExpensesTable = ({
   archived,
@@ -50,7 +52,7 @@ const ExpensesTable = ({
     }
   };
 
-  const handleChangeUserInExpense = (e: React.MouseEvent<HTMLButtonElement>, u: string) => {
+  const handleChangeUserInExpense = (e: React.ChangeEvent<HTMLInputElement>, u: string) => {
     if (e.target.checked) {
       setUsers([...users, u]);
     } else {
