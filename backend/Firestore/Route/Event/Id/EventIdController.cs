@@ -78,6 +78,7 @@ namespace Firestore.Route.Event.Id
         }
 
 
+        //TODO::: change to summary
         [EnableCors("Policy1")]
         [HttpGet]
         [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
@@ -104,6 +105,9 @@ namespace Firestore.Route.Event.Id
                     List<PayerDataDTO> a = new List<PayerDataDTO>();
                     List<Dictionary<string, string>> mailToUsername = new List<Dictionary<string, string>>();
 
+                 
+
+
                     foreach (var item in users)
                     {
                         PayerDataDTO payerData = new PayerDataDTO(await Translator.GetMailByUID(item));
@@ -114,7 +118,14 @@ namespace Firestore.Route.Event.Id
                             {"username", await Translator.GetUsernameByUID(item)}
                         });
 
-                        Console.WriteLine("USER:" + item);
+                        Console.WriteLine("summarydata " + summary.GetValue <Dictionary<string, double>>(item)[item]);
+                        foreach (var item2 in summary.GetValue<Dictionary<string,double>>(item))
+                        {
+                            Console.WriteLine($"{item}->{item2.Key}->{item2.Value}");
+                        }
+
+
+
 
                         foreach (var debtors in summary.GetValue<Dictionary<string, double>>(item))
                         {
@@ -136,6 +147,38 @@ namespace Firestore.Route.Event.Id
                     return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event summary", }));
                 }
             }
+            else
+            {
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event" }));
+            }
+        }
+
+        [EnableCors("Policy1")]
+        [HttpPut]
+        [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
+        public async Task<IActionResult> ChangeFinishedDAta([FromBody] PayerGiverDTO payerGiver, string id_event)
+        {
+            _logger.LogInformation($"EventModel get finished debtors Attempt");
+            Console.WriteLine(id_event);
+
+            DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
+            DocumentSnapshot eventData = await eventFromId.GetSnapshotAsync();
+
+            if (eventData.Exists)
+            {
+                DocumentReference summary = firestoreDb.Collection(summaryCollection).Document(eventData.GetValue<string>("summary"));
+
+                Dictionary<string, object> partToUpdate = new Dictionary<string, object>()
+                    {
+                        {payerGiver.payer,0 }
+                    };
+
+                await summary.UpdateAsync(partToUpdate);
+
+                return StatusCode(200);
+
+            }
+
             else
             {
                 return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event" }));
