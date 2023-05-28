@@ -868,7 +868,7 @@
 					]
 				},
 				{
-					"name": "*** Get Methods",
+					"name": "Get Methods",
 					"item": [
 						{
 							"name": "Get all events",
@@ -1022,7 +1022,7 @@
 							"response": []
 						},
 						{
-							"name": "*** Get event archived",
+							"name": "Get event archived",
 							"event": [
 								{
 									"listen": "test",
@@ -1072,6 +1072,80 @@
 											"value": null,
 											"disabled": true
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "*** Get finish event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{id_event}}/finish",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{id_event}}",
+										"finish"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "*** Get event summary",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{id_event}}/summary",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{id_event}}",
+										"summary"
 									]
 								}
 							},
@@ -1623,7 +1697,7 @@
 					]
 				},
 				{
-					"name": "*** Delete Methods",
+					"name": "Delete Methods",
 					"item": [
 						{
 							"name": "Delete existing expense",
@@ -1720,7 +1794,7 @@
 							"response": []
 						},
 						{
-							"name": "*** Delete expense wrong id_expenses",
+							"name": "Delete expense wrong id_expenses",
 							"event": [
 								{
 									"listen": "test",
@@ -1770,7 +1844,34 @@
 				},
 				{
 					"name": "*** PUT Methods",
-					"item": []
+					"item": [
+						{
+							"name": "****PUT Change desc/name",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"nowe_name\",\r\n    \"description\": \"nowy_desc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{id_event}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{id_event}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
