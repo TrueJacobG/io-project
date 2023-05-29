@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev-localhost": "vite -m localhost",
+    "dev-notlocalhost": "vite -m notlocalhost",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "preview-localhost": "vite preview -m localhost"
+    "preview-notlocalhost": "vite preview -m notlocalhost"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
