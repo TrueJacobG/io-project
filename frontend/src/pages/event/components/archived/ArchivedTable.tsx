@@ -56,7 +56,7 @@ const ArchivedTable = ({ finishedData, members }: Props) => {
                   // TODO?
                   return (
                     <React.Fragment key={Math.random()}>
-                      <p>{formatter.format(Number(deb.cash))}</p>
+                      <p>{formatter.format(Number(deb.cash.replace(",", ".")))}</p>
                       <p>to</p>
                       <p>{deb.email}</p>
                     </React.Fragment>
