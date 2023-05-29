@@ -6,6 +6,8 @@ if (import.meta.env.VITE_LOCALHOST === undefined) {
   link = "http://localhost:7012/api/v1";
 }
 
+link = "http://localhost:7012/api/v1";
+
 const useFetchWithBody = async (url: string, method: string, token: string, body: any) => {
   return fetch(link + url, {
     method: method,
