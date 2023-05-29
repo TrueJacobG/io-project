@@ -78,6 +78,7 @@ namespace Firestore.Route.Event.Id
         }
 
 
+        //TODO::: change to summary
         [EnableCors("Policy1")]
         [HttpGet]
         [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
@@ -87,64 +88,97 @@ namespace Firestore.Route.Event.Id
             Console.WriteLine(id_event);
 
             DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
-            DocumentSnapshot result = await eventFromId.GetSnapshotAsync();
+            DocumentSnapshot eventData = await eventFromId.GetSnapshotAsync();
 
-            if (result.Exists)
+            if (eventData.Exists)
             {
-                DocumentSnapshot summary = await firestoreDb.Collection(summaryCollection).Document(result.GetValue<string>("summary")).GetSnapshotAsync();
+                DocumentSnapshot summary = await firestoreDb.Collection(summaryCollection).Document(eventData.GetValue<string>("summary")).GetSnapshotAsync();
 
                 if (summary.Exists)
                 {
                     List<string> users = new List<string>
                     {
-                        result.GetValue<string>("creator")
+                        eventData.GetValue<string>("creator")
                     };
-                    users.AddRange(result.GetValue<List<string>>("users"));
-
+                    users.AddRange(eventData.GetValue<List<string>>("users"));
 
                     List<PayerDataDTO> a = new List<PayerDataDTO>();
+                    List<Dictionary<string, string>> mailToUsername = new List<Dictionary<string, string>>();
+
+                 
 
 
                     foreach (var item in users)
                     {
                         PayerDataDTO payerData = new PayerDataDTO(await Translator.GetMailByUID(item));
 
-                        Console.WriteLine(item);
+                        mailToUsername.Add(new Dictionary<string, string>()
+                        {
+                            {"mail", await Translator.GetMailByUID(item)},
+                            {"username", await Translator.GetUsernameByUID(item)}
+                        });
+
+                        Console.WriteLine("summarydata " + summary.GetValue <Dictionary<string, double>>(item)[item]);
+                        foreach (var item2 in summary.GetValue<Dictionary<string,double>>(item))
+                        {
+                            Console.WriteLine($"{item}->{item2.Key}->{item2.Value}");
+                        }
+
+
+
 
                         foreach (var debtors in summary.GetValue<Dictionary<string, double>>(item))
                         {
+                            //here change cash format to 2 places after .
                             payerData.debtors.Add(new Dictionary<string, string>()
                             {
                                 {"email", await Translator.GetMailByUID(debtors.Key) },
-                                {"cash", debtors.Value.ToString()}
+                                {"cash", Math.Round(debtors.Value,2).ToString()}
                             });
-
-                           
-                            //givers[user].Add("email", await Translator.GetMailByUID(debtors.Key));
-                            //givers[user].Add("cash", debtors.Value.ToString());
                         }
 
                         a.Add(payerData);
                     }
 
-
-                    //foreach (var item in givers)
-                    //{
-                    //    Console.WriteLine(item.Key);
-                    //    foreach (var item2 in givers[item.Key])
-                    //    {
-                    //        Console.WriteLine($"{item2.Key}    {item2.Value}");
-                    //    }
-                    //}
-
-
-                    return StatusCode(200, JsonConvert.SerializeObject(new { data = a }));
+                    return StatusCode(200, JsonConvert.SerializeObject(new { data = a, mailUsername = mailToUsername }));
                 }
                 else
                 {
-                    return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event summary" }));
+                    return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event summary", }));
                 }
             }
+            else
+            {
+                return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event" }));
+            }
+        }
+
+        [EnableCors("Policy1")]
+        [HttpPut]
+        [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
+        public async Task<IActionResult> ChangeFinishedDAta([FromBody] PayerGiverDTO payerGiver, string id_event)
+        {
+            _logger.LogInformation($"EventModel get finished debtors Attempt");
+            Console.WriteLine(id_event);
+
+            DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
+            DocumentSnapshot eventData = await eventFromId.GetSnapshotAsync();
+
+            if (eventData.Exists)
+            {
+                DocumentReference summary = firestoreDb.Collection(summaryCollection).Document(eventData.GetValue<string>("summary"));
+
+                Dictionary<string, object> partToUpdate = new Dictionary<string, object>()
+                    {
+                        {payerGiver.payer,0 }
+                    };
+
+                await summary.UpdateAsync(partToUpdate);
+
+                return StatusCode(200);
+
+            }
+
             else
             {
                 return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event" }));
