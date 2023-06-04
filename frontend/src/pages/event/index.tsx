@@ -180,7 +180,17 @@ const Event = ({ archived }: { archived: boolean }) => {
       fromEmail: fromEmail,
       toEmail: toEmail,
     })
-      .then(() => {})
+      .then(() => {
+        let newFinishedData: FinishedData[] = [];
+
+        finishedData.forEach((data) => {
+          if (data.payer !== fromEmail) {
+            newFinishedData.push(data);
+          }
+        });
+
+        setFinishedData(newFinishedData);
+      })
       .catch((e) => {
         console.error("something went wrong");
         console.error(e);

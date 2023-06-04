@@ -36,40 +36,44 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
           </div>
           <div style={{ clear: "both" }}></div>
         </div>
-        {finishedData.map((el) => {
-          return (
-            <div key={Math.random()} className="finished-data">
-              {el.debtors.length > 0 && (
-                <div className="debtor">
-                  <h3>{el.payer}</h3>
-                  {localStorage.getItem("email") == el.payer && (
-                    <div className="global-button-style debtor-button">
-                      <button onClick={() => handleDebtorReturnedMoney(el)}>Returned money!</button>
-                    </div>
-                  )}
-                  {localStorage.getItem("email") == el.debtors[0].email && (
-                    <div className="global-button-style payer-button">
-                      <button onClick={() => handlePayerReceivedMoney(el)}>Received money!</button>
-                    </div>
-                  )}
+        {finishedData.length == 0 ? (
+          <h1>Everyone paid!</h1>
+        ) : (
+          finishedData.map((el) => {
+            return (
+              <div key={Math.random()} className="finished-data">
+                {el.debtors.length > 0 && (
+                  <div className="debtor">
+                    <h3>{el.payer}</h3>
+                    {localStorage.getItem("email") == el.payer && (
+                      <div className="global-button-style debtor-button">
+                        <button onClick={() => handleDebtorReturnedMoney(el)}>Returned money!</button>
+                      </div>
+                    )}
+                    {localStorage.getItem("email") == el.debtors[0].email && (
+                      <div className="global-button-style payer-button">
+                        <button onClick={() => handlePayerReceivedMoney(el)}>Received money!</button>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div className="have-to-pay">
+                  {el.debtors.map((deb) => {
+                    // TODO?
+                    return (
+                      <React.Fragment key={Math.random()}>
+                        <p>{formatter.format(Number(deb.cash.replace(",", ".")))}</p>
+                        <p>to</p>
+                        <p>{deb.email}</p>
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
-              )}
-              <div className="have-to-pay">
-                {el.debtors.map((deb) => {
-                  // TODO?
-                  return (
-                    <React.Fragment key={Math.random()}>
-                      <p>{formatter.format(Number(deb.cash.replace(",", ".")))}</p>
-                      <p>to</p>
-                      <p>{deb.email}</p>
-                    </React.Fragment>
-                  );
-                })}
+                <div style={{ clear: "both" }}></div>
               </div>
-              <div style={{ clear: "both" }}></div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );
