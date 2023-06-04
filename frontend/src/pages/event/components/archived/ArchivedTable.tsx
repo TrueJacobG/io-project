@@ -50,20 +50,18 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
                         <button onClick={() => handleDebtorReturnedMoney(el)}>Returned money!</button>
                       </div>
                     )}
-                    {localStorage.getItem("email") == el.debtors[0].email && (
+                    {localStorage.getItem("email") == el.debtors[0].email && el.debtors[0].cash === "0" && (
                       <div className="global-button-style payer-button">
                         <button onClick={() => handlePayerReceivedMoney(el)}>Received money!</button>
                       </div>
                     )}
                   </div>
                 )}
-                {el.debtors[0].cash !== "0" && (
-                  <div className="have-to-pay">
-                    <p>{formatter.format(Number(el.debtors[0].cash.replace(",", ".")))}</p>
-                    <p>to</p>
-                    <p>{el.debtors[0].email}</p>
-                  </div>
-                )}
+                <div className="have-to-pay">
+                  <p>{formatter.format(Number(el.debtors[0].cash.replace(",", ".")))}</p>
+                  <p>to</p>
+                  <p>{el.debtors[0].email}</p>
+                </div>
                 <div style={{ clear: "both" }}></div>
               </div>
             );
