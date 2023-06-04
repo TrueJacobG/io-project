@@ -45,7 +45,7 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
                 {el.debtors.length > 0 && (
                   <div className="debtor">
                     <h3>{el.payer}</h3>
-                    {localStorage.getItem("email") == el.payer && (
+                    {localStorage.getItem("email") == el.payer && el.debtors[0].cash !== "0" && (
                       <div className="global-button-style debtor-button">
                         <button onClick={() => handleDebtorReturnedMoney(el)}>Returned money!</button>
                       </div>
@@ -57,18 +57,13 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
                     )}
                   </div>
                 )}
-                <div className="have-to-pay">
-                  {el.debtors.map((deb) => {
-                    // TODO?
-                    return (
-                      <React.Fragment key={Math.random()}>
-                        <p>{formatter.format(Number(deb.cash.replace(",", ".")))}</p>
-                        <p>to</p>
-                        <p>{deb.email}</p>
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
+                {el.debtors[0].cash !== "0" && (
+                  <div className="have-to-pay">
+                    <p>{formatter.format(Number(el.debtors[0].cash.replace(",", ".")))}</p>
+                    <p>to</p>
+                    <p>{el.debtors[0].email}</p>
+                  </div>
+                )}
                 <div style={{ clear: "both" }}></div>
               </div>
             );
