@@ -17,12 +17,10 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
   const handleDebtorReturnedMoney = (element: FinishedData) => {
     const data = { fromEmail: element.payer, toEmail: element.debtors[0].email };
     handleClickRefundMoney(data.fromEmail, data.toEmail, "return");
-    window.location.href = "/";
   };
   const handlePayerReceivedMoney = (element: FinishedData) => {
     const data = { fromEmail: element.payer, toEmail: element.debtors[0].email };
     handleClickRefundMoney(data.fromEmail, data.toEmail, "received");
-    window.location.href = "/";
   };
 
   return (
