@@ -59,11 +59,13 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
                     )}
                   </div>
                 )}
-                <div className="have-to-pay">
-                  <p>{formatter.format(Number(el.debtors[0].cash.replace(",", ".")))}</p>
-                  <p>to</p>
-                  <p>{el.debtors[0].email}</p>
-                </div>
+                {el.debtors !== undefined && (
+                  <div className="have-to-pay">
+                    <p>{formatter.format(Number(el.debtors[0].cash.replace(",", ".")))}</p>
+                    <p>to</p>
+                    <p>{el.debtors[0].email}</p>
+                  </div>
+                )}
                 <div style={{ clear: "both" }}></div>
               </div>
             );
