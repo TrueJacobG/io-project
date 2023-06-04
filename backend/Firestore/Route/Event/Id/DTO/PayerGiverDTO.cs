@@ -1,8 +1,14 @@
-﻿namespace Firestore.Route.Event.Id.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Firestore.Route.Event.Id.DTO
 {
     public class PayerGiverDTO
     {
-        public string payer;
-        public string giver;
+        [Required]
+        [EmailAddress]
+        public string fromEmail { get; set; }
+        [EmailAddress]
+        [Required]
+        public string toEmail { get; set; }
     }
 }

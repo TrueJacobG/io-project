@@ -2,6 +2,7 @@
 using Firestore.FirebaseThings;
 using Firestore.Route.Event.Id.DTO;
 using Firestore.Route.Event.Model;
+using Firestore.Route.User.Model;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -81,11 +82,10 @@ namespace Firestore.Route.Event.Id
         //TODO::: change to summary
         [EnableCors("Policy1")]
         [HttpGet]
-        [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
+        [Route("{id_event}/summary", Name = "getSummary")]
         public async Task<IActionResult> GetFinishedEventData(string id_event)
         {
             _logger.LogInformation($"EventModel get finished debtors Attempt");
-            Console.WriteLine(id_event);
 
             DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
             DocumentSnapshot eventData = await eventFromId.GetSnapshotAsync();
@@ -102,45 +102,39 @@ namespace Firestore.Route.Event.Id
                     };
                     users.AddRange(eventData.GetValue<List<string>>("users"));
 
-                    List<PayerDataDTO> a = new List<PayerDataDTO>();
+
+                    List<PayerDataDTO> summaryData = new List<PayerDataDTO>();
                     List<Dictionary<string, string>> mailToUsername = new List<Dictionary<string, string>>();
-
-                 
-
 
                     foreach (var item in users)
                     {
-                        PayerDataDTO payerData = new PayerDataDTO(await Translator.GetMailByUID(item));
-
-                        mailToUsername.Add(new Dictionary<string, string>()
+                        if (summary.TryGetValue<Dictionary<string, double>>(item, out Dictionary<string,double> _))
                         {
-                            {"mail", await Translator.GetMailByUID(item)},
-                            {"username", await Translator.GetUsernameByUID(item)}
-                        });
+                            PayerDataDTO payerData = new PayerDataDTO(await Translator.GetMailByUID(item));
 
-                        Console.WriteLine("summarydata " + summary.GetValue <Dictionary<string, double>>(item)[item]);
-                        foreach (var item2 in summary.GetValue<Dictionary<string,double>>(item))
-                        {
-                            Console.WriteLine($"{item}->{item2.Key}->{item2.Value}");
-                        }
-
-
-
-
-                        foreach (var debtors in summary.GetValue<Dictionary<string, double>>(item))
-                        {
-                            //here change cash format to 2 places after .
-                            payerData.debtors.Add(new Dictionary<string, string>()
+                            mailToUsername.Add(new Dictionary<string, string>()
                             {
-                                {"email", await Translator.GetMailByUID(debtors.Key) },
-                                {"cash", Math.Round(debtors.Value,2).ToString()}
+                                {"mail", await Translator.GetMailByUID(item)},
+                                {"username", await Translator.GetUsernameByUID(item)}
                             });
-                        }
 
-                        a.Add(payerData);
+                            foreach (var debtors in summary.GetValue<Dictionary<string, double>>(item))
+                            {
+                                payerData.debtors.Add(new Dictionary<string, string>()
+                                {
+                                    {"email", await Translator.GetMailByUID(debtors.Key) },
+                                    {"cash", Math.Round(Convert.ToDouble(debtors.Value),2).ToString()}
+                                });
+                            }
+
+                            if (payerData.debtors.Count > 0)
+                            {
+                                summaryData.Add(payerData);
+                            }
+                        }
                     }
 
-                    return StatusCode(200, JsonConvert.SerializeObject(new { data = a, mailUsername = mailToUsername }));
+                    return StatusCode(200, JsonConvert.SerializeObject(new { data = summaryData, mailUsername = mailToUsername }));
                 }
                 else
                 {
@@ -154,12 +148,16 @@ namespace Firestore.Route.Event.Id
         }
 
         [EnableCors("Policy1")]
-        [HttpPut]
-        [Route("{id_event}/finished_data", Name = "getFinishedEventData")]
+        [HttpPost]
+        [Route("{id_event}/summary", Name = "changeSummary")]
         public async Task<IActionResult> ChangeFinishedDAta([FromBody] PayerGiverDTO payerGiver, string id_event)
         {
             _logger.LogInformation($"EventModel get finished debtors Attempt");
-            Console.WriteLine(id_event);
+
+            if(!ModelState.IsValid)
+            {
+                return StatusCode(400, JsonConvert.SerializeObject(new { message = $"something wrong" }));
+            }
 
             DocumentReference eventFromId = firestoreDb.Collection(eventCollection).Document(id_event);
             DocumentSnapshot eventData = await eventFromId.GetSnapshotAsync();
@@ -167,18 +165,34 @@ namespace Firestore.Route.Event.Id
             if (eventData.Exists)
             {
                 DocumentReference summary = firestoreDb.Collection(summaryCollection).Document(eventData.GetValue<string>("summary"));
+                DocumentSnapshot summaryData = await summary.GetSnapshotAsync();
 
-                Dictionary<string, object> partToUpdate = new Dictionary<string, object>()
+                Dictionary<string, object> partToUpdate;
+                if (summaryData.GetValue<Dictionary<string, double>>(await Translator.GetUidByEmail(payerGiver.fromEmail))[await Translator.GetUidByEmail(payerGiver.toEmail)] == 0)
+                {
+                    partToUpdate = new Dictionary<string, object>()
                     {
-                        {payerGiver.payer,0 }
+                        {await Translator.GetUidByEmail(payerGiver.fromEmail), FieldValue.Delete}
                     };
+                }
+                else
+                {
+                    partToUpdate = new Dictionary<string, object>()
+                    {
+                        {
+                            await Translator.GetUidByEmail(payerGiver.fromEmail),new Dictionary<string, double>()
+                            {
+                                {await Translator.GetUidByEmail(payerGiver.toEmail), 0 }
+                            }
+                        },
+                    };
+                }
 
                 await summary.UpdateAsync(partToUpdate);
 
-                return StatusCode(200);
+                return StatusCode(200, JsonConvert.SerializeObject(new { }));
 
             }
-
             else
             {
                 return StatusCode(404, JsonConvert.SerializeObject(new { message = "There is no event" }));
@@ -242,20 +256,12 @@ namespace Firestore.Route.Event.Id
                     userCash.Add(user, new Dictionary<string, double>());
                 }
 
-                foreach (var item in userCash.Keys)
-                {
-                    Console.WriteLine($"USER:{item}->{await Translator.GetUsernameByUID(item)}");
-                }
-
-                Console.WriteLine();
-
                 //for all expenses
                 foreach (string expense in eventToFinishData.GetValue<string[]>("expenses"))
                 {
                     DocumentSnapshot eventToFinishExpense = await firestoreDb.Collection(expenseCollection).Document(expense).GetSnapshotAsync();
 
                     string creatorEmail = await Translator.GetMailByUID(eventToFinishExpense.GetValue<string>("creator"));
-                    Console.WriteLine($"CREATOR:::{creatorEmail}");
 
                     //for all users in one expense
                     foreach (Dictionary<string, string> item in eventToFinishExpense.GetValue<Dictionary<string, string>[]>("users"))
@@ -263,10 +269,6 @@ namespace Firestore.Route.Event.Id
                         //add debtors about user and their cash to proper userCash column
                         if (item["email"] != creatorEmail)
                         {
-                            Console.WriteLine($"FOUND -> {item["email"]}");
-                            Console.WriteLine($"{item["email"]}/{item["value"]}");
-                            Console.WriteLine($"{eventToFinishExpense.GetValue<string>("creator")}////{await Translator.GetUidByEmail(item["email"])}");
-
                             try
                             {
                                 if (userCash[await Translator.GetUidByEmail(item["email"])].Keys.Contains(eventToFinishExpense.GetValue<string>("creator")))
@@ -277,6 +279,8 @@ namespace Firestore.Route.Event.Id
                                 {
                                     userCash[await Translator.GetUidByEmail(item["email"])].Add(eventToFinishExpense.GetValue<string>("creator"), double.Parse(item["value"], CultureInfo.InvariantCulture));
                                 }
+
+                             
                             }
                             catch (Exception e)
                             {
@@ -288,20 +292,15 @@ namespace Firestore.Route.Event.Id
                     Console.WriteLine();
                 }
 
-                Console.WriteLine("[(userCash)]");
 
                 foreach (var item in userCash)
                 {
-                    Console.WriteLine($"[{await Translator.GetUsernameByUID(item.Key)}]");
                     foreach (KeyValuePair<string, double> pair in item.Value)
                     {
-                        Console.WriteLine($"[{await Translator.GetUsernameByUID(pair.Key)}]--->{pair.Value}");
                         if (userCash[item.Key].Keys.Contains(pair.Key) && userCash[pair.Key].Keys.Contains(item.Key))
                         {
-                            Console.WriteLine($"{await Translator.GetUsernameByUID(item.Key)}[{pair.Value}]///{await Translator.GetUsernameByUID(pair.Key)}[{userCash[pair.Key][item.Key]}]");
                             if (pair.Value >= userCash[pair.Key][item.Key])
                             {
-                                Console.WriteLine($"First bigger {await Translator.GetUsernameByUID(item.Key)}-{pair.Key}=={pair.Value - userCash[pair.Key][item.Key]}");
                                 userCash[item.Key][pair.Key] = pair.Value - userCash[pair.Key][item.Key];
                                 userCash[pair.Key][item.Key] = 0;
                             }
@@ -309,27 +308,9 @@ namespace Firestore.Route.Event.Id
                             {
                                 userCash[pair.Key][item.Key] = userCash[pair.Key][item.Key] - pair.Value;
                                 userCash[item.Key][pair.Key] = 0;
-                                Console.WriteLine("Second bigger");
                             }
                         }
                     }
-                    Console.WriteLine();
-
-                }
-
-                Console.WriteLine("FINAL:");
-                foreach (var item in userCash)
-                {
-                    Console.WriteLine($"[{await Translator.GetUsernameByUID(item.Key)}]");
-                    foreach (KeyValuePair<string, double> pair in item.Value)
-                    {
-                        if (pair.Value != 0)
-                        {
-                            Console.WriteLine($"[{await Translator.GetUsernameByUID(pair.Key)}]--->{pair.Value}");
-                        }
-                    }
-                    Console.WriteLine();
-
                 }
 
                 CollectionReference summarys = firestoreDb.Collection(summaryCollection);
@@ -342,6 +323,7 @@ namespace Firestore.Route.Event.Id
                 };
 
                 await eventToFinish.UpdateAsync(eventSummaryUpdate);
+                Console.WriteLine("finished");
 
                 return StatusCode(200, JsonConvert.SerializeObject(new { }));
             }
