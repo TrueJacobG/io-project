@@ -175,26 +175,59 @@ const Event = ({ archived }: { archived: boolean }) => {
       });
   };
 
-  const handleClickRefundMoney = (fromEmail: string, toEmail: string) => {
+  const handleClickRefundMoney = (fromEmail: string, toEmail: string, filter: string) => {
     useFetchWithBody("/event/" + idEvent + "/summary", "POST", localStorage.getItem("token") as string, {
       fromEmail: fromEmail,
       toEmail: toEmail,
     })
       .then(() => {
-        let newFinishedData: FinishedData[] = [];
-
-        finishedData.forEach((data) => {
-          if (data.payer !== fromEmail) {
-            newFinishedData.push(data);
-          }
-        });
-
-        setFinishedData(newFinishedData);
+        if (filter === "return") {
+          filterReturnClicked(fromEmail, toEmail);
+        } else {
+          filterReceivedClicked(fromEmail, toEmail);
+        }
       })
       .catch((e) => {
         console.error("something went wrong");
         console.error(e);
       });
+  };
+
+  const filterReturnClicked = (fromEmail: string, toEmail: string) => {
+    let newFinishedData: FinishedData[] = [];
+
+    finishedData.forEach((data) => {
+      if (data.debtors.length !== 0) {
+        if (data.payer === fromEmail) {
+          let fdata: FinishedData = {
+            payer: data.payer,
+            debtors: [],
+          };
+          data.debtors.forEach((deb) => {
+            if (deb.email !== toEmail) {
+              fdata.debtors.push(deb);
+            }
+          });
+          newFinishedData.push(fdata);
+        } else {
+          newFinishedData.push(data);
+        }
+      }
+    });
+
+    setFinishedData(newFinishedData);
+  };
+
+  const filterReceivedClicked = (fromEmail: string, receivedMoney: string) => {
+    let newFinishedData: FinishedData[] = [];
+
+    finishedData.forEach((data) => {
+      if (data.payer !== receivedMoney) {
+        newFinishedData.push(data);
+      }
+    });
+
+    setFinishedData(newFinishedData);
   };
 
   const loadFinishedData = () => {

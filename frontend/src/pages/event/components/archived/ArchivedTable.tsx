@@ -5,7 +5,7 @@ import { FinishedData } from "../../../../types/FinishedData";
 type Props = {
   finishedData: FinishedData[];
   members: MemberType[];
-  handleClickRefundMoney: (fromEmail: string, toEmail: string) => void;
+  handleClickRefundMoney: (fromEmail: string, toEmail: string, filter: string) => void;
 };
 
 const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props) => {
@@ -16,11 +16,11 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
 
   const handleDebtorReturnedMoney = (element: FinishedData) => {
     const data = { fromEmail: element.payer, toEmail: element.debtors[0].email };
-    handleClickRefundMoney(data.fromEmail, data.toEmail);
+    handleClickRefundMoney(data.fromEmail, data.toEmail, "return");
   };
   const handlePayerReceivedMoney = (element: FinishedData) => {
-    const data = { toEmail: element.payer, fromEmail: element.debtors[0].email };
-    // TODO
+    const data = { fromEmail: element.payer, toEmail: element.debtors[0].email };
+    handleClickRefundMoney(data.fromEmail, data.toEmail, "received");
   };
 
   return (
