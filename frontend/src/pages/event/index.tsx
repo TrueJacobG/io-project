@@ -180,7 +180,7 @@ const Event = ({ archived }: { archived: boolean }) => {
       fromEmail: fromEmail,
       toEmail: toEmail,
     })
-      .then(() => {
+      .then((data) => {
         if (filter === "return") {
           filterReturnClicked(fromEmail, toEmail);
         } else {

@@ -23,6 +23,8 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
     handleClickRefundMoney(data.fromEmail, data.toEmail, "received");
   };
 
+  console.log(finishedData);
+
   return (
     <div className="finished-data-all-box">
       <h1>Summary</h1>
