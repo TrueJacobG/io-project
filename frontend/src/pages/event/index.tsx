@@ -175,8 +175,20 @@ const Event = ({ archived }: { archived: boolean }) => {
       });
   };
 
+  const handleClickRefundMoney = (fromEmail: string, toEmail: string) => {
+    useFetchWithBody("/event/" + idEvent + "/summary", "POST", localStorage.getItem("token") as string, {
+      fromEmail: fromEmail,
+      toEmail: toEmail,
+    })
+      .then(() => {})
+      .catch((e) => {
+        console.error("something went wrong");
+        console.error(e);
+      });
+  };
+
   const loadFinishedData = () => {
-    useFetch("/event/" + idEvent + "/finished_data", "GET", localStorage.getItem("token") as string)
+    useFetch("/event/" + idEvent + "/summary", "GET", localStorage.getItem("token") as string)
       .then((data) => {
         setFinishedData(data.data);
       })
@@ -293,7 +305,7 @@ const Event = ({ archived }: { archived: boolean }) => {
         {isShowAddUserForm && <AddUserForm handleAddUser={handleAddUser} />}
         <Members archived={archived} members={members} handleDeleteMember={handleDeleteMember} />
       </div>
-      {archived && <ArchivedTable finishedData={finishedData} members={members} />}
+      {archived && <ArchivedTable finishedData={finishedData} members={members} handleClickRefundMoney={handleClickRefundMoney} />}
     </div>
   );
 };
