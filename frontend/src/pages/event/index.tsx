@@ -199,6 +199,9 @@ const Event = ({ archived }: { archived: boolean }) => {
     finishedData.forEach((data) => {
       if (data.debtors.length !== 0) {
         if (data.payer === fromEmail) {
+          console.log(fromEmail);
+          console.log(toEmail);
+
           let fdata: FinishedData = {
             payer: data.payer,
             debtors: [],
