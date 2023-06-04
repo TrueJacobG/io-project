@@ -57,7 +57,7 @@ const ArchivedTable = ({ finishedData, members, handleClickRefundMoney }: Props)
                     )}
                   </div>
                 )}
-                {el.debtors.length > 0 && (
+                {el.debtors.length > 0 && el.debtors[0].cash !== "0" && (
                   <div className="have-to-pay">
                     <p>{formatter.format(Number(el.debtors[0].cash.replace(",", ".")))}</p>
                     <p>to</p>
