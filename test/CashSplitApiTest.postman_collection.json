@@ -686,8 +686,12 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Response time is less than 400ms\", function () {\r",
-											"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+											"var res = pm.response.json();\r",
+											"console.log(res.id_event);\r",
+											"pm.environment.set(\"id_event\", res.id_event);\r",
+											"\r",
+											"pm.test(\"Response time is less than 200ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -705,7 +709,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"testowy event\",\r\n    \"description\": \"testowy opis\"\r\n}",
+									"raw": "{\r\n    \"name\": \"{{$randomCity}}\",\r\n    \"description\": \"{{$randomJobArea}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -864,6 +868,162 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Post user paid to other user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fromEmail\": \"sarowianek12@gmail.com\",\r\n    \"toEmail\": \"test1@gmail.com\"\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}/summary",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}",
+										"summary"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post user paid to other user no_body_data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fromEmail\": \"\",\r\n    \"toEmail\": \"\"\r\n\r\n\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/event/{{id_event}}/summary",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"{{id_event}}",
+										"summary"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post user paid to other user wrong_id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fromEmail\": \"test1@gmail.com\",\r\n    \"toEmail\": \"sarowianek12@gmail.com\"\r\n\r\n\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/event/wrong_id/summary",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"wrong_id",
+										"summary"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -972,13 +1132,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/event/AQbqPSAV3YS8JU95impL",
+									"raw": "{{url}}/event/{{id_event}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"event",
-										"AQbqPSAV3YS8JU95impL"
+										"{{id_event}}"
 									]
 								}
 							},
@@ -1028,6 +1188,13 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"\r",
+											"var res = pm.response.json();\r",
+											"\r",
+											"var id = res.archived_events[0]?.id_event;\r",
+											"\r",
+											"pm.environment.set(\"id_event_archived\", id);\r",
+											"\r",
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});"
@@ -1040,6 +1207,9 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -1078,7 +1248,7 @@
 							"response": []
 						},
 						{
-							"name": "*** Get finish event",
+							"name": "Get finish event",
 							"event": [
 								{
 									"listen": "test",
@@ -1096,8 +1266,27 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "",
@@ -1108,11 +1297,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/{{id_event}}/finish",
+									"raw": "{{url}}/event/{{id_event}}/finish",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
+										"event",
 										"{{id_event}}",
 										"finish"
 									]
@@ -1121,7 +1311,70 @@
 							"response": []
 						},
 						{
-							"name": "*** Get event summary",
+							"name": "Get finish event wrong_id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/event/wrong_id/finish",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"wrong_id",
+										"finish"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get event summary",
 							"event": [
 								{
 									"listen": "test",
@@ -1136,15 +1389,25 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
 								"url": {
-									"raw": "{{url}}/{{id_event}}/summary",
+									"raw": "{{url}}/event/{{id_event_archived}}/summary",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
-										"{{id_event}}",
+										"event",
+										"{{id_event_archived}}",
 										"summary"
 									]
 								}
@@ -1843,10 +2106,10 @@
 					]
 				},
 				{
-					"name": "*** PUT Methods",
+					"name": "PUT Methods",
 					"item": [
 						{
-							"name": "****PUT Change desc/name",
+							"name": "PUT Change desc/name ( no implemented )",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -1860,11 +2123,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/{{id_event}}",
+									"raw": "{{url}}/expense/{{id_event}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
+										"expense",
 										"{{id_event}}"
 									]
 								}
