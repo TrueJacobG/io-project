@@ -184,8 +184,6 @@ const Event = ({ archived }: { archived: boolean }) => {
         if (filter === "return") {
           filterReturnClicked(fromEmail, toEmail);
         } else {
-          console.log(fromEmail);
-          console.log(toEmail);
           filterReceivedClicked(fromEmail, toEmail);
         }
       })
@@ -224,7 +222,7 @@ const Event = ({ archived }: { archived: boolean }) => {
     let newFinishedData: FinishedData[] = [];
 
     finishedData.forEach((data) => {
-      if (data.payer !== receivedMoney) {
+      if (data.payer !== fromEmail) {
         newFinishedData.push(data);
       }
     });
